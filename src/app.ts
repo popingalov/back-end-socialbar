@@ -2,9 +2,6 @@ import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import lib.badValid from './libs/http-responses';
-
-console.log(lib.badValid);
 
 //
 dotenv.config();

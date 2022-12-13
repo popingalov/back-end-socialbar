@@ -61,5 +61,4 @@ const HTTP_RESPONSES = {
     status: 'Sorry, we are being DDoSed. Please call later.',
   },
 };
-
 export default HTTP_RESPONSES;
