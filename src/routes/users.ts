@@ -1,6 +1,8 @@
 import express from 'express';
 // const minitest = require('../controllers/index');
-import minitest from 'controllers/minitest/minitest';
+import newUser from '../controllers/users/newUser';
 const roter = express.Router();
 
-roter.get('/', minitest);
+roter.post('/', newUser);
+
+export default roter;

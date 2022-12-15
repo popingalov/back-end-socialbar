@@ -6,11 +6,6 @@ const emailRegExp =
 
 const userSchema = new Schema(
   {
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: 6,
-    },
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -21,16 +16,12 @@ const userSchema = new Schema(
       type: String,
       minlength: 2,
     },
-    avatar: {
-      type: URL,
-    },
+    // avatar: {
+    //   type: URL,
+    // },
     verify: {
       type: Boolean,
       default: false,
-    },
-    verificationToken: {
-      type: String,
-      required: [true, 'Verify token is required'],
     },
   },
   { versionKey: false, timestamps: true, collection: 'users' },
@@ -39,8 +30,8 @@ const userSchema = new Schema(
 const userJoiSchema = Joi.object({
   email: Joi.string().pattern(emailRegExp).required(),
   name: Joi.string().min(2),
-  token: {
-    type: String,
+  verify: {
+    type: Boolean,
     required: false,
   },
 });

@@ -1,3 +1,3 @@
-import minitest from '../controllers/minitest/minitest';
+import minitest from './ingridients/getAll';
 
 export default { minitest };

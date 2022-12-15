@@ -4,6 +4,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 //
+import ingRoute from './routes/ingridients';
+import usersRoute from './routes/users';
+import cocRoute from './routes/coctailts';
+
+//
 dotenv.config();
 
 const app = express();
@@ -14,8 +19,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
-app.use('/api', () => {
-  console.log('work');
-});
+app.use('/api/users', usersRoute);
+app.use('/api/ing', ingRoute);
+app.use('/api/coc', cocRoute);
 export default app;
 // module.exports = app;
