@@ -15,6 +15,10 @@ const ingShame = Schema(
       type: Boolean,
       default: false,
     },
+    shop: {
+      type: Boolean,
+      default: false,
+    },
     size: {
       type: String || Number,
       default: 50,

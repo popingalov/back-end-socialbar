@@ -10,7 +10,11 @@ const cocShame = Schema(
       default:
         'https://thumbs.dreamstime.com/b/coca-cola-drink-glass-ice-cubes-isolated-white-background-57156819.jpg',
     },
-    available: {
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+    isMine: {
       type: Boolean,
       default: false,
     },

@@ -22,7 +22,7 @@ export interface Ingredient {
   image: string;
   available: boolean;
   owner: string;
-  size?: string;
+  size?: string | number;
   createdAt: string;
   updatedAt: string;
 }
