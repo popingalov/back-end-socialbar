@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const HTTP_RESPONSES = {
+var HTTP_RESPONSES = {
     ok: {
         code: 200,
         status: 'ok',
@@ -23,7 +23,9 @@ const HTTP_RESPONSES = {
     },
     badValid: {
         code: 400,
-        status: (error) => `${error.details[0].message}`,
+        status: function (error) {
+            return "".concat(error.details[0].message);
+        },
     },
     badRequest: {
         code: 400,
@@ -43,7 +45,7 @@ const HTTP_RESPONSES = {
     },
     notFound: {
         code: 404,
-        status: (id) => `Id ${id} not found`,
+        status: function (id) { return "Id ".concat(id, " not found"); },
     },
     dataError: {
         code: 407,
@@ -55,7 +57,7 @@ const HTTP_RESPONSES = {
     },
     сonflict: {
         code: 409,
-        status: (mail) => `Email ${mail} in use`,
+        status: function (mail) { return "Email ".concat(mail, " in use"); },
     },
     serverError: {
         code: 500,

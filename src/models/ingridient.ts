@@ -15,7 +15,6 @@ const ingShame = Schema(
       type: Boolean,
       default: false,
     },
-    id: { type: String, required: true },
     owner: { type: String, ref: 'user', required: true },
   },
   { versionKey: false, timestamps: true, collection: 'ingredient' },

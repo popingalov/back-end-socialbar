@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const { Schema, model } = require('mongoose');
-const joi_1 = __importDefault(require("joi"));
-const emailRegExp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const userSchema = new Schema({
+var _a = require('mongoose'), Schema = _a.Schema, model = _a.model;
+var joi_1 = __importDefault(require("joi"));
+var emailRegExp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+var userSchema = new Schema({
     email: {
         type: String,
         required: [true, 'Email is required'],
@@ -25,7 +25,7 @@ const userSchema = new Schema({
         default: false,
     },
 }, { versionKey: false, timestamps: true, collection: 'users' });
-const userJoiSchema = joi_1.default.object({
+var userJoiSchema = joi_1.default.object({
     email: joi_1.default.string().pattern(emailRegExp).required(),
     name: joi_1.default.string().min(2),
     verify: {
@@ -33,13 +33,13 @@ const userJoiSchema = joi_1.default.object({
         required: false,
     },
 });
-const User = model('user', userSchema);
-const userVerificationJoiSchema = joi_1.default.object({
+var User = model('user', userSchema);
+var userVerificationJoiSchema = joi_1.default.object({
     email: joi_1.default.string().required(),
 });
 exports.default = {
-    User,
-    userJoiSchema,
-    userVerificationJoiSchema,
+    User: User,
+    userJoiSchema: userJoiSchema,
+    userVerificationJoiSchema: userVerificationJoiSchema,
 };
 //# sourceMappingURL=user.js.map

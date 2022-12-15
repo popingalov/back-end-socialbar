@@ -19,7 +19,9 @@ const cocShame = Schema(
     cocType: { type: Array, required: true },
     size: { type: Object, required: true },
     cocMetod: { type: String, default: 'Залити все в одну тару' },
-    ingredients: [{ type: String, required: true, ref: 'ingredient' }],
+    ingredients: [
+      { type: Schema.Types.ObjectId, required: true, ref: 'ingredient' },
+    ],
     glass: {
       type: String,
       default:
