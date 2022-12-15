@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { Schema, model } = require('mongoose');
-const Joi = require('joi');
-const ingShame = Schema({
+var _a = require('mongoose'), Schema = _a.Schema, model = _a.model;
+var Joi = require('joi');
+var ingShame = Schema({
     name: { type: String, require: true },
     description: { type: String, required: true },
     category: { type: String, required: true },
@@ -14,10 +14,9 @@ const ingShame = Schema({
         type: Boolean,
         default: false,
     },
-    id: { type: String, required: true },
     owner: { type: String, ref: 'user', required: true },
 }, { versionKey: false, timestamps: true, collection: 'ingredient' });
-const addIng = Joi.object({
+var addIng = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().required(),
     category: Joi.string().required(),
@@ -25,11 +24,11 @@ const addIng = Joi.object({
     alternative: Joi.array(),
     available: Joi.boolean(),
 });
-const Ing = model('ingredient', ingShame);
+var Ing = model('ingredient', ingShame);
 exports.default = {
-    Ing,
+    Ing: Ing,
     ingJoiSchemas: {
-        addIng,
+        addIng: addIng,
     },
 };
 //# sourceMappingURL=ingridient.js.map

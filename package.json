@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./server.js",
+    "start": "cross-env NODE_ENV=production node ./dist/server.js",
     "tsc": "tsc",
     "dev": "cross-env NODE_ENV=development nodemon ./server.js",
     "build": "tsc -p tsconfig.json",
@@ -30,6 +30,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/http-errors": "^2.0.1",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.3",
     "@types/uuid": "^9.0.0",
     "bcryptjs": "^2.4.3",
