@@ -44,15 +44,20 @@ var created = http_responses_1.default.created;
 var coctails_1 = __importDefault(require("../../models/coctails"));
 var Coc = coctails_1.default.Coc;
 var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, date, email, allCoc;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var email, allCoc;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _a = req.body, date = _a.date, email = _a.email;
-                return [4 /*yield*/, Coc.find({ owner: email }, '-createdAt -owner -updatedAt').populate('ingredients')];
+                email = req.headers.email;
+                return [4 /*yield*/, Coc.find({ owner: email }, '-createdAt -owner -updatedAt').populate('ingredients', '-createdAt -owner -updatedAt')];
             case 1:
-                allCoc = _b.sent();
-                date.owner = email;
+                allCoc = _a.sent();
+                allCoc.forEach(function (obj) {
+                    obj.ingredients = obj.ingredients.map(function (el) {
+                        el.size = obj.size[el.name.toLowerCase()];
+                        return el;
+                    }, []);
+                });
                 res.status(created.code).json(allCoc);
                 return [2 /*return*/];
         }

@@ -4,7 +4,7 @@ import cocModel from '../../models/coctails';
 const { Coc } = cocModel;
 import { RootObject } from './coctails';
 const createTransaction = async (req: any, res: any) => {
-  const { date, email } = req.body;
+  const { email } = req.headers;
 
   const allCoc: RootObject[] = await Coc.find(
     { owner: email },
@@ -18,7 +18,6 @@ const createTransaction = async (req: any, res: any) => {
     }, []);
   });
 
-  date.owner = email;
   res.status(created.code).json(allCoc);
 };
 

@@ -39,10 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// const bcrypt = require('bcryptjs');
 var CreateError = require('http-errors');
-// const { v4 } = require('uuid');
-// const { User, Category } = require('../../models');
 var user_1 = __importDefault(require("../../models/user"));
 var User = user_1.default.User;
 var 
@@ -55,28 +52,18 @@ var authHandler = function (req, res) { return __awaiter(void 0, void 0, void 0,
             case 0:
                 _a = req.body, email = _a.email, name = _a.name;
                 trimedEmail = email.trim();
-                console.log(email);
                 return [4 /*yield*/, User.findOne({ email: trimedEmail })];
             case 1:
                 user = _b.sent();
                 if (user) {
                     throw new CreateError(inUse.code, inUse.status);
                 }
-                //   const salt = await bcrypt.genSalt(saltDifficult);
-                //   const hashPass = await bcrypt.hash(password, salt);
-                //   const verificationToken = v4();
                 return [4 /*yield*/, User.create({
                         email: trimedEmail,
                         name: name,
-                        // password: hashPass,
-                        // verificationToken,
                     })];
             case 2:
-                //   const salt = await bcrypt.genSalt(saltDifficult);
-                //   const hashPass = await bcrypt.hash(password, salt);
-                //   const verificationToken = v4();
                 _b.sent();
-                // await Category.create({ owner: newUser.email });
                 res.status(created.code).json({
                     user: {
                         email: email,

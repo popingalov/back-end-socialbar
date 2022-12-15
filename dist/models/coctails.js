@@ -9,11 +9,14 @@ var cocShame = Schema({
         type: String,
         default: 'https://thumbs.dreamstime.com/b/coca-cola-drink-glass-ice-cubes-isolated-white-background-57156819.jpg',
     },
-    available: {
+    favorite: {
         type: Boolean,
         default: false,
     },
-    id: { type: String, required: true },
+    isMine: {
+        type: Boolean,
+        default: false,
+    },
     cocType: [{ type: String, required: true }],
     size: { type: Object, required: true },
     cocMetod: { type: String, default: 'Залити все в одну тару' },

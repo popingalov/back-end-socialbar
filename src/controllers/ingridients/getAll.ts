@@ -5,13 +5,12 @@ const CreateError = require('http-errors');
 const { ok, notFound } = require('../../libs').HTTP_RESPONSES;
 
 const getIng = async (req: any, res: any) => {
-  const { email } = req.body;
+  const { email } = req.headers;
 
   const ingList = await Ing.find(
     { owner: email },
     '-owner -createdAt -updatedAt',
   );
-  console.log(ingList);
 
   if (!ingList) {
     throw new CreateError(notFound.code, notFound.status);

@@ -3,8 +3,8 @@ import express from 'express';
 import addOne from '../controllers/coctails/newCoc';
 import getAll from '../controllers/coctails/getAll';
 const roter = express.Router();
-
-roter.get('/', getAll);
-roter.post('/', addOne);
+import controllerSync from 'middlewares/controllerSync';
+roter.get('/', controllerSync(getAll));
+roter.post('/', controllerSync(addOne));
 
 export default roter;

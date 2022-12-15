@@ -6,7 +6,8 @@ const { Coc } = cocModel;
 // const { Ing } = ingModel;
 
 const createTransaction = async (req: any, res: any) => {
-  const { date, email } = req.body;
+  const { date } = req.body;
+  const {  email } = req.headers;
 
   //   const ingList = await Ing.find(
   //     { owner: email, id: date.ingredients },

@@ -44,18 +44,19 @@ var created = http_responses_1.default.created;
 var ingridient_1 = __importDefault(require("../../models/ingridient"));
 var Ing = ingridient_1.default.Ing;
 var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, date, email, allIng, newIng;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var date, email, allIng, newIng;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _a = req.body, date = _a.date, email = _a.email;
+                date = req.body.date;
+                email = req.headers.email;
                 return [4 /*yield*/, Ing.find({ owner: email }, '-createdAt -owner -updatedAt')];
             case 1:
-                allIng = _b.sent();
+                allIng = _a.sent();
                 date.owner = email;
                 return [4 /*yield*/, Ing.create(date)];
             case 2:
-                newIng = _b.sent();
+                newIng = _a.sent();
                 allIng.push(newIng);
                 res.status(created.code).json(allIng);
                 return [2 /*return*/];

@@ -1,17 +1,17 @@
 import sss from '../libs/http-responses';
-console.log(sss);
+const { badValid } = sss;
 
-// const controllerSync = ctrl => {
-//   return async (req, res, next) => {
-//     try {
-//       await ctrl(req, res, next);
-//     } catch (error) {
-//       if (error.message.includes('validation failed')) {
-//         error.status = badValid.code;
-//       }
-//       next(error);
-//     }
-//   };
-// };
+const controllerSync = (ctrl: any) => {
+  return async (req: any, res: any, next: any) => {
+    try {
+      await ctrl(req, res, next);
+    } catch (error: any) {
+      if (error.message.includes('validation failed')) {
+        error.status = badValid.code;
+      }
+      next(error);
+    }
+  };
+};
 
-// export default controllerSync
+export default controllerSync;

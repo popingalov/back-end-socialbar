@@ -48,11 +48,10 @@ var getIng = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                email = req.body.email;
+                email = req.headers.email;
                 return [4 /*yield*/, Ing.find({ owner: email }, '-owner -createdAt -updatedAt')];
             case 1:
                 ingList = _a.sent();
-                console.log(ingList);
                 if (!ingList) {
                     throw new CreateError(notFound.code, notFound.status);
                 }

@@ -46,18 +46,19 @@ var Coc = coctails_1.default.Coc;
 // import ingModel from '../../models/ingridient';
 // const { Ing } = ingModel;
 var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, date, email, allCoc, newIng;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var date, email, allCoc, newIng;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _a = req.body, date = _a.date, email = _a.email;
+                date = req.body.date;
+                email = req.headers.email;
                 return [4 /*yield*/, Coc.find({ owner: email }, '-createdAt -owner -updatedAt')];
             case 1:
-                allCoc = _b.sent();
+                allCoc = _a.sent();
                 date.owner = email;
                 return [4 /*yield*/, Coc.create(date)];
             case 2:
-                newIng = _b.sent();
+                newIng = _a.sent();
                 allCoc.push(newIng);
                 res.status(created.code).json(allCoc);
                 return [2 /*return*/];
