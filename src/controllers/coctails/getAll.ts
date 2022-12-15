@@ -14,7 +14,6 @@ const createTransaction = async (req: any, res: any) => {
   allCoc.forEach(obj => {
     obj.ingredients = obj.ingredients.map(el => {
       el.size = obj.size[el.name.toLowerCase()];
-      console.log(el.size);
       return el;
     }, []);
   });
