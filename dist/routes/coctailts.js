@@ -8,7 +8,7 @@ var express_1 = __importDefault(require("express"));
 var newCoc_1 = __importDefault(require("../controllers/coctails/newCoc"));
 var getAll_1 = __importDefault(require("../controllers/coctails/getAll"));
 var roter = express_1.default.Router();
-var controllerSync_1 = __importDefault(require("middlewares/controllerSync"));
+var controllerSync_1 = __importDefault(require("../middlewares/controllerSync"));
 roter.get('/', (0, controllerSync_1.default)(getAll_1.default));
 roter.post('/', (0, controllerSync_1.default)(newCoc_1.default));
 exports.default = roter;

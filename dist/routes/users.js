@@ -7,7 +7,7 @@ var express_1 = __importDefault(require("express"));
 // const minitest = require('../controllers/index');
 var newUser_1 = __importDefault(require("../controllers/users/newUser"));
 var roter = express_1.default.Router();
-var controllerSync_1 = __importDefault(require("middlewares/controllerSync"));
+var controllerSync_1 = __importDefault(require("../middlewares/controllerSync"));
 roter.post('/', (0, controllerSync_1.default)(newUser_1.default));
 exports.default = roter;
 //# sourceMappingURL=users.js.map
