@@ -5,7 +5,6 @@ var Joi = require('joi');
 var cocShame = Schema({
     name: { type: String, require: true },
     description: { type: String, required: true },
-    category: { type: String, required: true },
     image: {
         type: String,
         default: 'https://thumbs.dreamstime.com/b/coca-cola-drink-glass-ice-cubes-isolated-white-background-57156819.jpg',
@@ -15,7 +14,7 @@ var cocShame = Schema({
         default: false,
     },
     id: { type: String, required: true },
-    cocType: { type: Array, required: true },
+    cocType: [{ type: String, required: true }],
     size: { type: Object, required: true },
     cocMetod: { type: String, default: 'Залити все в одну тару' },
     ingredients: [

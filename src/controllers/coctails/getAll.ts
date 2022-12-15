@@ -12,10 +12,6 @@ const createTransaction = async (req: any, res: any) => {
   ).populate('ingredients');
   date.owner = email;
 
-  const newIng = await Coc.create(date);
-
-  allCoc.push(newIng);
-
   res.status(created.code).json(allCoc);
 };
 

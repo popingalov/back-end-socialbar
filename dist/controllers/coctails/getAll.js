@@ -44,7 +44,7 @@ var created = http_responses_1.default.created;
 var coctails_1 = __importDefault(require("../../models/coctails"));
 var Coc = coctails_1.default.Coc;
 var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, date, email, allCoc, newIng;
+    var _a, date, email, allCoc;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -53,10 +53,6 @@ var createTransaction = function (req, res) { return __awaiter(void 0, void 0, v
             case 1:
                 allCoc = _b.sent();
                 date.owner = email;
-                return [4 /*yield*/, Coc.create(date)];
-            case 2:
-                newIng = _b.sent();
-                allCoc.push(newIng);
                 res.status(created.code).json(allCoc);
                 return [2 /*return*/];
         }
