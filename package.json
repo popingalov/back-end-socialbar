@@ -9,7 +9,9 @@
     "dev": "cross-env NODE_ENV=development nodemon ./server.js",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint **/*.js",
-    "lint:fix": "eslint --fix **/*.js"
+    "lint:fix": "eslint --fix **/*.js",
+    "predeploy": "npm run build",
+    "deploy": "netlify deploy -p"
   },
   "repository": {
     "type": "git",
