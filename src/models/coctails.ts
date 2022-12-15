@@ -5,7 +5,6 @@ const cocShame = Schema(
   {
     name: { type: String, require: true },
     description: { type: String, required: true },
-    category: { type: String, required: true },
     image: {
       type: String,
       default:
@@ -16,7 +15,7 @@ const cocShame = Schema(
       default: false,
     },
     id: { type: String, required: true },
-    cocType: { type: Array, required: true },
+    cocType: [{ type: String, required: true }],
     size: { type: Object, required: true },
     cocMetod: { type: String, default: 'Залити все в одну тару' },
     ingredients: [
