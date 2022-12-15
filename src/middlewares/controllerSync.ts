@@ -14,4 +14,4 @@ console.log(sss);
 //   };
 // };
 
-// module.exports = controllerSync;
+// export default controllerSync

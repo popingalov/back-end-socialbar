@@ -7,14 +7,22 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
+//
+const ingridients_1 = __importDefault(require("./routes/ingridients"));
+const users_1 = __importDefault(require("./routes/users"));
+const coctailts_1 = __importDefault(require("./routes/coctailts"));
+//
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+//
 app.use((0, morgan_1.default)(formatsLogger));
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.static('public'));
-console.log('asd');
-// export default app;
-module.exports = app;
+app.use('/api/users', users_1.default);
+app.use('/api/ing', ingridients_1.default);
+app.use('/api/coc', coctailts_1.default);
+exports.default = app;
+// module.exports = app;
 //# sourceMappingURL=app.js.map
