@@ -14,7 +14,6 @@ const cocShame = Schema(
       type: Boolean,
       default: false,
     },
-    id: { type: String, required: true },
     cocType: [{ type: String, required: true }],
     size: { type: Object, required: true },
     cocMetod: { type: String, default: 'Залити все в одну тару' },
