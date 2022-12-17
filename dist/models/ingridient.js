@@ -18,10 +18,6 @@ var ingShame = Schema({
         type: Boolean,
         default: false,
     },
-    size: {
-        type: String || Number,
-        default: 50,
-    },
     owner: { type: String, ref: 'user', required: true },
 }, { versionKey: false, timestamps: true, collection: 'ingredient' });
 var addIng = Joi.object({

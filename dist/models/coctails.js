@@ -18,10 +18,18 @@ var cocShame = Schema({
         default: false,
     },
     cocType: [{ type: String, required: true }],
-    size: { type: Object, required: true },
     cocMetod: { type: String, default: 'Залити все в одну тару' },
     ingredients: [
-        { type: Schema.Types.ObjectId, required: true, ref: 'ingredient' },
+        {
+            ing: { type: Schema.Types.ObjectId, required: true, ref: 'ingredient' },
+            size: { type: String, required: true },
+            alternative: [
+                { type: Schema.Types.ObjectId, ref: 'ingredient', default: null },
+            ],
+            optional: { type: Boolean, default: false },
+            dressing: { type: Boolean, default: false },
+            sizeType: { type: String, default: 'ml' },
+        },
     ],
     glass: {
         type: String,

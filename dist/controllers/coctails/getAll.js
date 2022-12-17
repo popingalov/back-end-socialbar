@@ -49,15 +49,12 @@ var createTransaction = function (req, res) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 email = req.headers.email;
-                return [4 /*yield*/, Coc.find({ owner: email }, '-createdAt -owner -updatedAt').populate('ingredients', '-createdAt -owner -updatedAt')];
+                return [4 /*yield*/, Coc.find({ owner: email }, '-createdAt -owner -updatedAt').populate([
+                        { path: 'ingredients.ing', select: '-createdAt -owner -updatedAt' },
+                        { path: 'ingredients.alternative', select: 'name _id' },
+                    ])];
             case 1:
                 allCoc = _a.sent();
-                allCoc.forEach(function (obj) {
-                    obj.ingredients = obj.ingredients.map(function (el) {
-                        el.size = obj.size[el.name.toLowerCase()];
-                        return el;
-                    }, []);
-                });
                 res.status(created.code).json(allCoc);
                 return [2 /*return*/];
         }

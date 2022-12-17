@@ -9,14 +9,10 @@ const createTransaction = async (req: any, res: any) => {
   const allCoc: RootObject[] = await Coc.find(
     { owner: email },
     '-createdAt -owner -updatedAt',
-  ).populate('ingredients.ing', '-createdAt -owner -updatedAt');
-
-  allCoc.forEach(obj => {
-    obj.ingredients = obj.ingredients.map(el => {
-      el.size = obj.size[el.name.toLowerCase()];
-      return el;
-    }, []);
-  });
+  ).populate([
+    { path: 'ingredients.ing', select: '-createdAt -owner -updatedAt' },
+    { path: 'ingredients.alternative', select: 'name _id' },
+  ]);
 
   res.status(created.code).json(allCoc);
 };

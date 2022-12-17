@@ -1,28 +1,24 @@
 import code from '../../libs/http-responses';
 const { created } = code;
 import cocModel from '../../models/coctails';
+import { RootObject } from './coctails';
 const { Coc } = cocModel;
-// import ingModel from '../../models/ingridient';
-// const { Ing } = ingModel;
 
 const createTransaction = async (req: any, res: any) => {
   const { date } = req.body;
-  const {  email } = req.headers;
+  const { email } = req.headers;
 
-  //   const ingList = await Ing.find(
-  //     { owner: email, id: date.ingredients },
-  //     '-owner -createdAt -updatedAt',
-  //   );
-
-  const allCoc = await Coc.find(
-    { owner: email },
-    '-createdAt -owner -updatedAt',
-  );
   date.owner = email;
 
-  const newIng = await Coc.create(date);
+  const { _id } = await Coc.create(date);
 
-  allCoc.push(newIng);
+  const allCoc: RootObject[] = await Coc.findOne(
+    _id,
+    '-createdAt -owner -updatedAt',
+  ).populate([
+    { path: 'ingredients.ing', select: '-createdAt -owner -updatedAt' },
+    { path: 'ingredients.alternative', select: 'name _id' },
+  ]);
 
   res.status(created.code).json(allCoc);
 };

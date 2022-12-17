@@ -7,12 +7,10 @@ const createTransaction = async (req: any, res: any) => {
   const { date } = req.body;
   const { email } = req.headers;
 
-  let allIng = await Ing.find({ owner: email }, '-createdAt -owner -updatedAt');
   date.owner = email;
 
-  const newIng = await Ing.create(date);
-
-  allIng.push(newIng);
+  const { _id } = await Ing.create(date);
+  const allIng = await Ing.findOne(_id, '-createdAt -owner -updatedAt');
 
   res.status(created.code).json(allIng);
 };

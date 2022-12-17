@@ -25,7 +25,9 @@ const cocShame = Schema(
         ing: { type: Schema.Types.ObjectId, required: true, ref: 'ingredient' },
 
         size: { type: String, required: true },
-        alternative: [{ type: Schema.Types.ObjectId, ref: 'ingredient' }],
+        alternative: [
+          { type: Schema.Types.ObjectId, ref: 'ingredient', default: null },
+        ],
         optional: { type: Boolean, default: false },
         dressing: { type: Boolean, default: false },
         sizeType: { type: String, default: 'ml' },
