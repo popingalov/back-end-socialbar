@@ -25,20 +25,32 @@ const ingShame = Schema(
   { versionKey: false, timestamps: true, collection: 'ingredient' },
 );
 
-const addIng = Joi.object({
-  name: Joi.string().required(),
-  description: Joi.string().required(),
-  category: Joi.string().required(),
-  image: Joi.string(),
-  alternative: Joi.array(),
-  available: Joi.boolean(),
+const addIngJoi = Joi.object({
+  date: Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    category: Joi.string().required(),
+    image: Joi.string(),
+    available: Joi.boolean(),
+    shop: Joi.boolean(),
+  }),
+});
+const changeIngJoi = Joi.object({
+  date: Joi.object({
+    _id: Joi.string(),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    category: Joi.string().required(),
+    image: Joi.string(),
+    available: Joi.boolean(),
+    shop: Joi.boolean(),
+  }),
 });
 
 const Ing = model('ingredient', ingShame);
 
 export default {
   Ing,
-  ingJoiSchemas: {
-    addIng,
-  },
+  changeIngJoi,
+  addIngJoi,
 };

@@ -3,32 +3,35 @@ export interface RootObject {
   name: string;
   description: string;
   image: string;
-  available: boolean;
-  id: string;
+  favorite: boolean;
+  isMine: boolean;
   cocType: string[];
-  size: Size;
   cocMetod: string;
   ingredients: Ingredient[];
   glass: string;
-  [key: string]: string;
 }
 
 export interface Ingredient {
-  [key: string]: string;
+  ing: Ing;
+  size: string;
+  alternative: Alternative[];
+  optional: boolean;
+  dressing: boolean;
+  sizeType: string;
+  _id: string;
+}
+
+export interface Alternative {
+  _id: string;
+  name: string;
+}
+
+interface Ing {
   _id: string;
   name: string;
   description: string;
   category: string;
   image: string;
   available: boolean;
-  owner: string;
-  size?: string | number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Size {
-  [key: string]: string;
-  rom: string;
-  cola: string;
+  shop: boolean;
 }

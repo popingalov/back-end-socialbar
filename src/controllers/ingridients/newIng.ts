@@ -3,7 +3,7 @@ const { created } = code;
 import ingModel from '../../models/ingridient';
 const { Ing } = ingModel;
 
-const createTransaction = async (req: any, res: any) => {
+const createIng = async (req: any, res: any) => {
   const { date } = req.body;
   const { email } = req.headers;
 
@@ -15,4 +15,4 @@ const createTransaction = async (req: any, res: any) => {
   res.status(created.code).json(allIng);
 };
 
-export default createTransaction;
+export default createIng;

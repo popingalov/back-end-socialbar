@@ -43,7 +43,7 @@ var http_responses_1 = __importDefault(require("../../libs/http-responses"));
 var created = http_responses_1.default.created;
 var ingridient_1 = __importDefault(require("../../models/ingridient"));
 var Ing = ingridient_1.default.Ing;
-var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var createIng = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var date, email, _id, allIng;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -62,5 +62,5 @@ var createTransaction = function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
-exports.default = createTransaction;
+exports.default = createIng;
 //# sourceMappingURL=newIng.js.map

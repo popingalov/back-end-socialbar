@@ -3,7 +3,8 @@ const { created } = code;
 import cocModel from '../../models/coctails';
 const { Coc } = cocModel;
 import { RootObject } from './coctails';
-const createTransaction = async (req: any, res: any) => {
+
+const takeAllCoc = async (req: any, res: any) => {
   const { email } = req.headers;
 
   const allCoc: RootObject[] = await Coc.find(
@@ -17,4 +18,4 @@ const createTransaction = async (req: any, res: any) => {
   res.status(created.code).json(allCoc);
 };
 
-export default createTransaction;
+export default takeAllCoc;

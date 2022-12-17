@@ -43,7 +43,7 @@ var http_responses_1 = __importDefault(require("../../libs/http-responses"));
 var created = http_responses_1.default.created;
 var coctails_1 = __importDefault(require("../../models/coctails"));
 var Coc = coctails_1.default.Coc;
-var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var createCoc = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var date, email, _id, allCoc;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -65,5 +65,5 @@ var createTransaction = function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
-exports.default = createTransaction;
+exports.default = createCoc;
 //# sourceMappingURL=newCoc.js.map

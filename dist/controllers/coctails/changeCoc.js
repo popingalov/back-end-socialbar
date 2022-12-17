@@ -43,22 +43,25 @@ var http_responses_1 = __importDefault(require("../../libs/http-responses"));
 var created = http_responses_1.default.created;
 var coctails_1 = __importDefault(require("../../models/coctails"));
 var Coc = coctails_1.default.Coc;
-var takeAllCoc = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, allCoc;
+var changeCoc = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var date, _id, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                email = req.headers.email;
-                return [4 /*yield*/, Coc.find({ owner: email }, '-createdAt -owner -updatedAt').populate([
+                date = req.body.date;
+                return [4 /*yield*/, Coc.findOneAndUpdate(date._id, date)];
+            case 1:
+                _id = (_a.sent())._id;
+                return [4 /*yield*/, Coc.findOne(_id, '-createdAt -owner -updatedAt').populate([
                         { path: 'ingredients.ing', select: '-createdAt -owner -updatedAt' },
                         { path: 'ingredients.alternative', select: 'name _id' },
                     ])];
-            case 1:
-                allCoc = _a.sent();
-                res.status(created.code).json(allCoc);
+            case 2:
+                result = _a.sent();
+                res.status(created.code).json(result);
                 return [2 /*return*/];
         }
     });
 }); };
-exports.default = takeAllCoc;
-//# sourceMappingURL=getAll.js.map
+exports.default = changeCoc;
+//# sourceMappingURL=changeCoc.js.map

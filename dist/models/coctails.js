@@ -37,24 +37,55 @@ var cocShame = Schema({
     },
     owner: { type: String, ref: 'user', required: true },
 }, { versionKey: false, timestamps: true, collection: 'cocktails' });
-var addcoc = Joi.object({
-    name: Joi.string().required(),
-    description: Joi.string().required(),
-    category: Joi.string().required(),
-    image: Joi.string(),
-    alternative: Joi.array(),
-    available: Joi.boolean(),
-    id: Joi.string().required(),
-    cocType: Joi.string().required(),
-    size: Joi.array().required(),
-    cocMetod: Joi.string(),
-    ingredients: Joi.array().required(),
+var addCocJoi = Joi.object({
+    date: Joi.object({
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        image: Joi.string(),
+        favorite: Joi.boolean(),
+        isMine: Joi.boolean(),
+        cocType: Joi.array().items(Joi.string()),
+        cocMethod: Joi.string(),
+        ingredients: Joi.array()
+            .items(Joi.object({
+            ing: Joi.string().required(),
+            size: Joi.string().required(),
+            alternative: Joi.array().items(Joi.string()),
+            optional: Joi.boolean(),
+            dressing: Joi.boolean(),
+            sizeType: Joi.string(),
+        }))
+            .required(),
+        glass: Joi.string(),
+    }),
+});
+var changeCocJoi = Joi.object({
+    date: Joi.object({
+        _id: Joi.string(),
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        image: Joi.string(),
+        favorite: Joi.boolean(),
+        isMine: Joi.boolean(),
+        cocType: Joi.array().items(Joi.string()),
+        cocMethod: Joi.string(),
+        ingredients: Joi.array()
+            .items(Joi.object({
+            ing: Joi.string().required(),
+            size: Joi.string().required(),
+            alternative: Joi.array().items(Joi.string()),
+            optional: Joi.boolean(),
+            dressing: Joi.boolean(),
+            sizeType: Joi.string(),
+        }))
+            .required(),
+        glass: Joi.string(),
+    }),
 });
 var Coc = model('cocktails', cocShame);
 exports.default = {
     Coc: Coc,
-    ingJoiSchemas: {
-        addcoc: addcoc,
-    },
+    addCocJoi: addCocJoi,
+    changeCocJoi: changeCocJoi,
 };
 //# sourceMappingURL=coctails.js.map

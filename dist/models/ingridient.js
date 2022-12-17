@@ -20,19 +20,31 @@ var ingShame = Schema({
     },
     owner: { type: String, ref: 'user', required: true },
 }, { versionKey: false, timestamps: true, collection: 'ingredient' });
-var addIng = Joi.object({
-    name: Joi.string().required(),
-    description: Joi.string().required(),
-    category: Joi.string().required(),
-    image: Joi.string(),
-    alternative: Joi.array(),
-    available: Joi.boolean(),
+var addIngJoi = Joi.object({
+    date: Joi.object({
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        category: Joi.string().required(),
+        image: Joi.string(),
+        available: Joi.boolean(),
+        shop: Joi.boolean(),
+    }),
+});
+var changeIngJoi = Joi.object({
+    date: Joi.object({
+        _id: Joi.string(),
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        category: Joi.string().required(),
+        image: Joi.string(),
+        available: Joi.boolean(),
+        shop: Joi.boolean(),
+    }),
 });
 var Ing = model('ingredient', ingShame);
 exports.default = {
     Ing: Ing,
-    ingJoiSchemas: {
-        addIng: addIng,
-    },
+    changeIngJoi: changeIngJoi,
+    addIngJoi: addIngJoi,
 };
 //# sourceMappingURL=ingridient.js.map
