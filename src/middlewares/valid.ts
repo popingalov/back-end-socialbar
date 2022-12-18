@@ -2,9 +2,9 @@
 import CreateError from 'http-errors';
 import errorLib from '../libs/http-responses';
 const { badValid } = errorLib;
-
+import { Request, Response, NextFunction } from 'express';
 const validation = (schema: any) => {
-  return async (req: any, res: any, next: any) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { error } = schema.validate(req.body);
       if (error) {

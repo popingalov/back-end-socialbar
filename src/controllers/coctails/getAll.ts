@@ -3,8 +3,8 @@ const { created } = code;
 import cocModel from '../../models/coctails';
 const { Coc } = cocModel;
 import { RootObject } from './coctails';
-
-const takeAllCoc = async (req: any, res: any) => {
+import { Request, Response } from 'express';
+const takeAllCoc = async (req: Request, res: Response) => {
   const { email } = req.headers;
 
   const allCoc: RootObject[] = await Coc.find(

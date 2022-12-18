@@ -3,8 +3,8 @@ const { created } = code;
 import cocModel from '../../models/coctails';
 import { RootObject } from './coctails';
 const { Coc } = cocModel;
-
-const createCoc = async (req: any, res: any) => {
+import { Request, Response } from 'express';
+const createCoc = async (req: Request, res: Response) => {
   const { date } = req.body;
   const { email } = req.headers;
 

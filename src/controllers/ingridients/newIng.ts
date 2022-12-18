@@ -2,15 +2,22 @@ import code from '../../libs/http-responses';
 const { created } = code;
 import ingModel from '../../models/ingridient';
 const { Ing } = ingModel;
-
-const createIng = async (req: any, res: any) => {
+//
+import { Request, Response } from 'express';
+import {IngList} from './ing'
+//
+const createIng = async (req: Request, res: Response) => {
   const { date } = req.body;
   const { email } = req.headers;
 
   date.owner = email;
 
   const { _id } = await Ing.create(date);
-  const allIng = await Ing.findOne(_id, '-createdAt -owner -updatedAt');
+
+  const allIng: IngList = await Ing.findOne(
+    _id,
+    '-createdAt -owner -updatedAt',
+  );
 
   res.status(created.code).json(allIng);
 };

@@ -7,14 +7,8 @@ const {
   HTTP_RESPONSES: { inUse, created },
 } = require('../../libs');
 
-interface Ireq {
-  body: {
-    email: string;
-    name: string;
-  };
-}
-
-const authHandler = async (req: Ireq, res: any) => {
+import { Request, Response } from 'express';
+const authHandler = async (req: Request, res: Response) => {
   const { email, name } = req.body;
   const trimedEmail = email.trim();
 

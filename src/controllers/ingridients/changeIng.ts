@@ -3,8 +3,8 @@ const { created } = code;
 import ingModel from '../../models/ingridient';
 const { Ing } = ingModel;
 import { IngList } from './ing';
-
-const changeIng = async (req: any, res: any) => {
+import { Request, Response } from 'express';
+const changeIng = async (req: Request, res: Response) => {
   const { date } = req.body;
 
   const { _id } = await Ing.findOneAndUpdate(date._id, date);

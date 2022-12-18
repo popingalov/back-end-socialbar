@@ -3,8 +3,8 @@ const { created } = code;
 import cocModel from '../../models/coctails';
 const { Coc } = cocModel;
 import { RootObject } from './coctails';
-
-const changeCoc = async (req: any, res: any) => {
+import {Request, Response} from 'express'
+const changeCoc = async (req: Request, res: Response) => {
   const { date } = req.body;
 
   const { _id }: RootObject = await Coc.findOneAndUpdate(date._id, date);
