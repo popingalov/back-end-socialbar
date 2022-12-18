@@ -4,10 +4,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 //
-import ingRoute from './routes/ingridients';
+import ingRoute from './routes/ingredients';
 import usersRoute from './routes/users';
-import cocRoute from './routes/coctailts';
-
+import cocRoute from './routes/cocktails';
 //
 dotenv.config();
 

@@ -1,12 +1,12 @@
 import express from 'express';
-import addOne from '../controllers/coctails/newCoc';
-import getAll from '../controllers/coctails/getAll';
+import addOne from '../controllers/cocktails/addCocktail';
+import getAll from '../controllers/cocktails/getAll';
 const roter = express.Router();
 //
 import controllerSync from '../middlewares/controllerSync';
 import ingJoiSchemas from '../models/coctails';
 import validation from '../middlewares/valid';
-import changeCoc from '../controllers/coctails/changeCoc';
+import changeCoc from '../controllers/cocktails/changeCocktail';
 //
 roter.get('/', controllerSync(getAll));
 roter.post('/', validation(ingJoiSchemas.addCocJoi), controllerSync(addOne));
