@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
-const Joi = require('joi');
-
+import Joi, { types } from 'joi';
 const ingShame = Schema(
   {
     name: { type: String, require: true },
@@ -35,6 +34,7 @@ const addIngJoi = Joi.object({
     shop: Joi.boolean(),
   }),
 });
+
 const changeIngJoi = Joi.object({
   date: Joi.object({
     _id: Joi.string(),

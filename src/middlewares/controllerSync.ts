@@ -1,7 +1,7 @@
 import sss from '../libs/http-responses';
 const { badValid } = sss;
 import { Request, Response, NextFunction } from 'express';
-const controllerSync = (ctrl: any) => {
+const controllerSync = (ctrl: Function) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ctrl(req, res, next);

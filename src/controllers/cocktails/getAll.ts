@@ -2,7 +2,7 @@ import code from '../../libs/http-responses';
 const { created } = code;
 import cocModel from '../../models/coctails';
 const { Coc } = cocModel;
-import { RootObject } from './cocktails';
+// import { RootObject } from './cocktails';
 import { Request, Response } from 'express';
 const takeAllCoc = async (req: Request, res: Response) => {
   const { email } = req.headers;

@@ -1,15 +1,19 @@
 import code from '../../libs/http-responses';
 const { created } = code;
 import cocModel from '../../models/coctails';
-import { RootObject } from './cocktails';
+// import { RootObject } from './cocktails';
 const { Coc } = cocModel;
 import { Request, Response } from 'express';
-const createCoc = async (req: Request, res: Response) => {
+
+interface IReq extends Request {
+  headers: {
+    email: string;
+  };
+}
+const createCoc = async (req: IReq, res: Response) => {
   const { date } = req.body;
   const { email } = req.headers;
-
   date.owner = email;
-
   const { _id } = await Coc.create(date);
 
   const allCoc: RootObject[] = await Coc.findOne(
