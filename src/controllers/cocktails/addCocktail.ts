@@ -1,7 +1,7 @@
 import code from '../../libs/http-responses';
 const { created } = code;
 import cocModel from '../../models/coctails';
-// import { RootObject } from './cocktails';
+import { RootObject } from './cocktails';
 const { Coc } = cocModel;
 import { Request, Response } from 'express';
 

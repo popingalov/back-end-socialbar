@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a = require('mongoose'), Schema = _a.Schema, model = _a.model;
-var Joi = require('joi');
+var joi_1 = __importDefault(require("joi"));
 var ingShame = Schema({
     name: { type: String, require: true },
     description: { type: String, required: true },
@@ -20,25 +23,25 @@ var ingShame = Schema({
     },
     owner: { type: String, ref: 'user', required: true },
 }, { versionKey: false, timestamps: true, collection: 'ingredient' });
-var addIngJoi = Joi.object({
-    date: Joi.object({
-        name: Joi.string().required(),
-        description: Joi.string().required(),
-        category: Joi.string().required(),
-        image: Joi.string(),
-        available: Joi.boolean(),
-        shop: Joi.boolean(),
+var addIngJoi = joi_1.default.object({
+    date: joi_1.default.object({
+        name: joi_1.default.string().required(),
+        description: joi_1.default.string().required(),
+        category: joi_1.default.string().required(),
+        image: joi_1.default.string(),
+        available: joi_1.default.boolean(),
+        shop: joi_1.default.boolean(),
     }),
 });
-var changeIngJoi = Joi.object({
-    date: Joi.object({
-        _id: Joi.string(),
-        name: Joi.string().required(),
-        description: Joi.string().required(),
-        category: Joi.string().required(),
-        image: Joi.string(),
-        available: Joi.boolean(),
-        shop: Joi.boolean(),
+var changeIngJoi = joi_1.default.object({
+    date: joi_1.default.object({
+        _id: joi_1.default.string(),
+        name: joi_1.default.string().required(),
+        description: joi_1.default.string().required(),
+        category: joi_1.default.string().required(),
+        image: joi_1.default.string(),
+        available: joi_1.default.boolean(),
+        shop: joi_1.default.boolean(),
     }),
 });
 var Ing = model('ingredient', ingShame);

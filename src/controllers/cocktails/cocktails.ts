@@ -1,4 +1,4 @@
-interface RootObject {
+export interface RootObject {
   _id: string;
   name: string;
   description: string;
@@ -10,8 +10,7 @@ interface RootObject {
   ingredients: Ingredient[];
   glass: string;
 }
-
-interface Ingredient {
+export interface Ingredient {
   ing: Ing;
   size: string;
   alternative: Alternative[];
@@ -21,7 +20,7 @@ interface Ingredient {
   _id: string;
 }
 
-interface Alternative {
+export interface Alternative {
   _id: string;
   name: string;
 }

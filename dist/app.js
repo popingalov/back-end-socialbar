@@ -8,9 +8,9 @@ var morgan_1 = __importDefault(require("morgan"));
 var cors_1 = __importDefault(require("cors"));
 var dotenv_1 = __importDefault(require("dotenv"));
 //
-var ingridients_1 = __importDefault(require("./routes/ingridients"));
+var ingredients_1 = __importDefault(require("./routes/ingredients"));
 var users_1 = __importDefault(require("./routes/users"));
-var coctailts_1 = __importDefault(require("./routes/coctailts"));
+var cocktails_1 = __importDefault(require("./routes/cocktails"));
 //
 dotenv_1.default.config();
 var app = (0, express_1.default)();
@@ -21,8 +21,8 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.static('public'));
 app.use('/api/users', users_1.default);
-app.use('/api/ing', ingridients_1.default);
-app.use('/api/coc', coctailts_1.default);
+app.use('/api/ing', ingredients_1.default);
+app.use('/api/coc', cocktails_1.default);
 exports.default = app;
 // module.exports = app;
 //# sourceMappingURL=app.js.map
