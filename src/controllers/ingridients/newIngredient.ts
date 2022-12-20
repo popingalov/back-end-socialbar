@@ -4,7 +4,7 @@ import ingModel from '../../models/ingridient';
 const { Ing } = ingModel;
 //
 import { Request, Response } from 'express';
-import {IngList} from './ing'
+import { IngList } from './ing';
 //
 const createIng = async (req: Request, res: Response) => {
   const { date } = req.body;

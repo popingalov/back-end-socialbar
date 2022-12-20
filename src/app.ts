@@ -22,4 +22,3 @@ app.use('/api/users', usersRoute);
 app.use('/api/ing', ingRoute);
 app.use('/api/coc', cocRoute);
 export default app;
-// module.exports = app;
