@@ -1,6 +1,0 @@
-{
-  "watch": ["src"],
-  "ext": "ts",
-  "ignore": ["src/**/*.spec.ts", "node_modules", "models/contacts.json"],
-  "exec": "ts-node -r tsconfig-paths/register src/server.ts"
-}
