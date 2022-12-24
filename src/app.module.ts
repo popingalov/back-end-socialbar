@@ -11,16 +11,19 @@ import { CategoriesModule } from './domain/categories/categories.module';
 
 const { DB_USER, DB_PASSWORD, DB_CLUSTER, DB_NAME } = process.env;
 const DB_PARAMS = 'retryWrites=true&w=majority';
-const DB_HOST = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_CLUSTER}/${DB_NAME}?${DB_PARAMS}`;
+const DB_HOST =
+  'mongodb+srv://popingalov:popingalov@cluster0.gdfjo81.mongodb.net/db-bar?retryWrites=true&w=majority';
 
 @Module({
   controllers: [],
   providers: [],
   imports: [
-    MongooseModule.forRoot(DB_HOST),
+    MongooseModule.forRoot(DB_HOST, {
+      useNewUrlParser: true,
+    }),
     PassportModule.register({ session: true }),
     UsersModule,
-    AuthModule,
+    // AuthModule,
     CocktailsModule,
     IngredientsModule,
     GlassesModule,
