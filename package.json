@@ -1,16 +1,10 @@
 {
-  "name": "nest-backend-bar",
+  "name": "back-end-socialbar",
   "version": "0.0.1",
   "description": "NestJS + Typescript backend",
-  "author": "Vitaliy Zavgorodniy",
+  "author": "",
   "private": true,
-  "license": "MIT",
-  "builds": [
-    {
-      "src": "package.json", 
-      "use": "vercel-sapper"
-    }
-  ],
+  "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
