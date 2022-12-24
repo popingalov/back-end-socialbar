@@ -16,6 +16,7 @@ import { Cocktail } from './cocktails.schema';
 
 import { JwtAuthGuard } from 'domain/auth/strategies/jwt.guard';
 
+import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
 import { Types } from 'mongoose';
 
@@ -23,44 +24,36 @@ import { Types } from 'mongoose';
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
 
-  @Get('/')
+  @Get()
   async getAll(): Promise<Cocktail[]> {
     return await this.cocktailService.getAll();
   }
 
-  @Post('/')
+  @Get(':id')
+  async getOne(@Param('id') id: Types.ObjectId): Promise<Cocktail> {
+    return await this.cocktailService.getById({ id });
+  }
+
   @UseGuards(JwtAuthGuard)
+  @Post()
   async createCocktail(@Body() body, @Req() req): Promise<Cocktail> {
     const { id } = req.user;
 
     return await this.cocktailService.createOne({ ...body, owner: id });
   }
 
-  @Get('/my')
-  @UseGuards(JwtAuthGuard)
-  async getDefaultCocktails(@Req() req): Promise<Cocktail[]> {
-    const { id } = req.user;
+  @Put(':id')
+  updateOne(
+    @Body() cocktail: UpdateCocktailDto,
+    @Param('id') id: string,
+  ): string {
+    const { title, description } = cocktail;
 
-    return await this.cocktailService.getByQuery({ owner: id });
+    return `Updated ${title} with id: ${id}. About: ${description}`;
   }
 
-  @Get('/:id')
-  async getOne(@Param('id') id: Types.ObjectId): Promise<Cocktail> {
-    return await this.cocktailService.getById({ id });
+  @Delete(':id')
+  deleteOne(@Param('id') id: string) {
+    return `Deleted id - ${id}`;
   }
-
-  // @Put(':id')
-  // updateOne(
-  //   @Body() cocktail: UpdateCocktailDto,
-  //   @Param('id') id: string,
-  // ): string {
-  //   const { title, description } = cocktail;
-
-  //   return `Updated ${title} with id: ${id}. About: ${description}`;
-  // }
-
-  // @Delete(':id')
-  // deleteOne(@Param('id') id: string) {
-  //   return `Deleted id - ${id}`;
-  // }
 }

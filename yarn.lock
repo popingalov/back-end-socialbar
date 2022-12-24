@@ -1484,11 +1484,6 @@
     "@types/jsonwebtoken" "8.5.8"
     "jsonwebtoken" "8.5.1"
 
-"@nestjs/mapped-types@*":
-  "integrity" "sha512-NTFwPZkQWsArQH8QSyFWGZvJ08gR+R4TofglqZoihn/vU+ktHEJjMqsIsADwb7XD97DhiD+TVv5ac+jG33BHrg=="
-  "resolved" "https://registry.npmjs.org/@nestjs/mapped-types/-/mapped-types-1.2.0.tgz"
-  "version" "1.2.0"
-
 "@nestjs/mongoose@^9.2.1":
   "integrity" "sha512-tMK5kKFjQnNVhqJDw1wa352z+VsODOFznTn74xSzrziof03qS+O6rLU4q1kMx0B4AmFbADf03GOdpvBc9bMWqw=="
   "resolved" "https://registry.npmjs.org/@nestjs/mongoose/-/mongoose-9.2.1.tgz"
