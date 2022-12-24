@@ -4,12 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CocktailsController } from './cocktails.controller';
 import { CocktailsService } from './cocktails.service';
 
-import {
-  Cocktail,
-  CocktailSchema,
-  CocktailIngredients,
-  CocktailIngredientsSchema,
-} from './cocktails.schema';
+import { Cocktail, CocktailSchema } from './cocktails.schema';
 
 @Module({
   controllers: [CocktailsController],
@@ -19,10 +14,6 @@ import {
       {
         name: Cocktail.name,
         schema: CocktailSchema,
-      },
-      {
-        name: CocktailIngredients.name,
-        schema: CocktailIngredientsSchema,
       },
     ]),
   ],

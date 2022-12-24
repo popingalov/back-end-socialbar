@@ -4,16 +4,16 @@ import { GoogleAuthGuard } from './strategies/google.guard';
 
 @Controller('auth')
 export class AuthController {
-  @UseGuards(GoogleAuthGuard)
   @Get('google/login')
+  @UseGuards(GoogleAuthGuard)
   async handleLogin() {}
 
-  @UseGuards(GoogleAuthGuard)
   @Get('google/redirect')
+  @UseGuards(GoogleAuthGuard)
   @Redirect()
   googleAuthRedirect(@Req() req) {
     const { token } = req.user;
 
-    return { url: `https://localhost:3000/?token=${token}` };
+    return { url: `http://localhost:3000?token=${token}` };
   }
 }

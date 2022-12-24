@@ -7,6 +7,7 @@ import { UsersModule } from 'domain/users/users.module';
 import { CocktailsModule } from 'domain/cocktails/cocktails.module';
 import { IngredientsModule } from 'domain/ingredients/ingredients.module';
 import { GlassesModule } from './domain/glasses/glasses.module';
+import { CategoriesModule } from './domain/categories/categories.module';
 
 const { DB_USER, DB_PASSWORD, DB_CLUSTER, DB_NAME } = process.env;
 const DB_PARAMS = 'retryWrites=true&w=majority';
@@ -23,6 +24,7 @@ const DB_HOST = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_CLUSTER}/${DB_NAME
     CocktailsModule,
     IngredientsModule,
     GlassesModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}

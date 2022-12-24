@@ -31,13 +31,21 @@ export class CocktailsService {
 
     return cocktails;
   }
-
-  async getByQuery(query): Promise<Cocktail[]> {
-    return await this.cocktailModel.find({ query });
+  
+  // mark
+  async getByQuery(query: any): Promise<Cocktail[]> {
+    return await this.cocktailModel.find(query);
   }
 
   async getById({ id }: FindByIdDto): Promise<Cocktail> {
-    return await this.cocktailModel.findById(id);
+    const cocktail = await this.cocktailModel
+      .findById(id)
+      .populate('owner', ['id', 'email', 'name', 'picture'])
+      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
+      .populate('glass')
+      .populate('ingredients.alternatives');
+
+    return cocktail;
   }
 
   async findByIngredient({ id }: FindByIngredientDto): Promise<Cocktail[]> {
