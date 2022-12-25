@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersService } from 'domain/users/users.service';
-import { User } from 'domain/users/schemas/users.schema';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/schemas/users.schema';
 
 import { createJwtTokenDto } from './dto/create-jwt-token.dto';
 import { validateGoogleUserDto } from './dto/validate-google-user.dto';

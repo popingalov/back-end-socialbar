@@ -6,8 +6,7 @@ import { Ingredient, IngredientDocument } from './ingredients.schema';
 
 import { CreateIngredientDto } from './dto/create-ingredient-dto';
 import { GetIngredientByIdDto } from './dto/get-ingredient-by-id.dto';
-import { CocktailsService } from 'domain/cocktails/cocktails.service';
-
+import { CocktailsService } from '../cocktails/cocktails.service';
 @Injectable()
 export class IngredientsService {
   constructor(

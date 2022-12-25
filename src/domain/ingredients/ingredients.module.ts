@@ -5,8 +5,7 @@ import { IngredientsService } from './ingredients.service';
 import { IngredientsController } from './ingredients.controller';
 import { Ingredient, IngredientSchema } from './ingredients.schema';
 
-import { CocktailsModule } from 'domain/cocktails/cocktails.module';
-
+import { CocktailsModule } from '../cocktails/cocktails.module';
 @Module({
   providers: [IngredientsService],
   controllers: [IngredientsController],

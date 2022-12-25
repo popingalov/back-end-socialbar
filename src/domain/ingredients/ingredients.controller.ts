@@ -11,8 +11,7 @@ import {
 import { IngredientsService } from './ingredients.service';
 import { Ingredient } from './ingredients.schema';
 
-import { JwtAuthGuard } from 'domain/auth/strategies/jwt.guard';
-
+import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 @Controller('ingredients')
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}

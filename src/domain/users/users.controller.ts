@@ -3,8 +3,7 @@ import { Controller, UseGuards, Req, Get, Post, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './schemas/users.schema';
 
-import { JwtAuthGuard } from 'domain/auth/strategies/jwt.guard';
-
+import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { createUserDto } from './dto/create-user.dto';
 
 @Controller('users')

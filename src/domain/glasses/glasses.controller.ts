@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 
 import { GlassesService } from './glasses.service';
 
-import { JwtAuthGuard } from 'domain/auth/strategies/jwt.guard';
+import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 @Controller('glasses')
 export class GlassesController {

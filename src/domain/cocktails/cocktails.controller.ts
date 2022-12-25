@@ -14,7 +14,7 @@ import {
 import { CocktailsService } from './cocktails.service';
 import { Cocktail } from './cocktails.schema';
 
-import { JwtAuthGuard } from 'domain/auth/strategies/jwt.guard';
+import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
