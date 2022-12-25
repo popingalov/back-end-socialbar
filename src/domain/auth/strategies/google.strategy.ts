@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
-
+import { config } from 'dotenv';
+config();
 import { AuthService } from '../auth.service';
 const { GOOGLE_ID, GOOGLE_SECRET, CALLBACK_URL } = process.env;
 
@@ -26,7 +27,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       throw new Error('No Google profile!' + accessToken + refreshToken); // refactor
 
     const email: string = profile.emails[0].value;
-    const name: string = `${profile.name.givenName} ${profile.name.familyName}`;
+    const name = `${profile.name.givenName} ${profile.name.familyName}`;
     const picture: string = profile._json.picture;
 
     let user = await this.authService.validateGoogleUser({ email });

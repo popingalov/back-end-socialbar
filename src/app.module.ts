@@ -21,7 +21,7 @@ const DB_HOST =
     MongooseModule.forRoot(DB_HOST),
     PassportModule.register({ session: true }),
     UsersModule,
-    // AuthModule,
+    AuthModule,
     CocktailsModule,
     IngredientsModule,
     GlassesModule,

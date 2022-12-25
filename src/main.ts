@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { AppModule } from './app.module';
+import { config } from 'dotenv';
+config();
 const PORT = process.env.PORT || 5000;
 
 async function bootstrap() {
