@@ -6,6 +6,7 @@ import { Ingredient, IngredientDocument } from './ingredients.schema';
 
 import { CreateIngredientDto } from './dto/create-ingredient-dto';
 import { GetIngredientByIdDto } from './dto/get-ingredient-by-id.dto';
+import { GetIngredientsDto } from './dto/getAlll.dto';
 import { CocktailsService } from '../cocktails/cocktails.service';
 @Injectable()
 export class IngredientsService {
@@ -19,6 +20,14 @@ export class IngredientsService {
     const newIngredient = new this.ingredientModel(ingredient);
 
     return await newIngredient.save();
+  }
+
+  async getIngredients({ owner }: GetIngredientsDto): Promise<Ingredient[]> {
+    const newIngredient: Ingredient[] = await this.ingredientModel
+      .find({ owner })
+      .populate('owner', ['id', 'name', 'picture', 'email']);
+
+    return newIngredient;
   }
 
   async getIngredientById({ id }: GetIngredientByIdDto) {

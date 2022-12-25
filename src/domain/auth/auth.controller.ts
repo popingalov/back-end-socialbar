@@ -6,7 +6,9 @@ import { GoogleAuthGuard } from './strategies/google.guard';
 export class AuthController {
   @UseGuards(GoogleAuthGuard)
   @Get('google/login')
-  async handleLogin() {}
+  async handleLogin() {
+    console.log('here');
+  }
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/redirect')

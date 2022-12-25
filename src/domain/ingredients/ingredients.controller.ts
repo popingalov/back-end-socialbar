@@ -24,6 +24,13 @@ export class IngredientsController {
       owner: req.user.id,
     });
   }
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getIngredients(@Req() req): Promise<Ingredient[]> {
+    return await this.ingredientsService.getIngredients({
+      owner: req.user.id,
+    });
+  }
 
   @Get(':id')
   async getById(@Param() { id }) {
