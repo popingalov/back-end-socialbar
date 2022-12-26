@@ -2,12 +2,16 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../users/schemas/users.schema';
+// import {
+//   CategoryItem,
+//   CategoryItemSchema,
+// } from '../categories/schema/categories.chema';
 
 export type CocktailDocument = Cocktail & Document;
 
 @Schema()
 export class CocktailIngredients extends Document {
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'Ingredient' })
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Ingredient', required: true })
   data: Types.ObjectId;
 
   @Prop({ required: true })
@@ -44,8 +48,8 @@ export class Cocktail {
   @Prop({ type: [CocktailIngredientsSchema], ref: 'Ingredient' })
   ingredients: CocktailIngredients[];
 
-  // @Prop() Category of cocktail from list of types / longs, shots, non-alcohol
-  // category: Category []
+  @Prop({ type: [String], required: true })
+  category: string[];
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'Glass' })
   glass: Types.ObjectId;
@@ -56,7 +60,7 @@ export class Cocktail {
   @Prop({ required: true })
   description: string;
 
-  @Prop()
+  @Prop({ type: String, required: true })
   recipe: string;
 
   @Prop({ required: false, default: null })

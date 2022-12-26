@@ -23,9 +23,13 @@ export class IngredientsService {
   }
 
   async getIngredients({ owner }: GetIngredientsDto): Promise<Ingredient[]> {
-    const newIngredient: Ingredient[] = await this.ingredientModel
-      .find({ owner })
-      .populate('owner', ['id', 'name', 'picture', 'email']);
+    const newIngredient: Ingredient[] = await this.ingredientModel.find(
+      {
+        owner,
+      },
+      '-owner',
+    );
+    // .populate('owner', ['id', 'name', 'picture', 'email']);
 
     return newIngredient;
   }

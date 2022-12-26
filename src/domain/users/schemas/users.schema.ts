@@ -11,11 +11,19 @@ export type UsersDocument = User & Document;
 export class User {
   id: Types.ObjectId;
 
-  @Prop({ required: true, unique: true, message: 'Name must be unique' })
+  @Prop({
+    type: String,
+    required: true,
+    unique: true,
+    message: 'email must be unique',
+  })
   email: string;
 
-  @Prop({ required: true, message: 'Name must be unique' })
+  @Prop({ required: true })
   name: string;
+
+  @Prop({ type: String, required: true, default: 'uk' })
+  locale: string;
 
   @Prop()
   picture: string;

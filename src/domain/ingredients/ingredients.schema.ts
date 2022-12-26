@@ -3,6 +3,11 @@ import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../users/schemas/users.schema';
 import { Cocktail, CocktailSchema } from '../cocktails/cocktails.schema';
+// import {
+//   CategoryItem,
+//   CategoryItemSchema,
+// } from '../categories/schema/categories.chema';
+
 export type IngredientDocument = Ingredient & Document;
 
 @Schema({
@@ -16,8 +21,8 @@ export class Ingredient {
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
   owner: User | null;
 
-  // @Prop({type: 's'})
-  // category: Types.Categories // new
+  @Prop({ type: String, ref: 'categories' })
+  category: string;
 
   @Prop({ type: [CocktailSchema], ref: 'Cocktail' })
   cocktails: Cocktail[];

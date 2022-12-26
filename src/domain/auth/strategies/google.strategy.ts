@@ -29,6 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const email: string = profile.emails[0].value;
     const name = `${profile.name.givenName} ${profile.name.familyName}`;
     const picture: string = profile._json.picture;
+    const locale: string = profile._json.locale;
 
     let user = await this.authService.validateGoogleUser({ email });
 
@@ -37,9 +38,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         email,
         name,
         picture,
+        locale,
       });
 
-    const token = this.authService.createToken({ id: user.id, email });
+    const token = this.authService.createToken({ id: user.id, email, locale });
 
     done(null, { token });
   }
