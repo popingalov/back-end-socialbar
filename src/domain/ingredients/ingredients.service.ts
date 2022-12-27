@@ -22,6 +22,16 @@ export class IngredientsService {
     return await newIngredient.save();
   }
 
+  async getDefault(): Promise<Ingredient[]> {
+    const newIngredient: Ingredient[] = await this.ingredientModel.find(
+      { email: 'popingalov@gmail.com' },
+      '-owner',
+    );
+    // .populate('owner', ['id', 'name', 'picture', 'email']);
+
+    return newIngredient;
+  }
+
   async getIngredients({ owner }: GetIngredientsDto): Promise<Ingredient[]> {
     const newIngredient: Ingredient[] = await this.ingredientModel.find(
       {
@@ -35,9 +45,7 @@ export class IngredientsService {
   }
 
   async getIngredientById({ id }: GetIngredientByIdDto) {
-    const ingredient = await this.ingredientModel
-      .findById(id)
-      .populate('owner', ['id', 'name', 'picture', 'email']);
+    const ingredient = await this.ingredientModel.findById(id);
 
     ingredient.cocktails = await this.cocktailsService.findByIngredient({ id });
 

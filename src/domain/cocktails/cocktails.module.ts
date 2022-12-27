@@ -7,8 +7,8 @@ import { CocktailsService } from './cocktails.service';
 import {
   Cocktail,
   CocktailSchema,
-  CocktailIngredients,
-  CocktailIngredientsSchema,
+  // CocktailIngredients,
+  // CocktailIngredientsSchema,
 } from './cocktails.schema';
 
 @Module({
@@ -19,10 +19,6 @@ import {
       {
         name: Cocktail.name,
         schema: CocktailSchema,
-      },
-      {
-        name: CocktailIngredients.name,
-        schema: CocktailIngredientsSchema,
       },
     ]),
   ],

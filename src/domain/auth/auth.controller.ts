@@ -10,8 +10,8 @@ export class AuthController {
     console.log('Doing things');
   }
 
-  @UseGuards(GoogleAuthGuard)
   @Get('google/redirect')
+  @UseGuards(GoogleAuthGuard)
   @Redirect()
   googleAuthRedirect(@Req() req) {
     const { token } = req.user;

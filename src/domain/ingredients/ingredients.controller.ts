@@ -16,20 +16,26 @@ import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
-  @Post()
   @UseGuards(JwtAuthGuard)
+  @Post()
   async createIngredient(@Body() body, @Req() req): Promise<Ingredient> {
     return await this.ingredientsService.createIngredient({
       ...body,
       owner: req.user.id,
     });
   }
-  @Get()
+
   @UseGuards(JwtAuthGuard)
+  @Get('/my')
   async getIngredients(@Req() req): Promise<Ingredient[]> {
     return await this.ingredientsService.getIngredients({
       owner: req.user.id,
     });
+  }
+
+  @Get()
+  async getDefault(): Promise<Ingredient[]> {
+    return await this.ingredientsService.getDefault();
   }
 
   @Get(':id')
