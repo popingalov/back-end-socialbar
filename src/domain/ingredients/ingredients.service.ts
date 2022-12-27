@@ -7,7 +7,10 @@ import { Ingredient, IngredientDocument } from './ingredients.schema';
 import { CreateIngredientDto } from './dto/create-ingredient-dto';
 import { GetIngredientByIdDto } from './dto/get-ingredient-by-id.dto';
 import { GetIngredientsDto } from './dto/getAlll.dto';
+import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { CocktailsService } from '../cocktails/cocktails.service';
+import { Types } from 'mongoose';
+
 @Injectable()
 export class IngredientsService {
   constructor(
@@ -50,5 +53,20 @@ export class IngredientsService {
     ingredient.cocktails = await this.cocktailsService.findByIngredient({ id });
 
     return ingredient.populate('cocktails.ingredients.data', ['id', 'title']);
+  }
+
+  async deleteIngredient({ id }): Promise<void> {
+    await this.ingredientModel.findOneAndDelete({ id });
+  }
+
+  async updateIngredient(
+    id: Types.ObjectId,
+    body: UpdateIngredientDto,
+  ): Promise<Ingredient> {
+    const updateCocktail = this.ingredientModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
+
+    return await updateCocktail;
   }
 }
