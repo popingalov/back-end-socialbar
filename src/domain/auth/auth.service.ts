@@ -23,7 +23,10 @@ export class AuthService {
     return await this.usersService.findByQuery(email);
   }
 
-  createToken(data: createJwtTokenDto): string {
+  createToken(data: any): any {
     return this.jwtService.sign(data);
+  }
+  validToken(data: any): any {
+    return this.jwtService.verify(data);
   }
 }

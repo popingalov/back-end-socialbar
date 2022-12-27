@@ -11,7 +11,6 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 import { SessionSerializer } from './strategies/google.serializer';
-
 @Module({
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, GoogleStrategy, SessionSerializer],
