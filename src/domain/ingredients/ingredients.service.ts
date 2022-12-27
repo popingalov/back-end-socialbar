@@ -56,6 +56,8 @@ export class IngredientsService {
   }
 
   async deleteIngredient({ id }): Promise<void> {
+    console.log(id);
+
     await this.ingredientModel.findOneAndDelete({ id });
   }
 

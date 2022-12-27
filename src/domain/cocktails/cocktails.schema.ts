@@ -45,7 +45,11 @@ export class Cocktail {
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
   owner: User | null;
 
-  @Prop({ type: [CocktailIngredientsSchema], ref: 'Ingredient' })
+  @Prop({
+    type: [CocktailIngredientsSchema],
+    required: true,
+    ref: 'Ingredient',
+  })
   ingredients: CocktailIngredients[];
 
   @Prop({ type: [String], required: true })
