@@ -21,6 +21,7 @@ import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createIngredient(@Body() body, @Req() req): Promise<Ingredient> {
     return await this.ingredientsService.createIngredient({
