@@ -3,7 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Cocktail, CocktailDocument } from './cocktails.schema';
-
+import { UpdateCocktailDto } from './dto/update-cocktail.dto';
+import { Types } from 'mongoose';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { FindByIdDto } from './dto/find-by-id.dto';
 import { FindByIngredientDto } from './dto/find-by-ingredient.dto';
@@ -54,5 +55,21 @@ export class CocktailsService {
 
   async findByIngredient({ id }: FindByIngredientDto): Promise<Cocktail[]> {
     return await this.cocktailModel.find({ 'ingredients.data': id });
+  }
+
+  async updateOne(
+    id: Types.ObjectId,
+    cocktail: UpdateCocktailDto,
+  ): Promise<Cocktail> {
+    const { title, description } = cocktail;
+    const updateCocktail = this.cocktailModel.findByIdAndUpdate(
+      id,
+      { title, description },
+      {
+        new: true,
+      },
+    );
+
+    return await updateCocktail;
   }
 }
