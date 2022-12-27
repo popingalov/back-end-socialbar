@@ -63,9 +63,13 @@ export class IngredientsService {
     id: Types.ObjectId,
     body: UpdateIngredientDto,
   ): Promise<Ingredient> {
-    const updateCocktail = this.ingredientModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+    const updateCocktail = this.ingredientModel.findByIdAndUpdate(
+      id,
+      body,
+      {
+        new: true,
+      },
+    );
 
     return await updateCocktail;
   }
