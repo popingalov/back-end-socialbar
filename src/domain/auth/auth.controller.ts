@@ -16,6 +16,6 @@ export class AuthController {
   googleAuthRedirect(@Req() req) {
     const { token } = req.user;
 
-    return { url: `https://localhost:3000/?token=${token}` };
+    return { url: `http://localhost:3000/?token=${token}` };
   }
 }
