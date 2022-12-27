@@ -26,10 +26,10 @@ export class FavoriteService {
       return newItem;
     }
 
-    const newItem = await this.categoryModel.findOneAndUpdate(
+    const newItem = await this.categoryModel.updateOne(
       { owner },
       {
-        cocktails: [...userItems.cocktails, id],
+        $push: { cocktails: id },
       },
     );
     return newItem;

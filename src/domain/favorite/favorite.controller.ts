@@ -28,8 +28,6 @@ export class FavoriteController {
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Req() req) {
-    console.log(req.user.id);
-
     const owner = req.user.id;
     return this.favoriteService.findAll(owner);
   }
