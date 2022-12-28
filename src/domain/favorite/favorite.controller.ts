@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { Favorite } from './shema/favorite.schema';
@@ -24,7 +25,7 @@ export class ShopingListController {
   }
 
   @Get()
-  getAll(): Promise<Favorite[]> {
+  getAll(@Req() req): Promise<Favorite[]> {
     return this.favoriteService.getAll();
   }
 
