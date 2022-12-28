@@ -2,9 +2,9 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../../users/schemas/users.schema';
-import { Ingredient } from 'src/domain/ingredients/ingredients.schema';
+import { Cocktail } from 'src/domain/cocktails/cocktails.schema';
 
-export type ShopingListDocument = ShopingList & Document;
+export type FavoriteDocument = Favorite & Document;
 
 @Schema({
   toJSON: {
@@ -12,20 +12,20 @@ export type ShopingListDocument = ShopingList & Document;
   },
   toObject: { virtuals: true },
 })
-export class ShopingList {
+export class Favorite {
   id: Types.ObjectId;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
   owner: User | null;
 
-  @Prop({ type: [SchemaTypes.ObjectId], ref: 'Ingredient' })
-  ingredients: Ingredient[];
+  @Prop({ type: [SchemaTypes.ObjectId], ref: 'Cocktail' })
+  cocktails: Cocktail[];
 }
 
-const ShopingListSchema = SchemaFactory.createForClass(ShopingList);
+const FavoriteSchema = SchemaFactory.createForClass(Favorite);
 
-ShopingListSchema.virtual('id').get(function () {
+FavoriteSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-export { ShopingListSchema };
+export { FavoriteSchema };

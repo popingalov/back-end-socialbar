@@ -20,7 +20,7 @@ export class ShopingListService {
       console.log('CREATE');
       const newItem = await this.shopingListModel.create({
         owner,
-        cocktails: [id],
+        ingredients: [id],
       });
 
       return newItem;
@@ -29,7 +29,7 @@ export class ShopingListService {
       const newItem = await this.shopingListModel.updateOne(
         { owner },
         {
-          $push: { cocktails: id },
+          $push: { ingredients: id },
         },
       );
       return newItem;
@@ -40,7 +40,7 @@ export class ShopingListService {
     return await this.shopingListModel.find();
   }
 
-  async deleteItem(id: string): Promise<void> {
+  async deleteFavorite(id: string): Promise<void> {
     await this.shopingListModel.findOneAndDelete({ id });
   }
 }
