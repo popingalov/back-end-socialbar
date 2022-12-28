@@ -46,11 +46,12 @@ export class FavoriteService {
   }
 
   async deleteFavorite(id: string, owner: string): Promise<void> {
-    await this.favoritetModel.updateOne(
+    const delItem = await this.favoritetModel.updateOne(
       {
         owner,
       },
       { $pull: { cocktails: id } },
     );
+
   }
 }
