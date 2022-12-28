@@ -11,6 +11,7 @@ import { GlassesModule } from './domain/glasses/glasses.module';
 import { ConfigModule } from '@nestjs/config';
 import { CategoriesModule } from './domain/categories/categories.module';
 import { FavoriteModule } from './domain/favorite/favorite.module';
+import { ShopingListModule } from './domain/shoping-list/shoping-list.module';
 
 const DB_HOST =
   'mongodb+srv://popingalov:popingalov@cluster0.gdfjo81.mongodb.net/db-bar?retryWrites=true&w=majority';
@@ -29,6 +30,7 @@ const DB_HOST =
     GlassesModule,
     CategoriesModule,
     FavoriteModule,
+    ShopingListModule,
   ],
 })
 export class AppModule {}

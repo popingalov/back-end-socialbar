@@ -8,26 +8,29 @@ import {
   Delete,
   Req,
 } from '@nestjs/common';
-import { FavoriteService } from './favorite.service';
-import { Favorite } from './shema/favorite.schema';
+import { ShopingListService } from './shoping-list.service';
+import { ShopingList } from './schema/shoping-list.schema';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
-@Controller('favorite')
-export class FavoriteController {
-  constructor(private readonly favoriteService: FavoriteService) {}
+@Controller('shoping-list')
+export class ShopingListController {
+  constructor(private readonly shopingListService: ShopingListService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() body, @Req() req) {
     const { id } = body;
-    return this.favoriteService.createFavorite({ id, owner: req.user.id });
+    return this.shopingListService.createShopingItem({
+      id,
+      owner: req.user.id,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getAll(@Req() req): Promise<Favorite[]> {
-    return this.favoriteService.getAll({
+  getAll(@Req() req): Promise<ShopingList[]> {
+    return this.shopingListService.getAll({
       owner: req.user.id,
     });
   }
@@ -35,6 +38,6 @@ export class FavoriteController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
-    return this.favoriteService.deleteFavorite(id);
+    return this.shopingListService.deleteItem(id);
   }
 }

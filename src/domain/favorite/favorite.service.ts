@@ -2,56 +2,59 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { TakeAllDto } from './dto/takeAll.dto';
-import { UpdateFavoriteDto } from './dto/update-favorite.dto';
-import { Favorite, FavoriteDocument } from './schema/favorite.schema';
+import { GetFavoriteDto } from './dto/get-favorite.dto';
+import { Favorite, FavoriteDocument } from './shema/favorite.schema';
+
 @Injectable()
 export class FavoriteService {
   constructor(
     @InjectModel(Favorite.name)
-    private readonly categoryModel: Model<FavoriteDocument>,
+    private readonly favoritetModel: Model<FavoriteDocument>,
   ) {}
 
-  async create({ owner, id }: CreateFavoriteDto) {
-    const userItems: any = await this.categoryModel.findOne({
+  async createFavorite({ owner, id }: CreateFavoriteDto) {
+    const userItems: Favorite = await this.favoritetModel.findOne({
       owner,
     });
 
     if (!userItems) {
-      const newItem = await this.categoryModel.create({
+      const newItem = await this.favoritetModel.create({
         owner,
         cocktails: [id],
       });
-
       return newItem;
     }
 
-    const newItem = await this.categoryModel.updateOne(
-      { owner },
-      {
-        $push: { cocktails: id },
-      },
+    const findItem = userItems.cocktails.find((elem) => elem.toString() === id);
+
+    if (!findItem) {
+      const newItem = await this.favoritetModel.updateOne(
+        { owner },
+        {
+          $push: { cocktails: id },
+        },
+      );
+      return newItem;
+    } else {
+      return userItems;
+    }
+  }
+
+  async getAll({ owner }: GetFavoriteDto): Promise<Favorite[]> {
+    const favoriteList = await this.favoritetModel.find({ owner });
+    return favoriteList;
+  }
+
+  async deleteFavorite(id: string): Promise<void> {
+    const delItem = await this.favoritetModel.find({
+      id,
+    });
+    const newItems = delItem[0].cocktails.filter(
+      (elem) => elem.toString() !== id,
     );
-    return newItem;
-  }
-
-  async findAll(owner: TakeAllDto) {
-    const userItems: any = await this.categoryModel
-      .findOne({ owner })
-      .populate('cocktails');
-
-    return userItems;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} favorite`;
-  }
-
-  update(id: number, updateFavoriteDto: UpdateFavoriteDto) {
-    return `This action updates a #${id} favorite`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} favorite`;
+    await this.favoritetModel.findOneAndUpdate(
+      { id },
+      { cocktails: [...newItems] },
+    );
   }
 }
