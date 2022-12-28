@@ -45,6 +45,7 @@ export class FavoriteService {
     return favoriteList;
   }
 
+<<<<<<< Updated upstream
   async deleteFavorite(id: string): Promise<void> {
     const delItem = await this.favoritetModel.find({
       id,
@@ -55,6 +56,14 @@ export class FavoriteService {
     await this.favoritetModel.findOneAndUpdate(
       { id },
       { cocktails: [...newItems] },
+=======
+  async deleteFavorite(id: string, owner: string): Promise<void> {
+    await this.favoritetModel.updateOne(
+      {
+        owner,
+      },
+      { $pull: { cocktails: id } },
+>>>>>>> Stashed changes
     );
   }
 }

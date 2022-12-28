@@ -47,16 +47,12 @@ export class ShopingListService {
     return itemsList;
   }
 
-  async deleteItem(id: string): Promise<void> {
-    const delItem = await this.shopingListModel.find({
-      id,
-    });
-    const newItems = delItem[0].ingredients.filter(
-      (elem) => elem.toString() !== id,
-    );
-    await this.shopingListModel.findOneAndUpdate(
-      { id },
-      { ingredients: [...newItems] },
+  async deleteItem(id: string, owner: string): Promise<void> {
+    await this.shopingListModel.updateOne(
+      {
+        owner,
+      },
+      { $pull: { cocktails: id } },
     );
   }
 }
