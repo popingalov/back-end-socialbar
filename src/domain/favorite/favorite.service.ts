@@ -52,12 +52,6 @@ export class FavoriteService {
       },
       { $pull: { cocktails: id } },
     );
-    // const newItems = delItem[0].cocktails.filter(
-    //   (elem) => elem.toString() !== id,
-    // );
-    // await this.favoritetModel.findOneAndUpdate(
-    //   { id },
-    //   { cocktails: [...newItems] },
-    // );
+
   }
 }
