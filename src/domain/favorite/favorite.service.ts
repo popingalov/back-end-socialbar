@@ -45,16 +45,19 @@ export class FavoriteService {
     return favoriteList;
   }
 
-  async deleteFavorite(id: string): Promise<void> {
-    const delItem = await this.favoritetModel.find({
-      id,
-    });
-    const newItems = delItem[0].cocktails.filter(
-      (elem) => elem.toString() !== id,
+  async deleteFavorite(id: string, owner: string): Promise<void> {
+    const delItem = await this.favoritetModel.updateOne(
+      {
+        owner,
+      },
+      { $pull: { cocktails: id } },
     );
-    await this.favoritetModel.findOneAndUpdate(
-      { id },
-      { cocktails: [...newItems] },
-    );
+    // const newItems = delItem[0].cocktails.filter(
+    //   (elem) => elem.toString() !== id,
+    // );
+    // await this.favoritetModel.findOneAndUpdate(
+    //   { id },
+    //   { cocktails: [...newItems] },
+    // );
   }
 }
