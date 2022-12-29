@@ -52,6 +52,5 @@ export class FavoriteService {
       },
       { $pull: { cocktails: id } },
     );
-
   }
 }

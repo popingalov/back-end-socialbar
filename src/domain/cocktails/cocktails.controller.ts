@@ -49,16 +49,6 @@ export class CocktailsController {
     return await this.cocktailService.getMyCocktails({ owner: id });
   }
 
-  // @Put(':id')
-  // updateOne(
-  //   @Body() cocktail: UpdateCocktailDto,
-  //   @Param('id') id: string,
-  // ): string {
-  //   const { title, description } = cocktail;
-
-  //   return `Updated ${title} with id: ${id}. About: ${description}`;
-  // }
-
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   deleteOne(@Param('id') id: string, @Req() req): Promise<void> {

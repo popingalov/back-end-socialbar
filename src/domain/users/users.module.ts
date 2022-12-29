@@ -5,6 +5,10 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 import { User, UserSchema } from './schemas/users.schema';
+import {
+  IngredientList,
+  IngredientListSchema,
+} from '../ingredient-list/schema/ingredientList.schema';
 
 @Module({
   controllers: [UsersController],
@@ -14,6 +18,10 @@ import { User, UserSchema } from './schemas/users.schema';
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: IngredientList.name,
+        schema: IngredientListSchema,
       },
     ]),
   ],

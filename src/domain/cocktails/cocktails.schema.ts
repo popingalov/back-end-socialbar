@@ -43,7 +43,7 @@ export class Cocktail {
   id: Types.ObjectId;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
-  owner: User | null;
+  owner: User;
 
   @Prop({
     type: [CocktailIngredientsSchema],

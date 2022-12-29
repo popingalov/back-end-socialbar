@@ -8,17 +8,23 @@ import { createUserDto } from './dto/create-user.dto';
 import { updateUserDto } from './dto/update-user.dto';
 import { findUserIdDto } from './dto/find-user-id.dto';
 import { findOneUserDto } from './dto/find-one-user.dto';
+import {
+  IngredientList,
+  IngredientListDocument,
+} from '../ingredient-list/schema/ingredientList.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UsersDocument>,
+    @InjectModel(IngredientList.name)
+    private ingredientList: Model<IngredientListDocument>,
   ) {}
 
   async createNew(user: createUserDto): Promise<User> {
-    const createdUser = new this.userModel(user);
-
-    return await createdUser.save();
+    const createdUser = await new this.userModel(user);
+    this.ingredientList.create({ owner: createdUser.id });
+    return createdUser.save();
   }
 
   async findById({ id }: findUserIdDto): Promise<User> {
