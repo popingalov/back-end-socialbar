@@ -44,9 +44,11 @@ export class CocktailsController {
 
   @Post('/my')
   @UseGuards(JwtAuthGuard)
-  async getMyCoctails(@Req() req): Promise<Cocktail[]> {
+  async getMyCocktails(@Req() req): Promise<Cocktail[]> {
     const { id } = req.user;
-    return await this.cocktailService.getMyCocktails({ owner: id });
+    return await this.cocktailService.getMyCocktails({
+      owner: id,
+    });
   }
 
   @UseGuards(JwtAuthGuard)

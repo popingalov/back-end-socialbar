@@ -33,9 +33,9 @@ export class CocktailsService {
     return cocktails;
   }
 
-  async getMyCocktails(query): Promise<Cocktail[]> {
+  async getMyCocktails({ owner }): Promise<Cocktail[]> {
     return await this.cocktailModel
-      .find({ query })
+      .find({ owner })
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
