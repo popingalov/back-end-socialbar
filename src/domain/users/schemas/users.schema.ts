@@ -22,11 +22,14 @@ export class User {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ type: String, required: true, default: 'uk' })
+  @Prop({ type: String, default: 'uk' })
   locale: string;
 
   @Prop()
   picture: string;
+
+  @Prop({ type: String, default: 'allIngredients' })
+  startPage: string;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
