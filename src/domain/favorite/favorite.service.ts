@@ -41,12 +41,14 @@ export class FavoriteService {
   }
 
   async getAll({ owner }: GetFavoriteDto): Promise<Favorite[]> {
-    const favoriteList = await this.favoritetModel.find({ owner });
+    const favoriteList = await this.favoritetModel
+      .find({ owner })
+      .populate('cocktails');
     return favoriteList;
   }
 
   async deleteFavorite(id: string, owner: string): Promise<void> {
-    const delItem = await this.favoritetModel.updateOne(
+    await this.favoritetModel.updateOne(
       {
         owner,
       },
