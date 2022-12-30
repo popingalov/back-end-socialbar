@@ -9,11 +9,18 @@ import { AuthService } from './auth.service';
 
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtPublickStrategy } from './strategies/jwtpublick.strategy';
 
 import { SessionSerializer } from './strategies/google.serializer';
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy, SessionSerializer],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    JwtPublickStrategy,
+    GoogleStrategy,
+    SessionSerializer,
+  ],
   imports: [
     UsersModule,
     PassportModule,

@@ -24,7 +24,7 @@ export class CocktailsService {
 
   async getDefault(): Promise<Cocktail[]> {
     const cocktails = await this.cocktailModel
-      .find({ email: 'popingalov@gmail.com' })
+      .find({ email: process.env.OWNER })
       // .populate('owner', ['id', 'email', 'name', 'picture'])
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')

@@ -27,10 +27,9 @@ export class IngredientsService {
 
   async getDefault(): Promise<Ingredient[]> {
     const newIngredient: Ingredient[] = await this.ingredientModel.find(
-      { email: 'popingalov@gmail.com' },
+      { email: process.env.OWNER },
       '-owner',
     );
-    // .populate('owner', ['id', 'name', 'picture', 'email']);
 
     return newIngredient;
   }
@@ -42,7 +41,6 @@ export class IngredientsService {
       },
       '-owner',
     );
-    // .populate('owner', ['id', 'name', 'picture', 'email']);
 
     return newIngredient;
   }

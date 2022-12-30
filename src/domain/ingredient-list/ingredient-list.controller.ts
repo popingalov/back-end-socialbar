@@ -12,6 +12,7 @@ import {
 import { IngredientListService } from './ingredient-list.service';
 import { CreateIngredientListDto } from './dto/create-ingredient-list.dto';
 import { UpdateIngredientListDto } from './dto/update-ingredient-list.dto';
+import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 @Controller('my-ingredient-list')
@@ -26,7 +27,8 @@ export class IngredientListController {
       id: body.id,
     });
   }
-  @UseGuards(JwtAuthGuard)
+
+  @UseGuards(JwtPublickGuard)
   @Get()
   findAll(@Req() req) {
     return this.ingredientListService.findAll({ owner: req.user.id });

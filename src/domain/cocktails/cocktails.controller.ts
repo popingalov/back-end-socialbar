@@ -16,7 +16,6 @@ import { Cocktail } from './cocktails.schema';
 
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
-import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
 import { Types } from 'mongoose';
 
@@ -25,7 +24,7 @@ export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
 
   @Get()
-  async getDefault(): Promise<Cocktail[]> {
+  async getDefault(@Req() req): Promise<Cocktail[]> {
     return await this.cocktailService.getDefault();
   }
 
@@ -46,6 +45,7 @@ export class CocktailsController {
   @UseGuards(JwtAuthGuard)
   async getMyCocktails(@Req() req): Promise<Cocktail[]> {
     const { id } = req.user;
+
     return await this.cocktailService.getMyCocktails({
       owner: id,
     });
