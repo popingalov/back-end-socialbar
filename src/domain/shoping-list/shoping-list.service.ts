@@ -43,7 +43,9 @@ export class ShopingListService {
   }
 
   async getAll({ owner }: GetShopingListDto): Promise<ShopingList[]> {
-    const itemsList = await this.shopingListModel.find({ owner });
+    const itemsList = await this.shopingListModel
+      .find({ owner })
+      .populate('ingredients');
     return itemsList;
   }
 
@@ -52,7 +54,7 @@ export class ShopingListService {
       {
         owner,
       },
-      { $pull: { cocktails: id } },
+      { $pull: { ingredients: id } },
     );
   }
 }
