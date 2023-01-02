@@ -25,7 +25,7 @@ export class CocktailsController {
 
   @Get()
   async getDefault(@Req() req): Promise<{
-    ican: Cocktail[];
+    haveAll: Cocktail[];
     needMore: Cocktail[];
     other: Cocktail[];
   }> {
@@ -48,7 +48,7 @@ export class CocktailsController {
   @Post('/my')
   @UseGuards(JwtAuthGuard)
   async getMyCocktails(@Req() req): Promise<{
-    ican: Cocktail[];
+    haveAll: Cocktail[];
     needMore: Cocktail[];
     other: Cocktail[];
   }> {

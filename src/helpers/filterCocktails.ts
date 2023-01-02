@@ -11,7 +11,7 @@ export default function (cocktails, ingredients) {
       }, 0);
 
       if (include === helper) {
-        acc.ican.push(el);
+        acc.haveAll.push(el);
         return acc;
       }
       if (helper - include <= 2) {
@@ -21,6 +21,6 @@ export default function (cocktails, ingredients) {
       acc.other.push(el);
       return acc;
     },
-    { ican: [], needMore: [], other: [] },
+    { haveAll: [], needMore: [], other: [] },
   );
 }

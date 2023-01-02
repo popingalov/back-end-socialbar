@@ -23,7 +23,12 @@ export class UsersService {
 
   async createNew(user: createUserDto): Promise<User> {
     const createdUser = await new this.userModel(user);
-    this.ingredientList.create({ owner: createdUser.id });
+    const defaultList = await this.ingredientList.findOne(
+      { owner: process.env.OWNER },
+      '-owner',
+    );
+
+    this.ingredientList.create({ owner: createdUser.id, ...defaultList });
     return createdUser.save();
   }
 
