@@ -28,7 +28,10 @@ export class UsersService {
       '-owner',
     );
 
-    this.ingredientList.create({ owner: createdUser.id, ...defaultList });
+    this.ingredientList.create({
+      owner: createdUser.id,
+      list: defaultList.list,
+    });
     return createdUser.save();
   }
 
