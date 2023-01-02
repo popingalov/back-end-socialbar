@@ -12,6 +12,7 @@ import { ShopingListService } from './shoping-list.service';
 import { ShopingList } from './schema/shoping-list.schema';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
+import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 
 @Controller('shoping-list')
 export class ShopingListController {
@@ -27,7 +28,7 @@ export class ShopingListController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtPublickGuard)
   @Get()
   getAll(@Req() req): Promise<ShopingList[]> {
     return this.shopingListService.getAll({

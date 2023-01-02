@@ -34,6 +34,7 @@ export class UsersController {
 
     return user;
   }
+
   @UseGuards(JwtAuthGuard)
   @Put('me')
   async updateUserData(@Req() req, @Body() body): Promise<User> {

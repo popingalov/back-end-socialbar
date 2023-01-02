@@ -1,19 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { Cocktail, CocktailDocument } from './cocktails.schema';
+import {
+  IngredientListDocument,
+  IngredientList,
+} from '../ingredient-list/schema/ingredientList.schema';
+
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-import { Types } from 'mongoose';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { FindByIdDto } from './dto/find-by-id.dto';
 import { FindByIngredientDto } from './dto/find-by-ingredient.dto';
+import { CocktailDto } from './dto/cocktail.dto';
+//
+import filterCocktails from '../../helpers/filterCocktails';
 
 @Injectable()
 export class CocktailsService {
   constructor(
     @InjectModel(Cocktail.name)
     private readonly cocktailModel: Model<CocktailDocument>,
+    @InjectModel(IngredientList.name)
+    private readonly ShopingListService: Model<IngredientListDocument>,
   ) {}
 
   async createOne(cocktail: CreateCocktailDto): Promise<Cocktail> {
@@ -22,23 +31,35 @@ export class CocktailsService {
     return await newCocktail.save();
   }
 
-  async getDefault(): Promise<Cocktail[]> {
-    const cocktails = await this.cocktailModel
+  // async getDefault(): Promise<any> {
+  async getDefault() {
+    const cocktails: CocktailDto[] = await this.cocktailModel
       .find({ email: process.env.OWNER })
-      // .populate('owner', ['id', 'email', 'name', 'picture'])
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
 
-    return cocktails;
+    const ingredients = await this.ShopingListService.findOne({
+      email: process.env.OWNER,
+    });
+
+    const result = filterCocktails(cocktails, ingredients);
+    return result;
   }
 
-  async getMyCocktails({ owner }): Promise<Cocktail[]> {
-    return await this.cocktailModel
+  async getMyCocktails({ owner }) {
+    const cocktails = await this.cocktailModel
       .find({ owner })
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
+
+    const ingredients = await this.ShopingListService.findOne({
+      email: owner,
+    });
+
+    const result = filterCocktails(cocktails, ingredients);
+    return result;
   }
 
   async getById({ id }: FindByIdDto): Promise<Cocktail> {

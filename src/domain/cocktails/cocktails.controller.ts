@@ -24,7 +24,11 @@ export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
 
   @Get()
-  async getDefault(@Req() req): Promise<Cocktail[]> {
+  async getDefault(@Req() req): Promise<{
+    ican: Cocktail[];
+    needMore: Cocktail[];
+    other: Cocktail[];
+  }> {
     return await this.cocktailService.getDefault();
   }
 
@@ -43,7 +47,11 @@ export class CocktailsController {
 
   @Post('/my')
   @UseGuards(JwtAuthGuard)
-  async getMyCocktails(@Req() req): Promise<Cocktail[]> {
+  async getMyCocktails(@Req() req): Promise<{
+    ican: Cocktail[];
+    needMore: Cocktail[];
+    other: Cocktail[];
+  }> {
     const { id } = req.user;
 
     return await this.cocktailService.getMyCocktails({
