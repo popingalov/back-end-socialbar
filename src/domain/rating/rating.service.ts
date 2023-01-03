@@ -29,7 +29,7 @@ export class RatingService {
     console.log(findCocktail);
 
     if (findCocktail) {
-      let users;
+      let users = 0;
       const sumRaiting = findCocktail.reduce((prev, number) => {
         users += 1;
         return prev + number.rating;
