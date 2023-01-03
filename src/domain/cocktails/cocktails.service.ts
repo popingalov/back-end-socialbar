@@ -60,13 +60,14 @@ export class CocktailsService {
 
     const myObj = filterMy(cocktails, ingredients);
     const defaultObj = await this.getDefault();
+    const mine = myObj.all.length === 0 ? null : myObj.mine;
 
     const result = {
       haveAll: myObj.haveAll.concat(defaultObj.haveAll),
       needMore: myObj.needMore.concat(defaultObj.needMore),
       other: myObj.other.concat(defaultObj.other),
       all: myObj.all.concat(defaultObj.all),
-      mine: myObj.mine,
+      mine,
     };
     return result;
   }
