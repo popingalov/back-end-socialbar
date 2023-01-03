@@ -48,6 +48,15 @@ export class RatingService {
   }
 
   async updateRating({ id, owner, rating }: UpdateRatingDto) {
-    return `This action updates a #${id} rating`;
+    const updateItem = await this.ratingModel.findOneAndUpdate(
+      { owner, cocktailId: id },
+      { rating },
+      { new: true },
+    );
+
+    console.log(updateItem);
+    if (!updateItem) {
+      return 'No items';
+    }
   }
 }
