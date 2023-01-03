@@ -43,8 +43,9 @@ export class IngredientsService {
       '-owner',
     );
 
-    const defaultIngredients = await this.getDefault();
-    return newIngredient.concat(defaultIngredients);
+    return newIngredient;
+    // const defaultIngredients = await this.getDefault();
+    // return newIngredient.concat(defaultIngredients);
   }
 
   async getIngredientById({ id }: GetIngredientByIdDto) {
