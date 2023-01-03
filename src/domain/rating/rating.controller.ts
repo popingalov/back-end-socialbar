@@ -10,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { RatingService } from './rating.service';
-import { CreateRatingDto } from './dto/create-rating.dto';
-import { UpdateRatingDto } from './dto/update-rating.dto';
 
 @Controller('rating')
 export class RatingController {

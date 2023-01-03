@@ -14,15 +14,32 @@ export class RatingService {
     private readonly ratingModel: Model<RatingDocument>,
   ) {}
 
-  postRating({ id, owner, rating }: CreateRatingDto) {
-    return 'This action adds a new rating';
+  async postRating({ id, owner, rating }: CreateRatingDto) {
+    const newRating = new this.ratingModel({
+      owner,
+      cocktailId: id,
+      rating,
+    });
+
+    return await newRating.save();
   }
 
-  findOne({ id }: GetRatingDto) {
-    return `This action returns a #${id} rating`;
+  async findOne({ id }: GetRatingDto) {
+    const findCocktail = await this.ratingModel.find({ cocktailId: id });
+    console.log(findCocktail);
+
+    if (findCocktail) {
+      let users;
+      const sumRaiting = findCocktail.reduce((prev, number) => {
+        users += 1;
+        return prev + number.rating;
+      }, 0);
+      return sumRaiting / users;
+    }
+    return `No items`;
   }
 
-  updateRating({ id, owner, rating }: UpdateRatingDto) {
+  async updateRating({ id, owner, rating }: UpdateRatingDto) {
     return `This action updates a #${id} rating`;
   }
 }
