@@ -15,6 +15,15 @@ export class RatingService {
   ) {}
 
   async postRating({ id, owner, rating }: CreateRatingDto) {
+    const existItem = await this.ratingModel.find({
+      owner,
+      cocktailId: id,
+    });
+
+    if (existItem) {
+      return await this.updateRating({ id, owner, rating });
+    }
+
     const newRating = new this.ratingModel({
       owner,
       cocktailId: id,
@@ -26,7 +35,6 @@ export class RatingService {
 
   async findOne({ id }: GetRatingDto) {
     const findCocktail = await this.ratingModel.find({ cocktailId: id });
-    console.log(findCocktail);
 
     if (findCocktail) {
       let users = 0;
