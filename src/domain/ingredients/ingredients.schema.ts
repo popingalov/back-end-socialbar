@@ -41,6 +41,9 @@ export class Ingredient {
 
   @Prop({ default: false })
   isDefault: boolean;
+
+  @Prop({ default: false })
+  availability: boolean;
 }
 
 const IngredientSchema = SchemaFactory.createForClass(Ingredient);

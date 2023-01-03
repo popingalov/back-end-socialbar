@@ -14,7 +14,8 @@ import { FindByIdDto } from './dto/find-by-id.dto';
 import { FindByIngredientDto } from './dto/find-by-ingredient.dto';
 import { CocktailDto } from './dto/cocktail.dto';
 //
-import filterCocktails from '../../helpers/filterCocktails';
+import filterDefault from '../../helpers/filterDefaultCocktails';
+import filterMy from '../../helpers/filterMyCocktails';
 
 @Injectable()
 export class CocktailsService {
@@ -31,7 +32,6 @@ export class CocktailsService {
     return await newCocktail.save();
   }
 
-  // async getDefault(): Promise<any> {
   async getDefault() {
     const cocktails: CocktailDto[] = await this.cocktailModel
       .find({ email: process.env.OWNER })
@@ -43,7 +43,7 @@ export class CocktailsService {
       email: process.env.OWNER,
     });
 
-    const result = filterCocktails(cocktails, ingredients);
+    const result = filterDefault(cocktails, ingredients);
     return result;
   }
 
@@ -58,7 +58,16 @@ export class CocktailsService {
       email: owner,
     });
 
-    const result = filterCocktails(cocktails, ingredients);
+    const myObj = filterMy(cocktails, ingredients);
+    const defaultObj = await this.getDefault();
+
+    const result = {
+      haveAll: myObj.haveAll.concat(defaultObj.haveAll),
+      needMore: myObj.needMore.concat(defaultObj.needMore),
+      other: myObj.other.concat(defaultObj.other),
+      all: myObj.all.concat(defaultObj.all),
+      mine: myObj.mine,
+    };
     return result;
   }
 

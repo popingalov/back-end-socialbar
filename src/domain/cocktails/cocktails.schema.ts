@@ -78,7 +78,7 @@ export class Cocktail {
   })
   picture: string;
 
-  @Prop({ required: true, default: false })
+  @Prop({ default: false })
   isDefault: boolean;
 }
 

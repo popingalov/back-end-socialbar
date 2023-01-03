@@ -50,8 +50,9 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteOne(@Param('id') id: string): Promise<void> {
-    return this.ingredientsService.deleteIngredient({ id });
+  deleteOne(@Param('id') id: string, @Req() req): Promise<void> {
+    const owner = req.user.id;
+    return this.ingredientsService.deleteIngredient({ id, owner });
   }
 
   @UseGuards(JwtAuthGuard)
