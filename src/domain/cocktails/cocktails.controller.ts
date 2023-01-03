@@ -51,7 +51,7 @@ export class CocktailsController {
     });
   }
 
-  @Post('/my')
+  // @Post('/my')
   @UseGuards(JwtAuthGuard)
   async getMyCocktails(@Req() req): Promise<{
     haveAll: Cocktail[];
