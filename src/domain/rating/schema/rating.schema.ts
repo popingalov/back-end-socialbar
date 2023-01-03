@@ -12,6 +12,9 @@ export class Rating {
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
   owner: User | null;
 
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Cocktail', required: true })
+  cocktailId: Types.ObjectId;
+
   @Prop({ type: Number, required: true })
   rating: number;
 }
