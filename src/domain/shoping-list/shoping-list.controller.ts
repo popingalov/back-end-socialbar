@@ -38,7 +38,8 @@ export class ShopingListController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req): Promise<void> {
+  remove(@Body() body, @Req() req): Promise<void> {
+    const { id } = body;
     const owner = req.user.id;
     return this.shopingListService.deleteItem(id, owner);
   }
