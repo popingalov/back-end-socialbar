@@ -6,15 +6,37 @@ import { CreateRatingDto } from './dto/create-rating.dto';
 import { GetRatingDto } from './dto/get-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { Rating, RatingDocument } from './schema/rating.schema';
+import { Cocktail, CocktailDocument } from '../cocktails/cocktails.schema';
+import { ratingSwitcher, ratingWordSwitcher } from 'src/helpers/ratingSwitcher';
 
 @Injectable()
 export class RatingService {
   constructor(
     @InjectModel(Rating.name)
     private readonly ratingModel: Model<RatingDocument>,
+    @InjectModel(Cocktail.name)
+    private readonly cocktailModel: Model<CocktailDocument>,
   ) {}
 
   async postRating({ id, owner, rating }: CreateRatingDto) {
+    const cocktailRating = await this.cocktailModel.findOne({ id }, 'ratings');
+    console.log(cocktailRating);
+
+    const value = ratingSwitcher(rating);
+    const ratingValue = cocktailRating.ratings[value];
+    console.log(ratingValue);
+    const valueUpdate = ratingWordSwitcher(value, ratingValue);
+    console.log(valueUpdate);
+
+    const a = await this.cocktailModel.findByIdAndUpdate(
+      id,
+      { ratings: valueUpdate },
+      {
+        new: true,
+      },
+    );
+    console.log(a);
+
     const existItem = await this.ratingModel.find({
       owner,
       cocktailId: id,
@@ -29,6 +51,21 @@ export class RatingService {
       cocktailId: id,
       rating,
     });
+
+    // ? Rating Update
+    //const cocktailRating = await this.cocktailModel.findOne({ id }, 'ratings');
+    //
+    //const value = ratingSwitcher(rating);
+    //const ratingValue = cocktailRating.ratings[value];
+    //const valueUpdate = ratingWordSwitcher(value, ratingValue)
+    //
+    //await this.cocktailModel.findByIdAndUpdate(
+    //  id,
+    //  { raitings: valueUpdate },
+    //  {
+    //    new: true,
+    //  },
+    //);
 
     return await newRating.save();
   }
@@ -54,7 +91,6 @@ export class RatingService {
       { new: true },
     );
 
-    console.log(updateItem);
     if (!updateItem) {
       return 'No items';
     }
