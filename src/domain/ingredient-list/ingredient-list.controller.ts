@@ -21,10 +21,10 @@ export class IngredientListController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id')
-  create(@Param('id') id, @Req() req) {
+  create(@Body() body: CreateIngredientListDto, @Req() req) {
     return this.ingredientListService.create({
       owner: req.user.id,
-      id,
+      id: body.id,
     });
   }
 
