@@ -32,6 +32,7 @@ export class FavoriteService {
         { owner },
         {
           $push: { cocktails: id },
+          new: true,
         },
       );
       return newItem;
