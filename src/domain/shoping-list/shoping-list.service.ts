@@ -30,12 +30,17 @@ export class ShopingListService {
     );
 
     if (!findItem) {
-      const newItem = await this.shopingListModel.updateOne(
-        { owner },
-        {
-          $push: { ingredients: id },
-        },
-      );
+      const newItem = await this.shopingListModel
+        .findOneAndUpdate(
+          { owner },
+          {
+            $push: { ingredients: id },
+          },
+          { new: true },
+        )
+        .populate('ingredients');
+      console.log(newItem);
+
       return newItem;
     } else {
       return userItems;

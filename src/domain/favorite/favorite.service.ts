@@ -28,13 +28,15 @@ export class FavoriteService {
     const findItem = userItems.cocktails.find((elem) => elem.toString() === id);
 
     if (!findItem) {
-      const newItem = await this.favoritetModel.updateOne(
-        { owner },
-        {
-          $push: { cocktails: id },
-          new: true,
-        },
-      );
+      const newItem = await this.favoritetModel
+        .findOneAndUpdate(
+          { owner },
+          {
+            $push: { cocktails: id },
+          },
+          { new: true },
+        )
+        .populate('cocktails');
       return newItem;
     } else {
       return userItems;
