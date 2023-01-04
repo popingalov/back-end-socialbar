@@ -33,6 +33,32 @@ export class CocktailIngredients extends Document {
 const CocktailIngredientsSchema =
   SchemaFactory.createForClass(CocktailIngredients);
 
+  @Schema()
+export class CocktailRating extends Document {
+  @Prop({ type: Number, default: 0 })
+  one: number;
+
+  @Prop({ type: Number, default: 0 })
+  two: number;
+
+  @Prop({ type: Number, default: 0 })
+  three: number;
+
+  @Prop({ type: Number, default: 0 })
+  four: number;
+
+  @Prop({ type: Number, default: 0 })
+  five: number;
+
+  @Prop({ type: Number, default: 0 })
+  total: number;
+
+  @Prop({ type: Number, default: 0 })
+  average: number;
+}
+
+const CocktailRatingSchema = SchemaFactory.createForClass(CocktailIngredients);
+
 @Schema({
   toJSON: {
     virtuals: true,
@@ -51,6 +77,12 @@ export class Cocktail {
     ref: 'Ingredient',
   })
   ingredients: CocktailIngredients[];
+
+  @Prop({
+    type: [CocktailRatingSchema],
+    required: true,
+  })
+  ratings: CocktailRating;
 
   @Prop({ type: [String], required: true })
   category: string[];

@@ -20,7 +20,7 @@ export class RatingService {
       cocktailId: id,
     });
 
-    if (existItem) {
+    if (existItem.length > 0) {
       return await this.updateRating({ id, owner, rating });
     }
 

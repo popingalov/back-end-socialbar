@@ -28,9 +28,9 @@ export class ShopingListController {
     });
   }
 
-  @UseGuards(JwtPublickGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getAll(@Req() req): Promise<ShopingList[]> {
+  getAll(@Req() req): Promise<ShopingList> {
     return this.shopingListService.getAll({
       owner: req.user.id,
     });
@@ -38,7 +38,8 @@ export class ShopingListController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req): Promise<void> {
+  remove(@Body() body, @Req() req): Promise<void> {
+    const { id } = body;
     const owner = req.user.id;
     return this.shopingListService.deleteItem(id, owner);
   }
