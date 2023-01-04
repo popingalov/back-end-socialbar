@@ -19,6 +19,7 @@ import filterMy from '../../helpers/filterMyCocktails';
 import { FavoriteService } from '../favorite/favorite.service';
 import { Favorite } from '../favorite/shema/favorite.schema';
 import addFavoriteAndICan from '../../helpers/addFavoriteAndICan';
+import errorGenerator from '../../helpers/errorGenerator';
 
 @Injectable()
 export class CocktailsService {
@@ -79,19 +80,26 @@ export class CocktailsService {
     return result;
   }
 
-  async getById({ id, owner }: FindByIdDto): Promise<Cocktail> {
-    const cocktail: Cocktail = await this.cocktailModel
-      .findById(id)
-      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-      .populate('glass')
-      .populate('ingredients.alternatives');
-    const ingredients = await this.ShopingListService.findOne({
-      owner,
-    });
-    const favorite = await this.FavoriteService.getAll({ owner });
+  async getById({ id, owner }): Promise<Cocktail> {
+    try {
+      const cocktail: Cocktail = await this.cocktailModel
+        .findById(id)
+        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
+        .populate('glass')
+        .populate('ingredients.alternatives');
 
-    const result = addFavoriteAndICan(cocktail, ingredients, favorite);
-    return result;
+      const ingredients = await this.ShopingListService.findOne({
+        owner,
+      });
+
+
+      const favorite = await this.FavoriteService.getAll({ owner });
+
+      const result = addFavoriteAndICan(cocktail, ingredients, favorite);
+      return result;
+    } catch (error) {
+      errorGenerator('Wrong ID , ingredient not found', 'NOT_FOUND');
+    }
   }
 
   async deleteMy({ userId, id }): Promise<void> {

@@ -33,7 +33,7 @@ export class CocktailIngredients extends Document {
 const CocktailIngredientsSchema =
   SchemaFactory.createForClass(CocktailIngredients);
 
-  @Schema()
+@Schema()
 export class CocktailRating extends Document {
   @Prop({ type: Number, default: 0 })
   one: number;
