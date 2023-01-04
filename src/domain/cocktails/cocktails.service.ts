@@ -92,7 +92,6 @@ export class CocktailsService {
         owner,
       });
 
-
       const favorite = await this.FavoriteService.getAll({ owner });
 
       const result = addFavoriteAndICan(cocktail, ingredients, favorite);
