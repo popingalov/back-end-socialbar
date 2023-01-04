@@ -42,8 +42,22 @@ export class FavoriteService {
 
   async getAll({ owner }: GetFavoriteDto): Promise<Favorite[]> {
     const favoriteList = await this.favoritetModel
+<<<<<<< Updated upstream
       .find({ owner })
       .populate('cocktails');
+=======
+      .findOne({ owner })
+      .populate('cocktails owner');
+
+    return favoriteList;
+  }
+
+  async getAllForMail({ email }: GetFavoriteDtoMail): Promise<Favorite> {
+    const favoriteList = await this.favoritetModel
+      .findOne({ email })
+      .populate('cocktails owner');
+
+>>>>>>> Stashed changes
     return favoriteList;
   }
 

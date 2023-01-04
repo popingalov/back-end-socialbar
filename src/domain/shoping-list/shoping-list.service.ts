@@ -42,10 +42,10 @@ export class ShopingListService {
     }
   }
 
-  async getAll({ owner }: GetShopingListDto): Promise<ShopingList[]> {
+  async getAll({ owner }: GetShopingListDto): Promise<ShopingList> {
     const itemsList = await this.shopingListModel
-      .find({ owner })
-      .populate('ingredients');
+      .findOne({ owner })
+      .populate('ingredients owner');
     return itemsList;
   }
 
