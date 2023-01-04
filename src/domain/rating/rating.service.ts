@@ -20,7 +20,7 @@ export class RatingService {
       cocktailId: id,
     });
 
-    if (existItem) {
+    if (existItem.length > 0) {
       return await this.updateRating({ id, owner, rating });
     }
 
@@ -54,7 +54,6 @@ export class RatingService {
       { new: true },
     );
 
-    console.log(updateItem);
     if (!updateItem) {
       return 'No items';
     }
