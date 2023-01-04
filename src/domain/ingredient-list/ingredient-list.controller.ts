@@ -35,11 +35,11 @@ export class IngredientListController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('')
-  remove(@Req() req, @Body() body) {
+  @Delete(':id')
+  remove(@Req() req, @Param('id') id) {
     return this.ingredientListService.remove({
       owner: req.user.id,
-      id: body.id,
+      id,
     });
   }
 }
