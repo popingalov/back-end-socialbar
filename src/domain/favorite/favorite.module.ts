@@ -15,5 +15,6 @@ import { Favorite, FavoriteSchema } from './shema/favorite.schema';
       },
     ]),
   ],
+  exports: [FavoriteService],
 })
 export class FavoriteModule {}

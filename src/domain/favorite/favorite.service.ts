@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { GetFavoriteDto } from './dto/get-favorite.dto';
+import { GetFavoriteDto, GetFavoriteDtoMail } from './dto/get-favorite.dto';
 import { Favorite, FavoriteDocument } from './shema/favorite.schema';
 
 @Injectable()
@@ -40,10 +40,18 @@ export class FavoriteService {
     }
   }
 
-  async getAll({ owner }: GetFavoriteDto): Promise<Favorite[]> {
+  async getAll({ owner }: GetFavoriteDto): Promise<Favorite> {
     const favoriteList = await this.favoritetModel
-      .find({ owner })
-      .populate('cocktails');
+      .findOne({ owner })
+      .populate('cocktails owner');
+
+    return favoriteList;
+  }
+  async getAllForMail({ email }: GetFavoriteDtoMail): Promise<Favorite> {
+    const favoriteList = await this.favoritetModel
+      .findOne({ email })
+      .populate('cocktails owner');
+
     return favoriteList;
   }
 

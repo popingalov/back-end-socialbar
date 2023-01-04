@@ -43,9 +43,9 @@ export class CocktailsController {
     all: Cocktail[];
   }> {
     const { id, trigger } = req.user;
-    if (trigger) {
-      return await this.cocktailService.getDefault();
-    }
+    // if (trigger) {
+    //   return await this.cocktailService.getDefault();
+    // }
     return await this.cocktailService.getMyCocktails({
       owner: id,
     });

@@ -3,16 +3,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { CocktailsController } from './cocktails.controller';
 import { CocktailsService } from './cocktails.service';
-
 import { Cocktail, CocktailSchema } from './cocktails.schema';
+//
+import { FavoriteModule } from '../favorite/favorite.module';
 import {
   IngredientList,
   IngredientListSchema,
 } from '../ingredient-list/schema/ingredientList.schema';
+//
 @Module({
   controllers: [CocktailsController],
   providers: [CocktailsService],
   imports: [
+    FavoriteModule,
     MongooseModule.forFeature([
       {
         name: Cocktail.name,

@@ -37,7 +37,7 @@ const CocktailIngredientsSchema =
   toJSON: {
     virtuals: true,
   },
-  toObject: { virtuals: true },
+  // toObject: { virtuals: true },
 })
 export class Cocktail {
   id: Types.ObjectId;
@@ -80,6 +80,12 @@ export class Cocktail {
 
   @Prop({ default: false })
   isDefault: boolean;
+
+  @Prop({ default: false })
+  favorite: boolean;
+
+  @Prop({ default: false })
+  iCan: boolean;
 }
 
 const CocktailSchema = SchemaFactory.createForClass(Cocktail);

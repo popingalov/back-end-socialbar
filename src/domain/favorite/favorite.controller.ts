@@ -26,7 +26,7 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getAll(@Req() req): Promise<Favorite[]> {
+  getAll(@Req() req): Promise<Favorite> {
     return this.favoriteService.getAll({
       owner: req.user.id,
     });

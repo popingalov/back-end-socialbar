@@ -16,10 +16,13 @@ import { CocktailDto } from './dto/cocktail.dto';
 //
 import filterDefault from '../../helpers/filterDefaultCocktails';
 import filterMy from '../../helpers/filterMyCocktails';
+import { FavoriteService } from '../favorite/favorite.service';
+import { Favorite } from '../favorite/shema/favorite.schema';
 
 @Injectable()
 export class CocktailsService {
   constructor(
+    private readonly FavoriteService: FavoriteService,
     @InjectModel(Cocktail.name)
     private readonly cocktailModel: Model<CocktailDocument>,
     @InjectModel(IngredientList.name)
@@ -33,17 +36,19 @@ export class CocktailsService {
   }
 
   async getDefault() {
+    const email = process.env.OWNER;
     const cocktails: CocktailDto[] = await this.cocktailModel
-      .find({ email: process.env.OWNER })
+      .find({ email })
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
 
     const ingredients = await this.ShopingListService.findOne({
-      email: process.env.OWNER,
+      email,
     });
 
-    const result = filterDefault(cocktails, ingredients);
+    const favorite = await this.FavoriteService.getAllForMail({ email });
+    const result = filterDefault(cocktails, ingredients, favorite);
     return result;
   }
 
@@ -57,8 +62,9 @@ export class CocktailsService {
     const ingredients = await this.ShopingListService.findOne({
       email: owner,
     });
+    const favorite = await this.FavoriteService.getAll({ owner });
 
-    const myObj = filterMy(cocktails, ingredients);
+    const myObj = filterMy(cocktails, ingredients, favorite);
     const defaultObj = await this.getDefault();
     const mine = myObj.all.length === 0 ? null : myObj.mine;
 
