@@ -65,10 +65,11 @@ export class CocktailsController {
       owner: id,
     });
   }
-
+  @UseGuards(JwtPublickGuard)
   @Get(':id')
-  async getOne(@Param('id') id: Types.ObjectId): Promise<Cocktail> {
-    return await this.cocktailService.getById({ id });
+  async getOne(@Param('id') id: Types.ObjectId, @Req() req): Promise<Cocktail> {
+    const owner = req.user.id;
+    return await this.cocktailService.getById({ id, owner });
   }
 
   @UseGuards(JwtAuthGuard)

@@ -18,6 +18,7 @@ import filterDefault from '../../helpers/filterDefaultCocktails';
 import filterMy from '../../helpers/filterMyCocktails';
 import { FavoriteService } from '../favorite/favorite.service';
 import { Favorite } from '../favorite/shema/favorite.schema';
+import addFavoriteAndICan from '../../helpers/addFavoriteAndICan';
 
 @Injectable()
 export class CocktailsService {
@@ -60,7 +61,7 @@ export class CocktailsService {
       .populate('ingredients.alternatives');
 
     const ingredients = await this.ShopingListService.findOne({
-      email: owner,
+      owner,
     });
     const favorite = await this.FavoriteService.getAll({ owner });
 
@@ -78,12 +79,19 @@ export class CocktailsService {
     return result;
   }
 
-  async getById({ id }: FindByIdDto): Promise<Cocktail> {
-    return await this.cocktailModel
+  async getById({ id, owner }: FindByIdDto): Promise<Cocktail> {
+    const cocktail: Cocktail = await this.cocktailModel
       .findById(id)
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
+    const ingredients = await this.ShopingListService.findOne({
+      owner,
+    });
+    const favorite = await this.FavoriteService.getAll({ owner });
+
+    const result = addFavoriteAndICan(cocktail, ingredients, favorite);
+    return result;
   }
 
   async deleteMy({ userId, id }): Promise<void> {

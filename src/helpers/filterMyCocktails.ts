@@ -2,6 +2,7 @@ export default function (cocktails, ingredients, favorite) {
   return cocktails.reduce(
     (acc, cocktail, idx) => {
       let helper = cocktail.ingredients.length;
+     
       //
       const favoriteResult =
         favorite.cocktails.reduce((acc, el) => {
@@ -38,7 +39,6 @@ export default function (cocktails, ingredients, favorite) {
       //
 
       if (iCanDo) {
-
         acc.haveAll.push(cocktail);
         return acc;
       }

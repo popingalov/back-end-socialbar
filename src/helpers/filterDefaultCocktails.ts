@@ -1,7 +1,8 @@
 export default function (cocktails, ingredients, favorite) {
   return cocktails.reduce(
-    (acc, cocktail) => {
+    (acc, cocktail, idx) => {
       let helper = cocktail.ingredients.length;
+
       //
       const favoriteResult =
         favorite.cocktails.reduce((acc, el) => {
