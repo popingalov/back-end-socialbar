@@ -6,15 +6,21 @@ import { CreateRatingDto } from './dto/create-rating.dto';
 import { GetRatingDto } from './dto/get-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { Rating, RatingDocument } from './schema/rating.schema';
+import { Cocktail, CocktailDocument } from '../cocktails/cocktails.schema';
 
 @Injectable()
 export class RatingService {
   constructor(
     @InjectModel(Rating.name)
     private readonly ratingModel: Model<RatingDocument>,
+    @InjectModel(Cocktail.name)
+    private readonly cocktailModel: Model<CocktailDocument>,
   ) {}
 
   async postRating({ id, owner, rating }: CreateRatingDto) {
+    const findCocktail = await this.cocktailModel.find({ id }, 'ratings')
+    console.log(findCocktail)
+
     const existItem = await this.ratingModel.find({
       owner,
       cocktailId: id,
