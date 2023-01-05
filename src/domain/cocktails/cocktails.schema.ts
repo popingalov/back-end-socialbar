@@ -2,6 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../users/schemas/users.schema';
+import defaultRating from 'src/helpers/defaultRating';
 // import {
 //   CategoryItem,
 //   CategoryItemSchema,
@@ -57,7 +58,7 @@ export class CocktailRating extends Document {
   average: number;
 }
 
-const CocktailRatingSchema = SchemaFactory.createForClass(CocktailIngredients);
+const CocktailRatingSchema = SchemaFactory.createForClass(CocktailRating);
 
 @Schema({
   toJSON: {
@@ -79,8 +80,9 @@ export class Cocktail {
   ingredients: CocktailIngredients[];
 
   @Prop({
-    type: [CocktailRatingSchema],
+    type: CocktailRatingSchema,
     required: true,
+    default: defaultRating,
   })
   ratings: CocktailRating;
 
