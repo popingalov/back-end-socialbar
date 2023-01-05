@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { defaultDict } from 'src/helpers/defaultRating';
 
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { GetRatingDto } from './dto/get-rating.dto';
@@ -18,8 +19,21 @@ export class RatingService {
   ) {}
 
   async postRating({ id, owner, rating }: CreateRatingDto) {
-    const findCocktail = await this.cocktailModel.find({ id }, 'ratings')
-    console.log(findCocktail)
+    const findCocktail = await this.cocktailModel.findOne({ id }, 'ratings');
+    console.log(findCocktail);
+
+    const value = findCocktail.ratings[defaultDict[rating]];
+    const ratingRequest = { [defaultDict[rating]]: value + 1 };
+    console.log(ratingRequest);
+
+    const updateMethod = await this.cocktailModel.findByIdAndUpdate(
+      id,
+      {
+        ratings: ratingRequest,
+      },
+      { new: true },
+    );
+    console.log('RESPONSE', updateMethod);
 
     const existItem = await this.ratingModel.find({
       owner,
@@ -60,7 +74,6 @@ export class RatingService {
       { new: true },
     );
 
-    console.log(updateItem);
     if (!updateItem) {
       return 'No items';
     }
