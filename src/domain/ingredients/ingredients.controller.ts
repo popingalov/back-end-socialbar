@@ -16,6 +16,7 @@ import { Ingredient } from './ingredients.schema';
 import { Types } from 'mongoose';
 
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
+import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 
 @Controller('ingredients')
 export class IngredientsController {
@@ -38,9 +39,11 @@ export class IngredientsController {
     });
   }
 
+  @UseGuards(JwtPublickGuard)
   @Get()
-  async getDefault(): Promise<Ingredient[]> {
-    return await this.ingredientsService.getDefault();
+  async getDefault(@Req() req): Promise<Ingredient[]> {
+    const owner = req.user.id;
+    return await this.ingredientsService.getDefault({ owner });
   }
 
   @Get(':id')

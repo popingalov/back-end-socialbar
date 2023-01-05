@@ -6,6 +6,14 @@ import { IngredientsController } from './ingredients.controller';
 import { Ingredient, IngredientSchema } from './ingredients.schema';
 
 import { CocktailsModule } from '../cocktails/cocktails.module';
+import {
+  ShopingList,
+  ShopingListSchema,
+} from '../shoping-list/schema/shoping-list.schema';
+import {
+  IngredientList,
+  IngredientListSchema,
+} from '../ingredient-list/schema/ingredientList.schema';
 @Module({
   providers: [IngredientsService],
   controllers: [IngredientsController],
@@ -15,6 +23,14 @@ import { CocktailsModule } from '../cocktails/cocktails.module';
       {
         name: Ingredient.name,
         schema: IngredientSchema,
+      },
+      {
+        name: ShopingList.name,
+        schema: ShopingListSchema,
+      },
+      {
+        name: IngredientList.name,
+        schema: IngredientListSchema,
       },
     ]),
   ],

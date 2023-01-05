@@ -11,12 +11,25 @@ import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { CocktailsService } from '../cocktails/cocktails.service';
 //
 import errorGenerator from '../../helpers/errorGenerator';
+import {
+  ShopingList,
+  ShopingListDocument,
+} from '../shoping-list/schema/shoping-list.schema';
+import {
+  IngredientList,
+  IngredientListDocument,
+} from '../ingredient-list/schema/ingredientList.schema';
+import filter from '../../helpers/filterShopingIngredientList';
 //
 @Injectable()
 export class IngredientsService {
   constructor(
     @InjectModel(Ingredient.name)
     private readonly ingredientModel: Model<IngredientDocument>,
+    @InjectModel(ShopingList.name)
+    private readonly shopingListModel: Model<ShopingListDocument>,
+    @InjectModel(IngredientList.name)
+    private readonly ingredientListtModel: Model<IngredientListDocument>,
     private readonly cocktailsService: CocktailsService,
   ) {}
 
@@ -26,26 +39,31 @@ export class IngredientsService {
     return await newIngredient.save();
   }
 
-  async getDefault(): Promise<Ingredient[]> {
-    const newIngredient: Ingredient[] = await this.ingredientModel.find(
+  async getDefault({ owner }): Promise<Ingredient[]> {
+    const ingredients: Ingredient[] = await this.ingredientModel.find(
       { email: process.env.OWNER },
       '-owner',
     );
 
-    return newIngredient;
+    const shopingList = await this.shopingListModel.findOne({ owner });
+    const ingredientList = await this.ingredientListtModel.findOne({ owner });
+    const result = filter({ ingredients, shopingList, ingredientList });
+
+    return result;
   }
 
   async getIngredients({ owner }: GetIngredientsDto): Promise<Ingredient[]> {
-    const newIngredient: Ingredient[] = await this.ingredientModel.find(
+    const ingredients: Ingredient[] = await this.ingredientModel.find(
       {
         owner,
       },
       '-owner',
     );
+    const shopingList = await this.shopingListModel.findOne({ owner });
+    const ingredientList = await this.ingredientListtModel.findOne({ owner });
+    const result = filter({ ingredients, shopingList, ingredientList });
 
-    return newIngredient;
-    // const defaultIngredients = await this.getDefault();
-    // return newIngredient.concat(defaultIngredients);
+    return result;
   }
 
   async getIngredientById({ id }: GetIngredientByIdDto) {

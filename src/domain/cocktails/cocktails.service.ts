@@ -54,6 +54,23 @@ export class CocktailsService {
     return result;
   }
 
+  async getMyDefault({ owner }) {
+    const email = process.env.OWNER;
+    const cocktails: CocktailDto[] = await this.cocktailModel
+      .find({ email })
+      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
+      .populate('glass')
+      .populate('ingredients.alternatives');
+
+    const ingredients = await this.ShopingListService.findOne({
+      email,
+    });
+
+    const favorite = await this.FavoriteService.getAll({ owner });
+    const result = filterDefault(cocktails, ingredients, favorite);
+    return result;
+  }
+
   async getMyCocktails({ owner }) {
     const cocktails = await this.cocktailModel
       .find({ owner })
@@ -67,7 +84,7 @@ export class CocktailsService {
     const favorite = await this.FavoriteService.getAll({ owner });
 
     const myObj = filterMy(cocktails, ingredients, favorite);
-    const defaultObj = await this.getDefault();
+    const defaultObj = await this.getMyDefault({ owner });
     const mine = myObj.all.length === 0 ? null : myObj.mine;
 
     const result = {
