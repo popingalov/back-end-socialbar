@@ -118,6 +118,9 @@ export class Cocktail {
 
   @Prop({ default: false })
   iCan: boolean;
+
+  @Prop({ default: [] })
+  lacks: [];
 }
 
 const CocktailSchema = SchemaFactory.createForClass(Cocktail);

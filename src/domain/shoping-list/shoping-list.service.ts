@@ -39,7 +39,6 @@ export class ShopingListService {
           { new: true },
         )
         .populate('ingredients');
-      console.log(newItem);
 
       return newItem;
     } else {

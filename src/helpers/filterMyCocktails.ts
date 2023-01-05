@@ -2,7 +2,7 @@ export default function (cocktails, ingredients, favorite) {
   return cocktails.reduce(
     (acc, cocktail, idx) => {
       let helper = cocktail.ingredients.length;
-     
+
       //
       const favoriteResult =
         favorite.cocktails.reduce((acc, el) => {
@@ -11,13 +11,16 @@ export default function (cocktails, ingredients, favorite) {
         }, 0) === 1;
       cocktail.favorite = favoriteResult;
       //
+
       const include = cocktail.ingredients.reduce((acc, el) => {
         if (!el.data) {
           return acc;
         }
         if (ingredients.list.includes(el.data.id)) {
           acc += 1;
+          return acc;
         }
+        cocktail.lacks.push(el.data.title);
         return acc;
       }, 0);
 
