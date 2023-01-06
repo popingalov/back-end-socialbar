@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../users/schemas/users.schema';
-import defaultRating from 'src/helpers/defaultRating';
+import defaultRating from 'src/helpers/ratingsFunc/defaultRating';
 // import {
 //   CategoryItem,
 //   CategoryItemSchema,
