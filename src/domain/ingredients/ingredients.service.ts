@@ -41,12 +41,11 @@ export class IngredientsService {
 
   async getDefault({ owner }): Promise<Ingredient[]> {
     const ingredients: Ingredient[] = await this.ingredientModel.find(
-      { email: process.env.OWNER },
+      { owner: process.env.OWNER },
       '-owner',
     );
 
     const shopingList = await this.shopingListModel.findOne({ owner });
-    console.log(shopingList);
     const ingredientList = await this.ingredientListtModel.findOne({ owner });
     const result = filter({ ingredients, shopingList, ingredientList });
 

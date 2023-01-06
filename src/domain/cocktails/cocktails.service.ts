@@ -38,32 +38,32 @@ export class CocktailsService {
   }
 
   async getDefault() {
-    const email = process.env.OWNER;
+    const owner = process.env.OWNER;
     const cocktails: CocktailDto[] = await this.cocktailModel
-      .find({ email })
+      .find({ owner })
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
 
     const ingredients = await this.ShopingListService.findOne({
-      email,
+      owner,
     });
 
-    const favorite = await this.FavoriteService.getAllForMail({ email });
+    const favorite = await this.FavoriteService.getAll({ owner });
     const result = filterDefault(cocktails, ingredients, favorite);
     return result;
   }
 
   async getMyDefault({ owner }) {
-    const email = process.env.OWNER;
+    const defaultOwner = process.env.OWNER;
     const cocktails: CocktailDto[] = await this.cocktailModel
-      .find({ email })
+      .find({ owner: defaultOwner })
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
 
     const ingredients = await this.ShopingListService.findOne({
-      email,
+      owner: defaultOwner,
     });
 
     const favorite = await this.FavoriteService.getAll({ owner });

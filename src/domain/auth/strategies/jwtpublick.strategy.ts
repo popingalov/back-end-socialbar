@@ -20,7 +20,7 @@ export class JwtPublickStrategy extends PassportStrategy(Strategy, 'publick') {
   }
 
   async validate(payload: any) {
-    if (payload.email === process.env.OWNER) {
+    if (payload.email === process.env.OWNER_MAIL) {
       payload.trigger = true;
     }
 
