@@ -19,8 +19,9 @@ export class ShopingListController {
   constructor(private readonly shopingListService: ShopingListService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id')
-  create(@Param('id') id, @Req() req) {
+  @Post()
+  create(@Body() body, @Req() req) {
+    const { id } = body;
     return this.shopingListService.createShopingItem({
       id,
       owner: req.user.id,

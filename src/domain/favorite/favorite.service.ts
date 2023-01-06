@@ -46,7 +46,7 @@ export class FavoriteService {
   async getAll({ owner }: GetFavoriteDto): Promise<Favorite> {
     const favoriteList = await this.favoritetModel
       .findOne({ owner })
-      .populate('cocktails owner');
+      .populate('cocktails');
 
     return favoriteList;
   }

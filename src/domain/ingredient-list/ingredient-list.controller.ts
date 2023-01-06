@@ -20,7 +20,7 @@ export class IngredientListController {
   constructor(private readonly ingredientListService: IngredientListService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('')
+  @Post()
   create(@Body() body: CreateIngredientListDto, @Req() req) {
     return this.ingredientListService.create({
       owner: req.user.id,

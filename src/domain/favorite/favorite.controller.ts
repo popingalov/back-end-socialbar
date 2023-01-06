@@ -18,7 +18,7 @@ export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('')
+  @Post()
   create(@Body() body, @Req() req) {
     const { id } = body;
     return this.favoriteService.createFavorite({ id, owner: req.user.id });
