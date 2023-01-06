@@ -10,6 +10,7 @@ export class JwtPublickStrategy extends PassportStrategy(Strategy, 'publick') {
     super({
       secretOrKey: process.env.JWT_SECRET,
       jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
         () => {
           return process.env.BASE_TOKEN;
         },

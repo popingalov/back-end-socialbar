@@ -28,7 +28,7 @@ export class ShopingListController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtPublickGuard)
   @Get()
   getAll(@Req() req): Promise<ShopingList> {
     return this.shopingListService.getAll({
