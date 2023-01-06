@@ -31,7 +31,6 @@ export class IngredientListService {
     const result = await this.listModel
       .findOne({ owner }, '-owner')
       .populate('list', '-owner -__v');
-    console.log(owner);
 
     return result;
   }
