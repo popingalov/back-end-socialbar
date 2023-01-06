@@ -1,7 +1,9 @@
+// import sumRatings from '../../helpers/ratingsFunc/sumRaiting';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { defaultDict } from 'src/helpers/defaultRating';
+// import { defaultDict } from 'src/helpers/ratingsFunc/defaultRating';
+import ratingCalculation from '../../helpers/ratingsFunc/ratingCalculation';
 
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { GetRatingDto } from './dto/get-rating.dto';
@@ -19,17 +21,15 @@ export class RatingService {
   ) {}
 
   async postRating({ id, owner, rating }: CreateRatingDto) {
+    console.log('???', id);
     const findCocktail = await this.cocktailModel.findOne({ id }, 'ratings');
-    console.log(findCocktail);
 
-    const value = findCocktail.ratings[defaultDict[rating]];
-    const ratingRequest = { [defaultDict[rating]]: value + 1 };
-    console.log(ratingRequest);
+    const { oldValue, countValue } = ratingCalculation(findCocktail, rating);
 
-    const updateMethod = await this.cocktailModel.findByIdAndUpdate(
-      id,
+    const updateMethod = await this.cocktailModel.findOneAndUpdate(
+      { id },
       {
-        ratings: ratingRequest,
+        ratings: { ...oldValue, ...countValue },
       },
       { new: true },
     );
