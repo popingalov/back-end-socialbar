@@ -1,9 +1,8 @@
-// import sumRatings from '../../helpers/ratingsFunc/sumRaiting';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-// import { defaultDict } from 'src/helpers/ratingsFunc/defaultRating';
-import ratingCalculation from '../../helpers/ratingsFunc/ratingCalculation';
+import ratingAdditionCalculation from '../../helpers/ratingsFunc/ratingAdditionCalculation';
+import ratingUpdateCalculation from 'src/helpers/ratingsFunc/ratingUpdateCalculation';
 
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { GetRatingDto } from './dto/get-rating.dto';
@@ -21,20 +20,12 @@ export class RatingService {
   ) {}
 
   async postRating({ id, owner, rating }: CreateRatingDto) {
-    console.log('???', id);
-    const findCocktail = await this.cocktailModel.findOne({ id }, 'ratings');
-
-    const { oldValue, countValue } = ratingCalculation(findCocktail, rating);
-
-    const updateMethod = await this.cocktailModel.findOneAndUpdate(
-      { id },
-      {
-        ratings: { ...oldValue, ...countValue },
-      },
-      { new: true },
+    const findCocktail = await this.cocktailModel.findOne(
+      { _id: id },
+      'ratings',
     );
-    console.log('RESPONSE', updateMethod);
 
+    // ? For update
     const existItem = await this.ratingModel.find({
       owner,
       cocktailId: id,
@@ -44,25 +35,39 @@ export class RatingService {
       return await this.updateRating({ id, owner, rating });
     }
 
+    // ? For create
     const newRating = new this.ratingModel({
       owner,
       cocktailId: id,
       rating,
     });
 
+    // * Add Ratings in Cocktails object
+    const { updateData, countValue } = ratingAdditionCalculation(
+      findCocktail,
+      rating,
+    );
+    const addCocktailsRatings = await this.cocktailModel.findOneAndUpdate(
+      { _id: id },
+      {
+        ratings: { ...updateData, ...countValue },
+      },
+      { new: true },
+    );
+    console.log('ADD RESPONSE', addCocktailsRatings);
+
     return await newRating.save();
   }
 
   async findOne({ id }: GetRatingDto) {
-    const findCocktail = await this.ratingModel.find({ cocktailId: id });
+    const findCocktail = await this.cocktailModel.findOne(
+      { _id: id },
+      'ratings',
+    );
 
     if (findCocktail) {
-      let users = 0;
-      const sumRaiting = findCocktail.reduce((prev, number) => {
-        users += 1;
-        return prev + number.rating;
-      }, 0);
-      return sumRaiting / users;
+      const { average } = findCocktail.ratings;
+      return average;
     }
     return `No items`;
   }
@@ -71,11 +76,31 @@ export class RatingService {
     const updateItem = await this.ratingModel.findOneAndUpdate(
       { owner, cocktailId: id },
       { rating },
-      { new: true },
     );
 
     if (!updateItem) {
       return 'No items';
     }
+
+    // ? Update Ratings in Cocktails object
+    console.log('???update???', id);
+    const findCocktail = await this.cocktailModel.findOne(
+      { _id: id },
+      'ratings',
+    );
+
+    const { updateData, countValue } = ratingUpdateCalculation(
+      findCocktail,
+      updateItem.rating,
+      rating,
+    );
+    const updateCocktailsRatings = await this.cocktailModel.findOneAndUpdate(
+      { _id: id },
+      {
+        ratings: { ...updateData, ...countValue },
+      },
+      { new: true },
+    );
+    console.log('UPDATE RESPONSE', updateCocktailsRatings);
   }
 }
