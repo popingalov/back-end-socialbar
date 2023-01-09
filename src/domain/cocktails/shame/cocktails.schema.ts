@@ -1,38 +1,13 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
-import { User } from '../users/schemas/users.schema';
+import { User } from '../../users/schemas/users.schema';
 import defaultRating from 'src/helpers/ratingsFunc/defaultRating';
-// import {
-//   CategoryItem,
-//   CategoryItemSchema,
-// } from '../categories/schema/categories.chema';
-
+import {
+  CocktailIngredients,
+  CocktailIngredientsSchema,
+} from './ingredient.shema';
 export type CocktailDocument = Cocktail & Document;
-
-@Schema()
-export class CocktailIngredients extends Document {
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'Ingredient', required: true })
-  data: Types.ObjectId;
-
-  @Prop({ required: true })
-  measure: string;
-
-  @Prop({ required: true })
-  measureType: string;
-
-  @Prop({ default: false })
-  isOptional: boolean;
-
-  @Prop({ type: [SchemaTypes.ObjectId], ref: 'Ingredient', default: null })
-  alternatives: Types.ObjectId[] | null;
-
-  @Prop({ default: false })
-  isDressing: boolean;
-}
-
-const CocktailIngredientsSchema =
-  SchemaFactory.createForClass(CocktailIngredients);
 
 @Schema()
 export class CocktailRating extends Document {
@@ -131,4 +106,4 @@ CocktailSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-export { CocktailSchema, CocktailIngredientsSchema };
+export { CocktailSchema };

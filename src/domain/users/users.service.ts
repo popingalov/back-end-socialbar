@@ -12,6 +12,7 @@ import {
   IngredientList,
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
+import { Favorite, FavoriteDocument } from '../favorite/shema/favorite.schema';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,8 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<UsersDocument>,
     @InjectModel(IngredientList.name)
     private ingredientList: Model<IngredientListDocument>,
+    @InjectModel(Favorite.name)
+    private favoriteModel: Model<FavoriteDocument>,
   ) {}
 
   async createNew(user: createUserDto): Promise<User> {
@@ -32,6 +35,17 @@ export class UsersService {
       owner: createdUser.id,
       list: defaultList.list,
     });
+
+    const defaultFavorite = await this.favoriteModel.findOne(
+      { owner: process.env.OWNER },
+      '-owner',
+    );
+
+    this.favoriteModel.create({
+      owner: createdUser.id,
+      cocktails: defaultFavorite.cocktails,
+    });
+
     return createdUser.save();
   }
 

@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../../users/schemas/users.schema';
-import { Cocktail } from 'src/domain/cocktails/cocktails.schema';
+import { Cocktail } from 'src/domain/cocktails/shame/cocktails.schema';
 
 export type FavoriteDocument = Favorite & Document;
 

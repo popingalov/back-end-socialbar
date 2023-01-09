@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { Cocktail, CocktailDocument } from './cocktails.schema';
+import { Cocktail, CocktailDocument } from './shame/cocktails.schema';
 import {
   IngredientListDocument,
   IngredientList,
@@ -31,7 +31,8 @@ export class CocktailsService {
     private readonly ShopingListService: Model<IngredientListDocument>,
   ) {}
 
-  async createOne(cocktail: CreateCocktailDto): Promise<Cocktail> {
+  async createOne(cocktail): Promise<Cocktail> {
+    // : CreateCocktailDto
     const newCocktail = new this.cocktailModel(cocktail);
 
     return await newCocktail.save();

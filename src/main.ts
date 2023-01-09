@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 import { config } from 'dotenv';
 config();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +18,15 @@ async function bootstrap() {
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: true,
+    }),
+  );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      disableErrorMessages:
+        process.env.NODE_ENV === 'PRODUCTION' ? true : false,
     }),
   );
   app.use(passport.initialize());

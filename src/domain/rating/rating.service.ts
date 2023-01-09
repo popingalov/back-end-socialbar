@@ -8,7 +8,10 @@ import { CreateRatingDto } from './dto/create-rating.dto';
 import { GetRatingDto } from './dto/get-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { Rating, RatingDocument } from './schema/rating.schema';
-import { Cocktail, CocktailDocument } from '../cocktails/cocktails.schema';
+import {
+  Cocktail,
+  CocktailDocument,
+} from '../cocktails/shame/cocktails.schema';
 
 @Injectable()
 export class RatingService {

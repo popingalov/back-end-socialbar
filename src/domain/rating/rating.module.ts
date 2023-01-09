@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RatingService } from './rating.service';
 import { RatingController } from './rating.controller';
 import { Rating, RatingSchema } from './schema/rating.schema';
-import { Cocktail, CocktailSchema } from '../cocktails/cocktails.schema';
+import { Cocktail, CocktailSchema } from '../cocktails/shame/cocktails.schema';
 
 @Module({
   controllers: [RatingController],

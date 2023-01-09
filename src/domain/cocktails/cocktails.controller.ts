@@ -9,17 +9,20 @@ import {
   Req,
   Param,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 
 import { CocktailsService } from './cocktails.service';
-import { Cocktail } from './cocktails.schema';
+import { Cocktail, CocktailSchema } from './shame/cocktails.schema';
 
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
 import { Types } from 'mongoose';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
-
+import { GetCocktailsByIdDto } from './dto/getCoctails.dto';
+import { CreateCocktailDto } from './dto/create-cocktail.dto';
+import { ValidationPipe } from '../../pipes/test.pipe';
 @Controller('cocktails')
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
@@ -67,14 +70,19 @@ export class CocktailsController {
   }
   @UseGuards(JwtPublickGuard)
   @Get(':id')
-  async getOne(@Param('id') id: Types.ObjectId, @Req() req): Promise<Cocktail> {
+  async getOne(@Param('id') id, @Req() req): Promise<Cocktail> {
     const owner = req.user.id;
+
     return await this.cocktailService.getById({ id, owner });
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createCocktail(@Body() body, @Req() req): Promise<Cocktail> {
+  async createCocktail(
+    @Body() body: CreateCocktailDto,
+
+    @Req() req,
+  ): Promise<Cocktail> {
     const { id } = req.user;
 
     return await this.cocktailService.createOne({ ...body, owner: id });
