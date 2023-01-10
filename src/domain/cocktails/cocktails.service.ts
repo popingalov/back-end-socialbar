@@ -2,24 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
+//
+import { UpdateCocktailDto } from './dto/update-cocktail.dto';
+import { FindByIngredientDto } from './dto/find-by-ingredient.dto';
+import { CocktailDto } from './dto/cocktail.dto';
+import { ReturnCocktailsDto } from './dto/returnCocktails.dto';
+//
+import filterDefault from '../../helpers/filterDefaultCocktails';
+import filterMy from '../../helpers/filterMyCocktails';
+import { FavoriteService } from '../favorite/favorite.service';
+import addFavoriteAndICan from '../../helpers/addFavoriteAndICan';
+import errorGenerator from '../../helpers/errorGenerator';
 import { Cocktail, CocktailDocument } from './shame/cocktails.schema';
 import {
   IngredientListDocument,
   IngredientList,
 } from '../ingredient-list/schema/ingredientList.schema';
-
-import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-import { CreateCocktailDto } from './dto/create-cocktail.dto';
-import { FindByIdDto } from './dto/find-by-id.dto';
-import { FindByIngredientDto } from './dto/find-by-ingredient.dto';
-import { CocktailDto } from './dto/cocktail.dto';
-//
-import filterDefault from '../../helpers/filterDefaultCocktails';
-import filterMy from '../../helpers/filterMyCocktails';
-import { FavoriteService } from '../favorite/favorite.service';
 import { Favorite } from '../favorite/shema/favorite.schema';
-import addFavoriteAndICan from '../../helpers/addFavoriteAndICan';
-import errorGenerator from '../../helpers/errorGenerator';
+//
 
 @Injectable()
 export class CocktailsService {
@@ -73,16 +73,19 @@ export class CocktailsService {
   }
 
   async getMyCocktails({ owner }) {
-    const cocktails = await this.cocktailModel
+    const cocktails: CocktailDto[] = await this.cocktailModel
       .find({ owner })
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
 
-    const ingredients = await this.ShopingListService.findOne({
-      owner,
-    });
-    const favorite = await this.FavoriteService.getAll({ owner });
+    const ingredients: IngredientList[] = await this.ShopingListService.findOne(
+      {
+        owner,
+      },
+    );
+
+    const favorite: Favorite = await this.FavoriteService.getAll({ owner });
 
     const myObj = filterMy(cocktails, ingredients, favorite);
     const defaultObj = await this.getMyDefault({ owner });

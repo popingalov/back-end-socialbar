@@ -1,32 +1,33 @@
 import { Types } from 'mongoose';
 import {
-  IsEmail,
-  IsNumber,
   IsString,
-  IsMongoId,
-  MaxLength,
-  MinLength,
-  isNumber,
   Length,
   IsOptional,
   IsArray,
-  ArrayContains,
   ValidateNested,
+  IsBoolean,
 } from 'class-validator';
-import { CocktailIngredients } from '../shame/ingredient.shema';
+
 import { Type } from 'class-transformer';
 
 class TestNewDto {
+  @IsString()
   data: string;
+  @IsString()
   measure: string;
+  @IsString()
   measureType: string;
 }
 
+class Category {
+  string;
+}
+
 export class CreateCocktailDto {
-  // @IsString()
-  // @Length(24, 24)
-  // @IsOptional()
-  // readonly owner?: Types.ObjectId;
+  @IsString()
+  @Length(24, 24)
+  @IsOptional()
+  readonly owner?: Types.ObjectId;
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TestNewDto)
@@ -35,8 +36,14 @@ export class CreateCocktailDto {
   readonly title: string;
   @IsString()
   readonly description: string;
-  @IsNumber()
-  readonly isDefault: number;
-  @IsNumber()
-  readonly recipe: number;
+  @IsBoolean()
+  readonly isDefault: boolean;
+  @IsString()
+  readonly recipe: string;
+  @IsOptional()
+  @IsString()
+  readonly picture: string;
+  @IsArray()
+  @Type(() => Category)
+  readonly category: [];
 }
