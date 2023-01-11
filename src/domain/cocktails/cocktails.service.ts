@@ -4,7 +4,6 @@ import { Model, Types } from 'mongoose';
 
 //
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-import { IdDto } from 'src/globalDto/id.dto';
 
 //
 import filterDefault from '../../helpers/filterDefaultCocktails';
@@ -131,7 +130,7 @@ export class CocktailsService {
     await this.cocktailModel.findOneAndDelete({ owner: userId, id });
   }
 
-  async findByIngredient({ id }: IdDto): Promise<Cocktail[]> {
+  async findByIngredient({ id }): Promise<Cocktail[]> {
     return await this.cocktailModel.find({ 'ingredients.data': id });
   }
 
