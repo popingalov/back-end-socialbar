@@ -1,39 +1,16 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
-
+//
 import { User } from '../../users/schemas/users.schema';
-import defaultRating from 'src/helpers/ratingsFunc/defaultRating';
 import {
   CocktailIngredients,
   CocktailIngredientsSchema,
 } from './ingredient.shema';
+import { CocktailRating, CocktailRatingSchema } from './cocktailRaiting.dto';
+import defaultRating from 'src/helpers/ratingsFunc/defaultRating';
+
+//
 export type CocktailDocument = Cocktail & Document;
-
-@Schema()
-export class CocktailRating extends Document {
-  @Prop({ type: Number, default: 0 })
-  one: number;
-
-  @Prop({ type: Number, default: 0 })
-  two: number;
-
-  @Prop({ type: Number, default: 0 })
-  three: number;
-
-  @Prop({ type: Number, default: 0 })
-  four: number;
-
-  @Prop({ type: Number, default: 0 })
-  five: number;
-
-  @Prop({ type: Number, default: 0 })
-  total: number;
-
-  @Prop({ type: Number, default: 0 })
-  average: number;
-}
-
-const CocktailRatingSchema = SchemaFactory.createForClass(CocktailRating);
 
 @Schema({
   toJSON: {

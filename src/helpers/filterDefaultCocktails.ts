@@ -1,4 +1,6 @@
-export default function (cocktails, ingredients, favorite) {
+import { IDefaultCocktails } from 'src/domain/cocktails/dto/returnDefaultCocktails.dto';
+
+export default function (cocktails, ingredients, favorite): IDefaultCocktails {
   return cocktails.reduce(
     (acc, cocktail, idx) => {
       let helper = cocktail.ingredients.length;

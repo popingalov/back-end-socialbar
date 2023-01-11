@@ -20,31 +20,20 @@ import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
 import { Types } from 'mongoose';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
-import { GetCocktailsByIdDto } from './dto/getCoctails.dto';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
-import { ValidationPipe } from '../../pipes/test.pipe';
+import { IDefaultCocktails } from './dto/returnDefaultCocktails.dto';
+import { IMyCocktails } from './dto/returnMyCocktails.dto';
 @Controller('cocktails')
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
 
-  async getDefault(@Req() req): Promise<{
-    haveAll: Cocktail[];
-    needMore: Cocktail[];
-    other: Cocktail[];
-    all: Cocktail[];
-  }> {
-    return await this.cocktailService.getDefault();
-  }
+  // async getDefault(@Req() req): Promise<IDefaultCocktails> {
+  //   return await this.cocktailService.getDefault();
+  // }
 
   @UseGuards(JwtPublickGuard)
   @Get()
-  async getAll(@Req() req): Promise<{
-    haveAll: Cocktail[];
-    needMore: Cocktail[];
-    other: Cocktail[];
-    mine: { haveAll: Cocktail[]; other: Cocktail[] } | null;
-    all: Cocktail[];
-  }> {
+  async getAll(@Req() req): Promise<IDefaultCocktails | IMyCocktails> {
     const { id, trigger } = req.user;
     if (trigger) {
       return await this.cocktailService.getDefault();
@@ -56,13 +45,7 @@ export class CocktailsController {
 
   // @Post('/my')
   @UseGuards(JwtAuthGuard)
-  async getMyCocktails(@Req() req): Promise<{
-    haveAll: Cocktail[];
-    needMore: Cocktail[];
-    other: Cocktail[];
-    mine: { haveAll: Cocktail[]; other: Cocktail[] } | null;
-    all: Cocktail[];
-  }> {
+  async getMyCocktails(@Req() req): Promise<IMyCocktails> {
     const { id } = req.user;
     return await this.cocktailService.getMyCocktails({
       owner: id,

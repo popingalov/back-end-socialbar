@@ -28,6 +28,10 @@ export class CreateCocktailDto {
   @Length(24, 24)
   @IsOptional()
   readonly owner?: Types.ObjectId;
+  @IsString()
+  @Length(24, 24)
+  @IsOptional()
+  readonly glass?: Types.ObjectId;
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TestNewDto)
@@ -45,5 +49,5 @@ export class CreateCocktailDto {
   readonly picture: string;
   @IsArray()
   @Type(() => Category)
-  readonly category: [];
+  readonly category: string[];
 }

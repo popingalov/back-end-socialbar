@@ -1,6 +1,13 @@
 import { Types } from 'mongoose';
 
-export interface ReturnCocktailsDto {
+export interface IFatherCocktail {
+  haveAll: Cocktail[];
+  needMore: Cocktail[];
+  other: Cocktail[];
+  all: Cocktail[];
+}
+
+export interface Cocktail {
   owner: string;
   ingredients: Ingredient[];
   ratings: Ratings;
