@@ -6,7 +6,8 @@ import { User } from '../users/schemas/users.schema';
 
 import { createJwtTokenDto } from './dto/create-jwt-token.dto';
 import { validateGoogleUserDto } from './dto/validate-google-user.dto';
-import { createGoogleUserDto } from './dto/create-google-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { CreateGoogleUserDto } from './dto/create-google-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +16,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async createGoogleUser(googleUser: createGoogleUserDto): Promise<User> {
-    return await this.usersService.createNew(googleUser);
+  async createGoogleUser(googleUser: CreateGoogleUserDto): Promise<User> {
+    return await this.usersService.createNewUser(googleUser);
   }
 
   async validateGoogleUser(email: validateGoogleUserDto): Promise<User> {

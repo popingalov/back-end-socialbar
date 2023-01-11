@@ -4,10 +4,10 @@ import { Model } from 'mongoose';
 
 import { User, UsersDocument } from './schemas/users.schema';
 
-import { createUserDto } from './dto/create-user.dto';
-import { updateUserDto } from './dto/update-user.dto';
-import { findUserIdDto } from './dto/find-user-id.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { GetUserIdDto } from './dto/get-user-id.dto';
 import { findOneUserDto } from './dto/find-one-user.dto';
+import { updateUserDto } from './dto/update-user.dto';
 import {
   IngredientList,
   IngredientListDocument,
@@ -24,7 +24,7 @@ export class UsersService {
     private favoriteModel: Model<FavoriteDocument>,
   ) {}
 
-  async createNew(user: createUserDto): Promise<User> {
+  async createNewUser(user: CreateUserDto): Promise<User> {
     const createdUser = await new this.userModel(user);
     const defaultList = await this.ingredientList.findOne(
       { owner: process.env.OWNER },
@@ -49,7 +49,7 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findById({ id }: findUserIdDto): Promise<User> {
+  async getById({ id }: GetUserIdDto): Promise<User> {
     return await this.userModel.findById(id);
   }
 
