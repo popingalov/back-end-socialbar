@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
 import { GetFavoriteDto, GetFavoriteDtoMail } from './dto/get-favorite.dto';
+import { DeleteFavoriteDto } from './dto/delete-favorite.dto';
 import { Favorite, FavoriteDocument } from './shema/favorite.schema';
 
 @Injectable()
@@ -25,7 +26,9 @@ export class FavoriteService {
       return newItem;
     }
 
-    const findItem = userItems.cocktails.find((elem) => elem.toString() === id);
+    const findItem = userItems.cocktails.find(
+      (elem) => elem.toString() === id.toString(),
+    );
 
     if (!findItem) {
       const newItem = await this.favoritetModel
@@ -58,7 +61,7 @@ export class FavoriteService {
     return favoriteList;
   }
 
-  async deleteFavorite(id: string, owner: string): Promise<void> {
+  async deleteFavorite({ id, owner }: DeleteFavoriteDto): Promise<void> {
     await this.favoritetModel.updateOne(
       {
         owner,

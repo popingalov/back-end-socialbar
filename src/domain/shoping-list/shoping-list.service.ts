@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateShopingListDto } from './dto/create-shoping-list.dto';
 import { GetShopingListDto } from './dto/get-shoping-list.dto';
+import { DeleteShopingListDto } from './dto/delete-shoping-list.dto';
 import { ShopingList, ShopingListDocument } from './schema/shoping-list.schema';
 
 @Injectable()
@@ -26,7 +27,7 @@ export class ShopingListService {
     }
 
     const findItem = userItems.ingredients.find(
-      (elem) => elem.toString() === id,
+      (elem) => elem.toString() === id.toString(),
     );
 
     if (!findItem) {
@@ -53,7 +54,7 @@ export class ShopingListService {
     return itemsList;
   }
 
-  async deleteItem(id: string, owner: string): Promise<void> {
+  async deleteItem({ id, owner }: DeleteShopingListDto): Promise<void> {
     await this.shopingListModel.updateOne(
       {
         owner,

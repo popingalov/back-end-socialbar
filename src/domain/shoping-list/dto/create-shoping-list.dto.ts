@@ -1,6 +1,11 @@
 import { Types } from 'mongoose';
+import { IsMongoId, IsString, Length } from 'class-validator';
 
 export class CreateShopingListDto {
-  readonly id: Types.ObjectId | string;
-  readonly owner: Types.ObjectId | string;
+  @IsMongoId()
+  readonly id: Types.ObjectId;
+  @IsString()
+  @Length(24, 24)
+  readonly owner: Types.ObjectId;
 }
+

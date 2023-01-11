@@ -1,8 +1,14 @@
 import { Types } from 'mongoose';
+import { IsString, Length } from 'class-validator';
+
+export class GetFavoriteDto {
+  @IsString()
+  @Length(24, 24)
+  readonly owner: Types.ObjectId | string;
+}
 
 export class GetFavoriteDtoMail {
-  readonly email: Types.ObjectId | string;
-}
-export class GetFavoriteDto {
-  readonly owner: Types.ObjectId | string;
+  @IsString()
+  @Length(5, 60)
+  readonly email: string;
 }

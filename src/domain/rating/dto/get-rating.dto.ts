@@ -1,5 +1,7 @@
 import { Types } from 'mongoose';
+import { IsMongoId } from 'class-validator';
 
 export class GetRatingDto {
-  readonly id: Types.ObjectId | string;
+  @IsMongoId()
+  readonly id: Types.ObjectId;
 }

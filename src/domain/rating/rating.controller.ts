@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { RatingService } from './rating.service';
+import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('rating')
 export class RatingController {
@@ -17,7 +18,7 @@ export class RatingController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id')
-  create(@Param('id') id: string, @Req() req, @Body() body) {
+  create(@Param() { id }: IdDto, @Req() req, @Body() body) {
     const owner = req.user.id;
     const { rating } = body;
     return this.ratingService.postRating({ id, owner, rating });
@@ -25,13 +26,13 @@ export class RatingController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param() { id }: IdDto) {
     return this.ratingService.findOne({ id });
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Req() req, @Body() body) {
+  update(@Param() { id }: IdDto, @Req() req, @Body() body) {
     const owner = req.user.id;
     const { rating } = body;
     return this.ratingService.updateRating({ id, owner, rating });

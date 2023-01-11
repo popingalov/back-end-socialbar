@@ -12,6 +12,7 @@ import { FavoriteService } from './favorite.service';
 import { Favorite } from './shema/favorite.schema';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
+import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('favorite')
 export class FavoriteController {
@@ -34,8 +35,8 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req): Promise<void> {
+  remove(@Param() { id }: IdDto, @Req() req): Promise<void> {
     const owner = req.user.id;
-    return this.favoriteService.deleteFavorite(id, owner);
+    return this.favoriteService.deleteFavorite({ id, owner });
   }
 }

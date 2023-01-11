@@ -13,6 +13,7 @@ import { ShopingList } from './schema/shoping-list.schema';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
+import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('shoping-list')
 export class ShopingListController {
@@ -38,8 +39,8 @@ export class ShopingListController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id, @Req() req): Promise<void> {
+  remove(@Param() { id }: IdDto, @Req() req): Promise<void> {
     const owner = req.user.id;
-    return this.shopingListService.deleteItem(id, owner);
+    return this.shopingListService.deleteItem({ id, owner });
   }
 }
