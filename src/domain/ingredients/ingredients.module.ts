@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { IngredientsService } from './ingredients.service';
 import { IngredientsController } from './ingredients.controller';
-import { Ingredient, IngredientSchema } from './ingredients.schema';
+import { Ingredient, IngredientSchema } from './schema/ingredients.schema';
 
 import { CocktailsModule } from '../cocktails/cocktails.module';
 import {

@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { Ingredient, IngredientDocument } from './ingredients.schema';
+import { Ingredient, IngredientDocument } from './schema/ingredients.schema';
 
 import { CreateIngredientDto } from './dto/create-ingredient-dto';
+import { GetIngredientsDto } from './dto/get-ingredients.dto';
 import { GetIngredientByIdDto } from './dto/get-ingredient-by-id.dto';
-import { GetIngredientsDto } from './dto/getAlll.dto';
+import { DeleteIngredientDto } from './dto/delete-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { CocktailsService } from '../cocktails/cocktails.service';
 //
@@ -39,7 +40,7 @@ export class IngredientsService {
     return await newIngredient.save();
   }
 
-  async getDefault({ owner }): Promise<Ingredient[]> {
+  async getDefault({ owner }: GetIngredientsDto): Promise<Ingredient[]> {
     const ingredients: Ingredient[] = await this.ingredientModel.find(
       { owner: process.env.OWNER },
       '-owner',
@@ -76,7 +77,7 @@ export class IngredientsService {
     return ingredient.populate('cocktails.ingredients.data', ['id', 'title']);
   }
 
-  async deleteIngredient({ id, owner }): Promise<void> {
+  async deleteIngredient({ id, owner }: DeleteIngredientDto): Promise<void> {
     await this.ingredientModel.findOneAndDelete({ _id: id, owner });
   }
 

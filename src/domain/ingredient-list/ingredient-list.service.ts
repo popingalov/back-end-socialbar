@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateIngredientListDto } from './dto/create-ingredient-list.dto';
-import { TakeIngredientListDto } from './dto/takeAllIngredient-list.dto';
+import { GetIngredientListDto } from './dto/get-ingredient-list.dto';
+import { DeleteIngredientListDto } from './dto/delete-ingredient-list.dto';
 import {
   IngredientList,
   IngredientListDocument,
 } from './schema/ingredientList.schema';
+
 @Injectable()
 export class IngredientListService {
   constructor(
@@ -27,7 +29,7 @@ export class IngredientListService {
     return result;
   }
 
-  async findAll({ owner }: TakeIngredientListDto): Promise<IngredientList> {
+  async getAll({ owner }: GetIngredientListDto): Promise<IngredientList> {
     const result = await this.listModel
       .findOne({ owner }, '-owner')
       .populate('list', '-owner -__v');
@@ -38,7 +40,7 @@ export class IngredientListService {
   async remove({
     owner,
     id,
-  }: CreateIngredientListDto): Promise<IngredientList> {
+  }: DeleteIngredientListDto): Promise<IngredientList> {
     const result = await this.listModel
       .findOneAndUpdate({ owner }, { $pull: { list: id } }, { new: true })
       .populate('list');

@@ -81,7 +81,7 @@ export class CocktailsController {
   @Put(':id')
   async updateOne(
     @Body() cocktail: UpdateCocktailDto,
-    @Param('id') id: Types.ObjectId,
+    @Param() { id }: IdDto,
   ): Promise<Cocktail> {
     return await this.cocktailService.updateOne(id, cocktail);
   }

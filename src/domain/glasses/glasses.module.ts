@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GlassesController } from './glasses.controller';
 import { GlassesService } from './glasses.service';
 
-import { Glass, GlassSchema } from './glasses.chema';
+import { Glass, GlassSchema } from './schema/glasses.schema';
 
 @Module({
   controllers: [GlassesController],
