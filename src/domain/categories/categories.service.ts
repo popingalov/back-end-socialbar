@@ -3,9 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Category, CategoryDocument } from './schema/categories.schema';
 
-import { CreateCategoryDto } from './dto/create-category.dto';
-// import { ResultCategoryDto } from './dto/resultCategory.dto';
-
 @Injectable()
 export class CategoriesService {
   constructor(
@@ -23,7 +20,7 @@ export class CategoriesService {
     return result;
   }
 
-  async create({ name, items }: CreateCategoryDto): Promise<Category> {
+  async create({ name, items }): Promise<Category> {
     return await this.categoryModel.create({ name, items });
   }
 }

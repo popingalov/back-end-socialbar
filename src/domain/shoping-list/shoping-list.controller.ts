@@ -21,7 +21,7 @@ export class ShopingListController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body, @Req() req) {
+  create(@Body() body: IdDto, @Req() req) {
     const { id } = body;
     return this.shopingListService.createShopingItem({
       id,

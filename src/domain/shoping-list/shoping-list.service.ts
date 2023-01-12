@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateShopingListDto } from './dto/create-shoping-list.dto';
-import { GetShopingListDto } from './dto/get-shoping-list.dto';
-import { DeleteShopingListDto } from './dto/delete-shoping-list.dto';
 import { ShopingList, ShopingListDocument } from './schema/shoping-list.schema';
 
 @Injectable()
@@ -13,7 +10,7 @@ export class ShopingListService {
     private readonly shopingListModel: Model<ShopingListDocument>,
   ) {}
 
-  async createShopingItem({ owner, id }: CreateShopingListDto) {
+  async createShopingItem({ owner, id }) {
     const userItems: ShopingList = await this.shopingListModel.findOne({
       owner,
     });
@@ -47,14 +44,14 @@ export class ShopingListService {
     }
   }
 
-  async getAll({ owner }: GetShopingListDto): Promise<ShopingList> {
+  async getAll({ owner }): Promise<ShopingList> {
     const itemsList = await this.shopingListModel
       .findOne({ owner })
       .populate('ingredients');
     return itemsList;
   }
 
-  async deleteItem({ id, owner }: DeleteShopingListDto): Promise<void> {
+  async deleteItem({ id, owner }): Promise<void> {
     await this.shopingListModel.updateOne(
       {
         owner,

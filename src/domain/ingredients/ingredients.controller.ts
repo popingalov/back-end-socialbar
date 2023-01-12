@@ -12,11 +12,11 @@ import {
 
 import { IngredientsService } from './ingredients.service';
 import { Ingredient } from './schema/ingredients.schema';
-
-import { Types } from 'mongoose';
-
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
+
+import { CreateIngredientDto } from './dto/create-ingredient-dto';
+import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('ingredients')
@@ -25,7 +25,10 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createIngredient(@Body() body, @Req() req): Promise<Ingredient> {
+  async createIngredient(
+    @Body() body: CreateIngredientDto,
+    @Req() req,
+  ): Promise<Ingredient> {
     return await this.ingredientsService.createIngredient({
       ...body,
       owner: req.user.id,
@@ -61,7 +64,10 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async updateOne(@Body() body, @Param() { id }: IdDto): Promise<Ingredient> {
+  async updateOne(
+    @Body() body: UpdateIngredientDto,
+    @Param() { id }: IdDto,
+  ): Promise<Ingredient> {
     return await this.ingredientsService.updateIngredient(id, body);
   }
 }

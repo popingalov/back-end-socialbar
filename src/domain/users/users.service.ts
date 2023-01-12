@@ -3,16 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { User, UsersDocument } from './schemas/users.schema';
-
-import { CreateUserDto } from './dto/create-user.dto';
-import { GetUserIdDto } from './dto/get-user-id.dto';
-import { findOneUserDto } from './dto/find-one-user.dto';
-import { updateUserDto } from './dto/update-user.dto';
 import {
   IngredientList,
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
 import { Favorite, FavoriteDocument } from '../favorite/shema/favorite.schema';
+
+import { findOneUserDto } from './dto/find-one-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +21,7 @@ export class UsersService {
     private favoriteModel: Model<FavoriteDocument>,
   ) {}
 
-  async createNewUser(user: CreateUserDto): Promise<User> {
+  async createNewUser(user): Promise<User> {
     const createdUser = await new this.userModel(user);
     const defaultList = await this.ingredientList.findOne(
       { owner: process.env.OWNER },
@@ -49,7 +46,7 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async getById({ id }: GetUserIdDto): Promise<User> {
+  async getById({ id }): Promise<User> {
     return await this.userModel.findById(id);
   }
 
@@ -57,7 +54,7 @@ export class UsersService {
     return await this.userModel.findOne({ ...query });
   }
 
-  async updateUser({ id, payload }: updateUserDto): Promise<User> {
+  async updateUser({ id, payload }): Promise<User> {
     return await this.userModel.findByIdAndUpdate(id, payload, {
       returnDocument: 'after',
     });

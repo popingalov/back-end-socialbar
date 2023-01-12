@@ -1,4 +1,4 @@
-import { IsString, IsArray, ValidateNested } from 'class-validator';
+import { IsString, IsObject, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ItemsDto {
@@ -9,10 +9,8 @@ export class ItemsDto {
 }
 
 export class CreateCategoryDto {
-  @IsString()
-  readonly name: string;
-  @IsArray()
+  @IsObject()
   @ValidateNested({ each: true })
   @Type(() => ItemsDto)
-  readonly items: ItemsDto[];
+  readonly items: ItemsDto;
 }

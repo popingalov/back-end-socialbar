@@ -12,6 +12,7 @@ import { FavoriteService } from './favorite.service';
 import { Favorite } from './shema/favorite.schema';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
+
 import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('favorite')
@@ -20,7 +21,7 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body, @Req() req) {
+  create(@Body() body: IdDto, @Req() req) {
     const { id } = body;
     return this.favoriteService.createFavorite({ id, owner: req.user.id });
   }

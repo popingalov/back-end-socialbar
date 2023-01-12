@@ -1,12 +1,5 @@
-import { Types } from 'mongoose';
 import { Type } from 'class-transformer';
-import {
-  IsOptional,
-  IsArray,
-  IsString,
-  IsBoolean,
-  Length,
-} from 'class-validator';
+import { IsOptional, IsArray, IsString, IsBoolean } from 'class-validator';
 
 class Category {
   @IsString()
@@ -14,9 +7,6 @@ class Category {
 }
 
 export class CreateIngredientDto {
-  @IsString()
-  @Length(24, 24)
-  readonly owner: Types.ObjectId;
   @IsString()
   readonly title: string;
   @IsString()
@@ -26,19 +16,19 @@ export class CreateIngredientDto {
   readonly category: string[];
   @IsString()
   @IsOptional()
-  readonly picture: string;
+  readonly picture?: string;
   @IsBoolean()
   @IsOptional()
-  readonly isDefault: boolean;
+  readonly isDefault?: boolean;
   @IsBoolean()
   @IsOptional()
-  readonly availability: boolean;
+  readonly availability?: boolean;
   @IsBoolean()
   @IsOptional()
-  readonly shopping: boolean;
+  readonly shopping?: boolean;
   @IsBoolean()
   @IsOptional()
-  readonly iHave: boolean;
+  readonly iHave?: boolean;
 }
 
 //export class AddListtDto {

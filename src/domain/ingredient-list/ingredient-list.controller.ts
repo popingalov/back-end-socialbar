@@ -12,6 +12,7 @@ import {
 import { IngredientListService } from './ingredient-list.service';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
+
 import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('my-ingredient-list')
@@ -20,7 +21,7 @@ export class IngredientListController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body, @Req() req) {
+  create(@Body() body: IdDto, @Req() req) {
     return this.ingredientListService.create({
       owner: req.user.id,
       id: body.id,
