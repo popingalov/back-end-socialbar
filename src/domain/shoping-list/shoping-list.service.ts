@@ -52,11 +52,12 @@ export class ShopingListService {
   }
 
   async deleteItem({ id, owner }): Promise<void> {
-    await this.shopingListModel.updateOne(
+    return await this.shopingListModel.findOneAndUpdate(
       {
         owner,
       },
       { $pull: { ingredients: id } },
+      { new: true },
     );
   }
 }

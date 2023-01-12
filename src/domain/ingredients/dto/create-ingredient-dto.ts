@@ -1,19 +1,13 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsArray, IsString, IsBoolean } from 'class-validator';
 
-class Category {
-  @IsString()
-  string;
-}
-
 export class CreateIngredientDto {
   @IsString()
   readonly title: string;
   @IsString()
   readonly description: string;
-  @IsArray()
-  @Type(() => Category)
-  readonly category: string[];
+  @IsString()
+  readonly category: string;
   @IsString()
   @IsOptional()
   readonly picture?: string;

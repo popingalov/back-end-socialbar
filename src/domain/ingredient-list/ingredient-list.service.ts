@@ -32,6 +32,7 @@ export class IngredientListService {
   }
 
   async remove({ owner, id }): Promise<IngredientList> {
+
     const result = await this.listModel
       .findOneAndUpdate({ owner }, { $pull: { list: id } }, { new: true })
       .populate('list');
