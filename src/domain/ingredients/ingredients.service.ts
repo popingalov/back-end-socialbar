@@ -2,12 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { Ingredient, IngredientDocument } from './ingredients.schema';
-
-import { CreateIngredientDto } from './dto/create-ingredient-dto';
-import { GetIngredientByIdDto } from './dto/get-ingredient-by-id.dto';
-import { GetIngredientsDto } from './dto/getAlll.dto';
-import { UpdateIngredientDto } from './dto/update-ingredient.dto';
+import { Ingredient, IngredientDocument } from './schema/ingredients.schema';
 import { CocktailsService } from '../cocktails/cocktails.service';
 //
 import errorGenerator from '../../helpers/errorGenerator';
@@ -20,7 +15,7 @@ import {
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
 import filter from '../../helpers/filterShopingIngredientList';
-//
+
 @Injectable()
 export class IngredientsService {
   constructor(
@@ -33,7 +28,7 @@ export class IngredientsService {
     private readonly cocktailsService: CocktailsService,
   ) {}
 
-  async createIngredient(ingredient: CreateIngredientDto): Promise<Ingredient> {
+  async createIngredient(ingredient): Promise<Ingredient> {
     const newIngredient = new this.ingredientModel(ingredient);
 
     return await newIngredient.save();
@@ -52,7 +47,7 @@ export class IngredientsService {
     return result;
   }
 
-  async getIngredients({ owner }: GetIngredientsDto): Promise<Ingredient[]> {
+  async getIngredients({ owner }): Promise<Ingredient[]> {
     const ingredients: Ingredient[] = await this.ingredientModel.find(
       {
         owner,
@@ -66,7 +61,7 @@ export class IngredientsService {
     return result;
   }
 
-  async getIngredientById({ id }: GetIngredientByIdDto) {
+  async getIngredientById({ id }) {
     const ingredient = await this.ingredientModel.findById(id);
     if (!ingredient) {
       errorGenerator('Wrong ID , ingredient not found', 'NOT_FOUND');
@@ -80,10 +75,7 @@ export class IngredientsService {
     await this.ingredientModel.findOneAndDelete({ _id: id, owner });
   }
 
-  async updateIngredient(
-    id: Types.ObjectId,
-    body: UpdateIngredientDto,
-  ): Promise<Ingredient> {
+  async updateIngredient(id: Types.ObjectId, body): Promise<Ingredient> {
     const updateCocktail = this.ingredientModel.findByIdAndUpdate(id, body, {
       new: true,
     });

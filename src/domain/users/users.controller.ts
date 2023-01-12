@@ -10,17 +10,18 @@ import {
 
 import { UsersService } from './users.service';
 import { User } from './schemas/users.schema';
-
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
-import { createUserDto } from './dto/create-user.dto';
+
+import { CreateUserDto } from './dto/create-user.dto';
+import { updateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('create')
-  async createNew(@Body() user: createUserDto): Promise<User> {
-    const result = await this.usersService.createNew(user);
+  async createNewUser(@Body() user: CreateUserDto): Promise<User> {
+    const result = await this.usersService.createNewUser(user);
 
     return result;
   }
@@ -29,17 +30,15 @@ export class UsersController {
   @Get('me')
   async getUserData(@Req() req): Promise<User> {
     const { id } = req.user;
-
-    const user = await this.usersService.findById({ id });
+    const user = await this.usersService.getById({ id });
 
     return user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('me')
-  async updateUserData(@Req() req, @Body() body): Promise<User> {
+  async updateUserData(@Req() req, @Body() body: updateUserDto): Promise<User> {
     const { id } = req.user;
-
     const user = await this.usersService.updateUser({ id, payload: body });
 
     return user;

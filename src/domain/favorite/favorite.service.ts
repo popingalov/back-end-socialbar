@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { GetFavoriteDto, GetFavoriteDtoMail } from './dto/get-favorite.dto';
+import { GetFavoriteDtoMail } from './dto/get-favorite.dto';
 import { Favorite, FavoriteDocument } from './shema/favorite.schema';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class FavoriteService {
     private readonly favoritetModel: Model<FavoriteDocument>,
   ) {}
 
-  async createFavorite({ owner, id }: CreateFavoriteDto) {
+  async createFavorite({ owner, id }) {
     const userItems: Favorite = await this.favoritetModel.findOne({
       owner,
     });
@@ -25,7 +24,9 @@ export class FavoriteService {
       return newItem;
     }
 
-    const findItem = userItems.cocktails.find((elem) => elem.toString() === id);
+    const findItem = userItems.cocktails.find(
+      (elem) => elem.toString() === id.toString(),
+    );
 
     if (!findItem) {
       const newItem = await this.favoritetModel
@@ -43,7 +44,7 @@ export class FavoriteService {
     }
   }
 
-  async getAll({ owner }: GetFavoriteDto): Promise<Favorite> {
+  async getAll({ owner }): Promise<Favorite> {
     const favoriteList = await this.favoritetModel
       .findOne({ owner })
       .populate('cocktails');
@@ -58,7 +59,7 @@ export class FavoriteService {
     return favoriteList;
   }
 
-  async deleteFavorite(id: string, owner: string): Promise<void> {
+  async deleteFavorite({ id, owner }): Promise<void> {
     await this.favoritetModel.updateOne(
       {
         owner,

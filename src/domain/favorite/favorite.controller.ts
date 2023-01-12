@@ -13,13 +13,15 @@ import { Favorite } from './shema/favorite.schema';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
+import { IdDto } from 'src/globalDto/id.dto';
+
 @Controller('favorite')
 export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body, @Req() req) {
+  create(@Body() body: IdDto, @Req() req) {
     const { id } = body;
     return this.favoriteService.createFavorite({ id, owner: req.user.id });
   }
@@ -34,8 +36,8 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req): Promise<void> {
+  remove(@Param() { id }: IdDto, @Req() req): Promise<void> {
     const owner = req.user.id;
-    return this.favoriteService.deleteFavorite(id, owner);
+    return this.favoriteService.deleteFavorite({ id, owner });
   }
 }

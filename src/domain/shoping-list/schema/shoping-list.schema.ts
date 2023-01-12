@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 import { User } from '../../users/schemas/users.schema';
-import { Ingredient } from 'src/domain/ingredients/ingredients.schema';
+import { Ingredient } from 'src/domain/ingredients/schema/ingredients.schema';
 
 export type ShopingListDocument = ShopingList & Document;
 

@@ -4,9 +4,6 @@ import { Model } from 'mongoose';
 import ratingAdditionCalculation from '../../helpers/ratingsFunc/ratingAdditionCalculation';
 import ratingUpdateCalculation from 'src/helpers/ratingsFunc/ratingUpdateCalculation';
 
-import { CreateRatingDto } from './dto/create-rating.dto';
-import { GetRatingDto } from './dto/get-rating.dto';
-import { UpdateRatingDto } from './dto/update-rating.dto';
 import { Rating, RatingDocument } from './schema/rating.schema';
 import {
   Cocktail,
@@ -22,7 +19,7 @@ export class RatingService {
     private readonly cocktailModel: Model<CocktailDocument>,
   ) {}
 
-  async postRating({ id, owner, rating }: CreateRatingDto) {
+  async postRating({ id, owner, rating }) {
     const findCocktail = await this.cocktailModel.findOne(
       { _id: id },
       'ratings',
@@ -62,7 +59,7 @@ export class RatingService {
     return await newRating.save();
   }
 
-  async findOne({ id }: GetRatingDto) {
+  async findOne({ id }) {
     const findCocktail = await this.cocktailModel.findOne(
       { _id: id },
       'ratings',
@@ -75,7 +72,7 @@ export class RatingService {
     return `No items`;
   }
 
-  async updateRating({ id, owner, rating }: UpdateRatingDto) {
+  async updateRating({ id, owner, rating }) {
     const updateItem = await this.ratingModel.findOneAndUpdate(
       { owner, cocktailId: id },
       { rating },

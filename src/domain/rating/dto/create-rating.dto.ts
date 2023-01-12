@@ -1,7 +1,8 @@
-import { Types } from 'mongoose';
+import { IsNumber, Min, Max } from 'class-validator';
 
 export class CreateRatingDto {
-  readonly id: Types.ObjectId | string;
-  readonly owner: Types.ObjectId | string;
+  @IsNumber({ maxDecimalPlaces: 0 })
+  @Min(1)
+  @Max(5)
   readonly rating: number;
 }

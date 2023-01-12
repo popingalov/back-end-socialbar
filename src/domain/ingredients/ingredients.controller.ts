@@ -11,12 +11,13 @@ import {
 } from '@nestjs/common';
 
 import { IngredientsService } from './ingredients.service';
-import { Ingredient } from './ingredients.schema';
-
-import { Types } from 'mongoose';
-
+import { Ingredient } from './schema/ingredients.schema';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
+
+import { CreateIngredientDto } from './dto/create-ingredient-dto';
+import { UpdateIngredientDto } from './dto/update-ingredient.dto';
+import { IdDto } from 'src/globalDto/id.dto';
 
 @Controller('ingredients')
 export class IngredientsController {
@@ -24,17 +25,12 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createIngredient(@Body() body, @Req() req): Promise<Ingredient> {
+  async createIngredient(
+    @Body() body: CreateIngredientDto,
+    @Req() req,
+  ): Promise<Ingredient> {
     return await this.ingredientsService.createIngredient({
       ...body,
-      owner: req.user.id,
-    });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/my')
-  async getIngredients(@Req() req): Promise<Ingredient[]> {
-    return await this.ingredientsService.getIngredients({
       owner: req.user.id,
     });
   }
@@ -46,14 +42,22 @@ export class IngredientsController {
     return await this.ingredientsService.getDefault({ owner });
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('/my')
+  async getIngredients(@Req() req): Promise<Ingredient[]> {
+    return await this.ingredientsService.getIngredients({
+      owner: req.user.id,
+    });
+  }
+
   @Get(':id')
-  async getById(@Param() { id }) {
+  async getById(@Param() { id }: IdDto) {
     return await this.ingredientsService.getIngredientById({ id });
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteOne(@Param('id') id: string, @Req() req): Promise<void> {
+  deleteOne(@Param() { id }: IdDto, @Req() req): Promise<void> {
     const owner = req.user.id;
     return this.ingredientsService.deleteIngredient({ id, owner });
   }
@@ -61,8 +65,8 @@ export class IngredientsController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateOne(
-    @Body() body,
-    @Param('id') id: Types.ObjectId,
+    @Body() body: UpdateIngredientDto,
+    @Param() { id }: IdDto,
   ): Promise<Ingredient> {
     return await this.ingredientsService.updateIngredient(id, body);
   }

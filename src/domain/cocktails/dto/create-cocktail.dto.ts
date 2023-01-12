@@ -20,6 +20,7 @@ class TestNewDto {
 }
 
 class Category {
+  @IsString()
   string;
 }
 

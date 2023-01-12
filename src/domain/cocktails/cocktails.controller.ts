@@ -72,7 +72,7 @@ export class CocktailsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteOne(@Param('id') id: string, @Req() req): Promise<void> {
+  deleteOne(@Param() { id }: IdDto, @Req() req): Promise<void> {
     const userId = req.user.id;
     return this.cocktailService.deleteMy({ userId, id });
   }
@@ -81,7 +81,7 @@ export class CocktailsController {
   @Put(':id')
   async updateOne(
     @Body() cocktail: UpdateCocktailDto,
-    @Param('id') id: Types.ObjectId,
+    @Param() { id }: IdDto,
   ): Promise<Cocktail> {
     return await this.cocktailService.updateOne(id, cocktail);
   }
