@@ -14,6 +14,7 @@ import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 import { IdDto } from 'src/globalDto/id.dto';
+import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 
 @Controller('favorite')
 export class FavoriteController {
@@ -26,7 +27,7 @@ export class FavoriteController {
     return this.favoriteService.createFavorite({ id, owner: req.user.id });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtPublickGuard)
   @Get()
   getAll(@Req() req): Promise<Favorite> {
     return this.favoriteService.getAll({
