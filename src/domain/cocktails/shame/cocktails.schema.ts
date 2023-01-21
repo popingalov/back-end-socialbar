@@ -27,7 +27,7 @@ export class Cocktail {
   @Prop({
     type: [CocktailIngredientsSchema],
     required: true,
-    ref: 'Ingredient',
+    // ref: 'Ingredient',
   })
   ingredients: CocktailIngredients[];
 

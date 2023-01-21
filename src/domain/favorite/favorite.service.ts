@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import addLacks from 'src/helpers/addLacks';
+import { IngredientList } from '../ingredient-list/schema/ingredientList.schema';
+import { IngredientDocument } from '../ingredients/schema/ingredients.schema';
 import { GetFavoriteDtoMail } from './dto/get-favorite.dto';
 import { Favorite, FavoriteDocument } from './shema/favorite.schema';
 
@@ -9,6 +12,8 @@ export class FavoriteService {
   constructor(
     @InjectModel(Favorite.name)
     private readonly favoritetModel: Model<FavoriteDocument>,
+    @InjectModel(IngredientList.name)
+    private readonly ingredientList: Model<IngredientDocument>,
   ) {}
 
   async createFavorite({ owner, id }) {
@@ -45,11 +50,16 @@ export class FavoriteService {
   }
 
   async getAll({ owner }): Promise<Favorite> {
-    const favoriteList = await this.favoritetModel
-      .findOne({ owner })
-      .populate('cocktails');
-
-    return favoriteList;
+    const [favorite, ingredientList] = await Promise.all([
+      (
+        await this.favoritetModel
+          .findOne({ owner })
+          .populate('cocktails', '-owner')
+      ).populate('cocktails.ingredients.data'),
+      this.ingredientList.findOne({ owner }).populate('list'),
+    ]);
+    const result = addLacks({ favorite, ingredientList });
+    return result;
   }
   async getAllForMail({ email }: GetFavoriteDtoMail): Promise<Favorite> {
     const favoriteList = await this.favoritetModel
