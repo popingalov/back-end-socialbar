@@ -60,16 +60,22 @@ export class CocktailsService {
 
   async getMyDefault({ owner }): Promise<IDefaultCocktails> {
     const defaultOwner = process.env.OWNER;
-    const cocktails: Cocktail[] = await this.cocktailModel
-      .find({ owner: defaultOwner })
-      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-      .populate('glass')
-      .populate('ingredients.alternatives');
-    const ingredients: IngredientList = await this.IngredientListModel.findOne({
-      owner: defaultOwner,
-    });
+    const [cocktails, ingredients, favorite]: [
+      Cocktail[],
+      IngredientList,
+      Favorite,
+    ] = await Promise.all([
+      this.cocktailModel
+        .find({ owner: defaultOwner })
+        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
+        .populate('glass')
+        .populate('ingredients.alternatives'),
+      this.IngredientListModel.findOne({
+        owner: defaultOwner,
+      }),
+      this.FavoriteService.getAll({ owner }),
+    ]);
 
-    const favorite: Favorite = await this.FavoriteService.getAll({ owner });
     const result: IDefaultCocktails = filterDefault(
       cocktails,
       ingredients,
@@ -79,21 +85,25 @@ export class CocktailsService {
   }
 
   async getMyCocktails({ owner }): Promise<IMyCocktails> {
-    const cocktails: Cocktail[] = await this.cocktailModel
-      .find({ owner })
-      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-      .populate('glass')
-      .populate('ingredients.alternatives');
-
-    const ingredients: IngredientList[] =
-      await this.IngredientListModel.findOne({
+    const [cocktails, ingredients, favorite, defaultObj]: [
+      Cocktail[],
+      IngredientList,
+      Favorite,
+      IDefaultCocktails,
+    ] = await Promise.all([
+      this.cocktailModel
+        .find({ owner })
+        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
+        .populate('glass')
+        .populate('ingredients.alternatives'),
+      this.IngredientListModel.findOne({
         owner,
-      });
-
-    const favorite: Favorite = await this.FavoriteService.getAll({ owner });
+      }),
+      this.FavoriteService.getAll({ owner }),
+      this.getMyDefault({ owner }),
+    ]);
 
     const myObj = filterMy(cocktails, ingredients, favorite);
-    const defaultObj = await this.getMyDefault({ owner });
     const mine = myObj.all.length === 0 ? null : myObj.mine;
     const result = {
       haveAll: myObj.haveAll.concat(defaultObj.haveAll),
@@ -107,18 +117,17 @@ export class CocktailsService {
 
   async getById({ id, owner }): Promise<Cocktail> {
     try {
-      const cocktail: Cocktail = await this.cocktailModel
-        .findById(id)
-        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass')
-        .populate('ingredients.alternatives');
-
-      const ingredients = await this.IngredientListModel.findOne({
-        owner,
-      });
-
-      const favorite = await this.FavoriteService.getAll({ owner });
-
+      const [cocktail, favorite, ingredients] = await Promise.all([
+        this.cocktailModel
+          .findById(id)
+          .populate('ingredients.data', ['id', 'title', 'description', 'image'])
+          .populate('glass')
+          .populate('ingredients.alternatives'),
+        this.FavoriteService.getAll({ owner }),
+        this.IngredientListModel.findOne({
+          owner,
+        }),
+      ]);
       const result = addFavoriteAndICan(cocktail, ingredients, favorite);
       return result;
     } catch (error) {

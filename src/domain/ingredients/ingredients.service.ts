@@ -15,6 +15,8 @@ import {
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
 import filter from '../../helpers/filterShopingIngredientList';
+import { Cocktail } from '../cocktails/shame/cocktails.schema';
+import { IMyCocktails } from '../cocktails/dto/returnMyCocktails.dto';
 
 @Injectable()
 export class IngredientsService {
@@ -36,31 +38,39 @@ export class IngredientsService {
 
   async getDefault({ owner }): Promise<Ingredient[]> {
     const defaultOwner = process.env.OWNER;
-    const ingredients: Ingredient[] = await this.ingredientModel.find(
-      { owner: defaultOwner },
-      '-owner',
-    );
-
-    const shopingList = await this.shopingListModel.findOne({ owner });
-    const ingredientList = await this.ingredientListtModel.findOne({ owner });
-    const { all } = await this.cocktailsService.getMyCocktails({
-      owner: defaultOwner,
-    });
+    const [ingredients, { all }, shopingList, ingredientList]: [
+      Ingredient[],
+      IMyCocktails,
+      ShopingList,
+      IngredientList,
+    ] = await Promise.all([
+      this.ingredientModel.find({ owner: defaultOwner }, '-owner'),
+      this.cocktailsService.getMyCocktails({ owner: defaultOwner }),
+      this.shopingListModel.findOne({ owner }),
+      this.ingredientListtModel.findOne({ owner }),
+    ]);
     const result = filter({ ingredients, shopingList, ingredientList, all });
 
     return result;
   }
 
   async getIngredients({ owner }): Promise<Ingredient[]> {
-    const ingredients: Ingredient[] = await this.ingredientModel.find(
-      {
-        owner,
-      },
-      '-owner',
-    );
-    const { all } = await this.cocktailsService.getMyCocktails({ owner });
-    const shopingList = await this.shopingListModel.findOne({ owner });
-    const ingredientList = await this.ingredientListtModel.findOne({ owner });
+    const [ingredients, { all }, shopingList, ingredientList]: [
+      Ingredient[],
+      IMyCocktails,
+      ShopingList,
+      IngredientList,
+    ] = await Promise.all([
+      this.ingredientModel.find(
+        {
+          owner,
+        },
+        '-owner',
+      ),
+      this.cocktailsService.getMyCocktails({ owner }),
+      this.shopingListModel.findOne({ owner }),
+      this.ingredientListtModel.findOne({ owner }),
+    ]);
     const result = filter({ ingredients, shopingList, ingredientList, all });
 
     return result;
