@@ -41,7 +41,7 @@ export class CocktailsService {
   async getDefault(): Promise<IDefaultCocktails> {
     const owner = process.env.OWNER;
     const cocktails: Cocktail[] = await this.cocktailModel
-      .find({ owner })
+      .find({ owner }, '-__v -owner')
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
@@ -66,9 +66,9 @@ export class CocktailsService {
       Favorite,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ owner: defaultOwner })
+        .find({ owner: defaultOwner }, '-__v -owner')
         .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass')
+        .populate('glass', '-__v')
         .populate('ingredients.alternatives'),
       this.IngredientListModel.findOne({
         owner: defaultOwner,
@@ -92,9 +92,9 @@ export class CocktailsService {
       IDefaultCocktails,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ owner })
+        .find({ owner }, '-__v -owner')
         .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass')
+        .populate('glass', '-__v')
         .populate('ingredients.alternatives'),
       this.IngredientListModel.findOne({
         owner,
@@ -119,7 +119,7 @@ export class CocktailsService {
     try {
       const [cocktail, favorite, ingredients] = await Promise.all([
         this.cocktailModel
-          .findById(id)
+          .findById(id, '-__v -owner')
           .populate('ingredients.data', ['id', 'title', 'description', 'image'])
           .populate('glass')
           .populate('ingredients.alternatives'),
