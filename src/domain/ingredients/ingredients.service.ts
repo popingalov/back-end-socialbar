@@ -35,14 +35,18 @@ export class IngredientsService {
   }
 
   async getDefault({ owner }): Promise<Ingredient[]> {
+    const defaultOwner = process.env.OWNER;
     const ingredients: Ingredient[] = await this.ingredientModel.find(
-      { owner: process.env.OWNER },
+      { owner: defaultOwner },
       '-owner',
     );
 
     const shopingList = await this.shopingListModel.findOne({ owner });
     const ingredientList = await this.ingredientListtModel.findOne({ owner });
-    const result = filter({ ingredients, shopingList, ingredientList });
+    const { all } = await this.cocktailsService.getMyCocktails({
+      owner: defaultOwner,
+    });
+    const result = filter({ ingredients, shopingList, ingredientList, all });
 
     return result;
   }
@@ -54,9 +58,10 @@ export class IngredientsService {
       },
       '-owner',
     );
+    const { all } = await this.cocktailsService.getMyCocktails({ owner });
     const shopingList = await this.shopingListModel.findOne({ owner });
     const ingredientList = await this.ingredientListtModel.findOne({ owner });
-    const result = filter({ ingredients, shopingList, ingredientList });
+    const result = filter({ ingredients, shopingList, ingredientList, all });
 
     return result;
   }
