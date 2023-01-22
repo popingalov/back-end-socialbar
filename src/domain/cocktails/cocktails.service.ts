@@ -70,7 +70,7 @@ export class CocktailsService {
         .populate('glass', '-__v')
         .populate('ingredients.alternatives'),
       this.IngredientListModel.findOne({
-        owner: defaultOwner,
+        owner: owner,
       }),
       this.FavoriteService.getAll({ owner }),
     ]);
