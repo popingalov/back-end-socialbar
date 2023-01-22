@@ -27,8 +27,8 @@ export class Ingredient {
   @Prop({ type: String, ref: 'categories' })
   category: string;
 
-  @Prop({ type: [String] })
-  cocktails: any;
+  @Prop({ type: [], ref: 'Cocktail' })
+  cocktails: any[];
 
   @Prop({ required: true })
   title: string;
