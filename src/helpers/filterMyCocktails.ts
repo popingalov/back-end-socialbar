@@ -38,6 +38,12 @@ export default function (cocktails, ingredients, favorite): IMyCocktails {
           acc.mine.haveAll.push(cocktail);
           return acc;
         }
+
+        if (helper - include <= 2) {
+          acc.mine.needMore.push(cocktail);
+          return acc;
+        }
+
         acc.mine.other.push(cocktail);
         return acc;
       }
@@ -60,7 +66,7 @@ export default function (cocktails, ingredients, favorite): IMyCocktails {
       haveAll: [],
       needMore: [],
       other: [],
-      mine: { haveAll: [], other: [] },
+      mine: { haveAll: [], needMore: [], other: [] },
       all: [],
     },
   );

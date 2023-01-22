@@ -1,5 +1,5 @@
 import { IDefaultCocktails } from 'src/domain/cocktails/dto/returnDefaultCocktails.dto';
-import addFavirotAndIcan from './addFavoriteAndICan'
+import addFavirotAndIcan from './addFavoriteAndICan';
 export default function (cocktails, ingredients, favorite): IDefaultCocktails {
   return cocktails.reduce(
     (acc, cocktail, idx) => {
