@@ -27,8 +27,8 @@ export class Ingredient {
   @Prop({ type: String, ref: 'categories' })
   category: string;
 
-  @Prop({ type: [CocktailSchema] || [String], ref: 'Cocktail' })
-  cocktails: Cocktail[];
+  @Prop({ type: [String] })
+  cocktails: any;
 
   @Prop({ required: true })
   title: string;
