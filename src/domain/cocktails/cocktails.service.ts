@@ -74,6 +74,7 @@ export class CocktailsService {
       }),
       this.FavoriteService.getAll({ owner }),
     ]);
+    console.log(cocktails);
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,
@@ -103,6 +104,8 @@ export class CocktailsService {
     ]);
 
     const myObj = filterMy(cocktails, ingredients, favorite);
+    // console.log(myObj);
+
     const mine = myObj.all.length === 0 ? null : myObj.mine;
     const result = {
       haveAll: myObj.haveAll.concat(defaultObj.haveAll),
