@@ -20,7 +20,6 @@ import { Favorite } from '../favorite/shema/favorite.schema';
 import { IDefaultCocktails } from './dto/returnDefaultCocktails.dto';
 import { ShopingList } from '../shoping-list/schema/shoping-list.schema';
 import { IMyCocktails } from './dto/returnMyCocktails.dto';
-//
 
 @Injectable()
 export class CocktailsService {
@@ -157,5 +156,9 @@ export class CocktailsService {
     );
 
     return await updateCocktail;
+  }
+
+  async uploadImage(image) {
+    console.log(image);
   }
 }
