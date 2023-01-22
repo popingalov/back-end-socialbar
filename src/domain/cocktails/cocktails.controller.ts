@@ -9,6 +9,8 @@ import {
   Req,
   Param,
   UseGuards,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { CocktailsService } from './cocktails.service';
@@ -23,6 +25,11 @@ import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { IDefaultCocktails } from './dto/returnDefaultCocktails.dto';
 import { IMyCocktails } from './dto/returnMyCocktails.dto';
 import { IdDto } from 'src/globalDto/id.dto';
+// ? Upload Files
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import createFileName from 'src/helpers/uploadFiles/createFileName';
+
 @Controller('cocktails')
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
@@ -62,11 +69,13 @@ export class CocktailsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createCocktail(
+    @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateCocktailDto,
     @Req() req,
   ): Promise<Cocktail> {
     const { id } = req.user;
 
+    const linkOnImage = await this.cocktailService.uploadImage(image);
     return await this.cocktailService.createOne({ ...body, owner: id });
   }
 
@@ -84,5 +93,29 @@ export class CocktailsController {
     @Param() { id }: IdDto,
   ): Promise<Cocktail> {
     return await this.cocktailService.updateOne(id, cocktail);
+  }
+
+  // ! test controller
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('img', {
+      storage: diskStorage({
+        destination: './temp',
+        filename: (req, file, cb): void => {
+          const newFileName = createFileName(file.originalname);
+          cb(null, newFileName);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+          return cb(null, false);
+        }
+        return cb(null, true);
+      },
+    }),
+  )
+  async testUpload(@UploadedFile() image: Express.Multer.File) {
+    return await this.cocktailService.uploadImage(image);
   }
 }
