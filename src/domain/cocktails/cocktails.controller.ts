@@ -75,7 +75,10 @@ export class CocktailsController {
   ): Promise<Cocktail> {
     const { id } = req.user;
 
-    const linkOnImage = await this.cocktailService.uploadImage(image);
+    const linkOnImage = await this.cocktailService.uploadImage(
+      image.buffer,
+      image.originalname,
+    );
     return await this.cocktailService.createOne({ ...body, owner: id });
   }
 
@@ -98,24 +101,11 @@ export class CocktailsController {
   // ! test controller
   @UseGuards(JwtAuthGuard)
   @Post('upload')
-  @UseInterceptors(
-    FileInterceptor('img', {
-      storage: diskStorage({
-        destination: './temp',
-        filename: (req, file, cb): void => {
-          const newFileName = createFileName(file.originalname);
-          cb(null, newFileName);
-        },
-      }),
-      fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-          return cb(null, false);
-        }
-        return cb(null, true);
-      },
-    }),
-  )
+  @UseInterceptors(FileInterceptor('img'))
   async testUpload(@UploadedFile() image: Express.Multer.File) {
-    return await this.cocktailService.uploadImage(image);
+    return await this.cocktailService.uploadImage(
+      image.buffer,
+      image.originalname,
+    );
   }
 }

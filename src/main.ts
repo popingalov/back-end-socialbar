@@ -4,10 +4,16 @@ import * as passport from 'passport';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { config } from 'dotenv';
+import { config as awsConfig } from 'aws-sdk';
 config();
 const PORT = process.env.PORT || 5000;
 
 async function bootstrap() {
+  awsConfig.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+  });
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');

@@ -4,7 +4,6 @@ import { Model, Types } from 'mongoose';
 
 //
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-
 //
 import filterDefault from '../../helpers/filterDefaultCocktails';
 import filterMy from '../../helpers/filterMyCocktails';
@@ -20,6 +19,9 @@ import { Favorite } from '../favorite/shema/favorite.schema';
 import { IDefaultCocktails } from './dto/returnDefaultCocktails.dto';
 import { ShopingList } from '../shoping-list/schema/shoping-list.schema';
 import { IMyCocktails } from './dto/returnMyCocktails.dto';
+// ! s3
+import { v4 as uuidv4 } from 'uuid';
+import { S3 } from 'aws-sdk';
 
 @Injectable()
 export class CocktailsService {
@@ -161,7 +163,15 @@ export class CocktailsService {
     return await updateCocktail;
   }
 
-  async uploadImage(image) {
-    console.log(image);
+  async uploadImage(dataBuffer: Buffer, fileName: string) {
+    const s3 = new S3();
+    const result = await s3
+      .upload({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Body: dataBuffer,
+        Key: `${uuidv4()}-${fileName}`,
+      })
+      .promise();
+    console.log('upload result', result);
   }
 }
