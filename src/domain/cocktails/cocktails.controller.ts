@@ -19,7 +19,6 @@ import { Cocktail } from './shame/cocktails.schema';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-import { Types } from 'mongoose';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { IDefaultCocktails } from './dto/returnDefaultCocktails.dto';
@@ -27,8 +26,6 @@ import { IMyCocktails } from './dto/returnMyCocktails.dto';
 import { IdDto } from 'src/globalDto/id.dto';
 // ? Upload Files
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import createFileName from 'src/helpers/uploadFiles/createFileName';
 
 @Controller('cocktails')
 export class CocktailsController {
@@ -68,6 +65,7 @@ export class CocktailsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UseInterceptors(FileInterceptor('img'))
   async createCocktail(
     @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateCocktailDto,
@@ -75,11 +73,15 @@ export class CocktailsController {
   ): Promise<Cocktail> {
     const { id } = req.user;
 
-    const linkOnImage = await this.cocktailService.uploadImage(
+    const imageUploadLink = await this.cocktailService.uploadImage(
       image.buffer,
       image.originalname,
     );
-    return await this.cocktailService.createOne({ ...body, owner: id });
+    return await this.cocktailService.createOne({
+      ...body,
+      picture: imageUploadLink.Location,
+      owner: id,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
