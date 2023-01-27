@@ -172,6 +172,6 @@ export class CocktailsService {
         Key: `${uuidv4()}-${fileName}`,
       })
       .promise();
-    console.log('upload result', result);
+    return result;
   }
 }
