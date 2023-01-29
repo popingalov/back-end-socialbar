@@ -5,6 +5,8 @@ export default function ({ ingredients, shopingList, ingredientList, all }) {
     el.shopping = shopingList.ingredients.includes(el.id);
     const cocktailList: string[] = all.reduce((acc, cocktail) => {
       const result = cocktail.ingredients.reduce((acc, { data }) => {
+        if (!data) return acc;
+
         if (data.title === el.title) {
           acc.push(cocktail.title);
         }

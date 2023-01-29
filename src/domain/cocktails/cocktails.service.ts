@@ -77,7 +77,7 @@ export class CocktailsService {
       }),
       this.FavoriteService.getAll({ owner }),
     ]);
-    console.log(cocktails);
+    // console.log(cocktails);
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,
