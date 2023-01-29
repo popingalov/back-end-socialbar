@@ -13,14 +13,14 @@ export class IngredientListService {
     private readonly listModel: Model<IngredientListDocument>,
   ) {}
 
-  async create({ owner, id }): Promise<IngredientList> {
+  async create({ owner, id }) {
     const test = await this.listModel.findOne({ owner });
     if (!test) await this.listModel.create({ owner });
 
-    const result = await this.listModel
+    await this.listModel
       .findOneAndUpdate({ owner }, { $push: { list: id } }, { new: true })
       .populate('list');
-    return result;
+    return { message: 201, body: {} };
   }
 
   async getAll({ owner }): Promise<IngredientList> {
@@ -31,11 +31,10 @@ export class IngredientListService {
     return result;
   }
 
-  async remove({ owner, id }): Promise<IngredientList> {
-
-    const result = await this.listModel
+  async remove({ owner, id }) {
+    await this.listModel
       .findOneAndUpdate({ owner }, { $pull: { list: id } }, { new: true })
       .populate('list');
-    return result;
+    return { message: 204 };
   }
 }
