@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  HttpCode,
 } from '@nestjs/common';
 import { IngredientListService } from './ingredient-list.service';
 import { JwtPublickGuard } from '../auth/strategies/publick.guard';
@@ -36,6 +37,7 @@ export class IngredientListController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(204)
   remove(@Req() req, @Param() { id }: IdDto) {
     return this.ingredientListService.remove({
       owner: req.user.id,
