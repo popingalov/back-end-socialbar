@@ -8,6 +8,8 @@ import {
   Req,
   Param,
   UseGuards,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { IngredientsService } from './ingredients.service';
@@ -18,21 +20,44 @@ import { JwtPublickGuard } from '../auth/strategies/publick.guard';
 import { CreateIngredientDto } from './dto/create-ingredient-dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { IdDto } from 'src/globalDto/id.dto';
+// ? image
+import { CocktailsService } from '../cocktails/cocktails.service';
+import IFileUpload from 'src/helpers/imageHeplers/fileUpload.interface';
+import fileUpload from 'src/helpers/imageHeplers/fileUpload';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('ingredients')
 export class IngredientsController {
-  constructor(private readonly ingredientsService: IngredientsService) {}
+  constructor(
+    private readonly ingredientsService: IngredientsService,
+    private readonly cocktailsService: CocktailsService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UseInterceptors(FileInterceptor('img'))
   async createIngredient(
+    @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateIngredientDto,
     @Req() req,
   ): Promise<Ingredient> {
-    return await this.ingredientsService.createIngredient({
-      ...body,
-      owner: req.user.id,
-    });
+    let imageUploadLink: IFileUpload = await fileUpload(
+      image,
+      this.cocktailsService.uploadImage,
+    );
+
+    return await this.ingredientsService.createIngredient(
+      imageUploadLink
+        ? {
+            ...body,
+            picture: imageUploadLink.Location,
+            owner: req.user.id,
+          }
+        : {
+            ...body,
+            owner: req.user.id,
+          },
+    );
   }
 
   @UseGuards(JwtPublickGuard)
@@ -64,10 +89,25 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
+  @UseInterceptors(FileInterceptor('img'))
   async updateOne(
+    @UploadedFile() image: Express.Multer.File,
     @Body() body: UpdateIngredientDto,
     @Param() { id }: IdDto,
   ): Promise<Ingredient> {
-    return await this.ingredientsService.updateIngredient(id, body);
+    let imageUploadLink: IFileUpload = await fileUpload(
+      image,
+      this.cocktailsService.uploadImage,
+    );
+
+    return await this.ingredientsService.updateIngredient(
+      id,
+      imageUploadLink
+        ? {
+            ...body,
+            picture: imageUploadLink.Location,
+          }
+        : body,
+    );
   }
 }

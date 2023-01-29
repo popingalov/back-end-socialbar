@@ -13,7 +13,7 @@ import { User } from './schemas/users.schema';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { updateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -37,7 +37,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Put('me')
-  async updateUserData(@Req() req, @Body() body: updateUserDto): Promise<User> {
+  async updateUserData(@Req() req, @Body() body: UpdateUserDto): Promise<User> {
     const { id } = req.user;
     const user = await this.usersService.updateUser({ id, payload: body });
 

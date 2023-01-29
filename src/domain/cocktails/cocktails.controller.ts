@@ -26,14 +26,12 @@ import { IMyCocktails } from './dto/returnMyCocktails.dto';
 import { IdDto } from 'src/globalDto/id.dto';
 // ? Upload Files
 import { FileInterceptor } from '@nestjs/platform-express';
+import IFileUpload from 'src/helpers/imageHeplers/fileUpload.interface';
+import fileUpload from 'src/helpers/imageHeplers/fileUpload';
 
 @Controller('cocktails')
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
-
-  // async getDefault(@Req() req): Promise<IDefaultCocktails> {
-  //   return await this.cocktailService.getDefault();
-  // }
 
   @UseGuards(JwtPublickGuard)
   @Get()
@@ -72,16 +70,23 @@ export class CocktailsController {
     @Req() req,
   ): Promise<Cocktail> {
     const { id } = req.user;
-
-    const imageUploadLink = await this.cocktailService.uploadImage(
-      image.buffer,
-      image.originalname,
+    let imageUploadLink: IFileUpload = await fileUpload(
+      image,
+      this.cocktailService.uploadImage,
     );
-    return await this.cocktailService.createOne({
-      ...body,
-      picture: imageUploadLink.Location,
-      owner: id,
-    });
+
+    return await this.cocktailService.createOne(
+      imageUploadLink
+        ? {
+            ...body,
+            picture: imageUploadLink.Location,
+            owner: id,
+          }
+        : {
+            ...body,
+            owner: id,
+          },
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -104,10 +109,14 @@ export class CocktailsController {
   @UseGuards(JwtAuthGuard)
   @Post('upload')
   @UseInterceptors(FileInterceptor('img'))
-  async testUpload(@UploadedFile() image: Express.Multer.File) {
-    return await this.cocktailService.uploadImage(
-      image.buffer,
-      image.originalname,
+  async testUpload(@UploadedFile() image: Express.Multer.File, @Body() body) {
+    const { picture } = body;
+    await this.cocktailService.deleteImage(picture);
+
+    let imageUploadLink: IFileUpload = await fileUpload(
+      image,
+      this.cocktailService.uploadImage,
     );
+    return imageUploadLink;
   }
 }

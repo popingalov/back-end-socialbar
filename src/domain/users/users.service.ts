@@ -9,7 +9,7 @@ import {
 } from '../ingredient-list/schema/ingredientList.schema';
 import { Favorite, FavoriteDocument } from '../favorite/shema/favorite.schema';
 
-import { findOneUserDto } from './dto/find-one-user.dto';
+import { FindOneUserDto } from './dto/find-one-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -50,7 +50,7 @@ export class UsersService {
     return await this.userModel.findById(id);
   }
 
-  async findByQuery(query: findOneUserDto): Promise<User> {
+  async findByQuery(query: FindOneUserDto): Promise<User> {
     return await this.userModel.findOne({ ...query });
   }
 
