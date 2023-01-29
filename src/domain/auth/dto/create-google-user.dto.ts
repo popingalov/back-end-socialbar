@@ -13,10 +13,3 @@ export class CreateGoogleUserDto {
   @IsString()
   readonly picture: string;
 }
-
-// export class createGoogleUserDto {
-//   readonly email: string;
-//   readonly name: string;
-//   readonly picture: string | null;
-//   readonly locale: string;
-// }

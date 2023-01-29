@@ -15,7 +15,6 @@ import {
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
 import filter from '../../helpers/filterShopingIngredientList';
-import { Cocktail } from '../cocktails/shame/cocktails.schema';
 import { IMyCocktails } from '../cocktails/dto/returnMyCocktails.dto';
 
 @Injectable()

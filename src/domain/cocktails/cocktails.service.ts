@@ -20,6 +20,7 @@ import { IDefaultCocktails } from './dto/returnDefaultCocktails.dto';
 import { ShopingList } from '../shoping-list/schema/shoping-list.schema';
 import { IMyCocktails } from './dto/returnMyCocktails.dto';
 // ! s3
+import getFileName from 'src/helpers/imageHeplers/getFileName';
 import { v4 as uuidv4 } from 'uuid';
 import { S3 } from 'aws-sdk';
 
@@ -173,5 +174,18 @@ export class CocktailsService {
       })
       .promise();
     return result;
+  }
+
+  async deleteImage(fileName: string) {
+    if (!fileName) return;
+    const newFileName = getFileName(fileName);
+    const s3 = new S3();
+    await s3.deleteObject(
+      { Bucket: process.env.AWS_BUCKET_NAME, Key: newFileName },
+      (err, data) => {
+        if (!err) console.log('Delete data', data);
+        else console.log(err, err.stack);
+      },
+    );
   }
 }

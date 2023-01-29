@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import { IsOptional, IsArray, IsString, IsBoolean } from 'class-validator';
 
 export class CreateIngredientDto {
@@ -8,9 +7,6 @@ export class CreateIngredientDto {
   readonly description: string;
   @IsString()
   readonly category: string;
-  @IsString()
-  @IsOptional()
-  readonly picture?: string;
   @IsBoolean()
   @IsOptional()
   readonly isDefault?: boolean;

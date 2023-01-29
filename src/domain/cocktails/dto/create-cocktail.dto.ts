@@ -45,9 +45,6 @@ export class CreateCocktailDto {
   readonly isDefault: boolean;
   @IsString()
   readonly recipe: string;
-  @IsOptional()
-  @IsString()
-  readonly picture: string;
   @IsArray()
   @Type(() => Category)
   readonly category: string[];
