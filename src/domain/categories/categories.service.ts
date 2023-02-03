@@ -16,16 +16,16 @@ export class CategoriesService {
     //  acc[el.name] = el.items;
     //  return acc;
     //}, {});
-    console.log('CC', categories);
 
-    const result: any = categories.reduce((acc, el) => {
-      console.log('EL', el);
+    const result: any = categories.reduce((acc, { en }) => {
+      acc[en.name] = en.items;
       return acc;
     }, {});
     return result;
   }
 
   async create({ name, items }): Promise<Category> {
-    return await this.categoryModel.create({ name, items });
+    const result = await this.categoryModel.create({ en: { name, items } });
+    return result;
   }
 }
