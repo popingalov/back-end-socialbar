@@ -17,8 +17,8 @@ export class CategoriesService {
     //  return acc;
     //}, {});
 
-    const result: any = categories.reduce((acc, { description }) => {
-      console.log('EL', description);
+    const result: any = categories.reduce((acc, el) => {
+      console.log('EL', el);
       return acc;
     }, {});
     return result;
