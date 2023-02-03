@@ -25,8 +25,8 @@ export class CategoryData extends Document {
 
 const CategoryDataSchema = SchemaFactory.createForClass(CategoryData);
 
-@Schema({ _id: false })
-class CategoryLang extends Document {
+@Schema()
+export class Category {
   @Prop({ type: CategoryDataSchema, required: true })
   en: CategoryData;
 
@@ -35,14 +35,6 @@ class CategoryLang extends Document {
 
   @Prop({ type: CategoryDataSchema, required: false, default: null })
   ru: CategoryData | null;
-}
-
-const CategoryLangSchema = SchemaFactory.createForClass(CategoryLang);
-
-@Schema()
-export class Category {
-  @Prop({ type: CategoryLangSchema, ref: 'Category', required: true })
-  description: CategoryLang;
 }
 
 const CategorySchema = SchemaFactory.createForClass(Category);
