@@ -12,9 +12,13 @@ export class CategoriesService {
 
   async getByName(): Promise<Category> {
     const categories = await this.categoryModel.find();
-    const result: any = categories.reduce((acc, el) => {
-      acc[el.name] = el.items;
+    //const result: any = categories.reduce((acc, el) => {
+    //  acc[el.name] = el.items;
+    //  return acc;
+    //}, {});
 
+    const result: any = categories.reduce((acc, { description }) => {
+      console.log('EL', description);
       return acc;
     }, {});
     return result;
