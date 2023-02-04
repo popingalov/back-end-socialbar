@@ -14,13 +14,31 @@ export class CategoryItem extends Document {
 
 const CategoryItemSchema = SchemaFactory.createForClass(CategoryItem);
 
-@Schema()
-export class Category {
+@Schema({ _id: false })
+export class CategoryData extends Document {
   @Prop({ required: true, unique: true })
   name: 'cocktails' | 'ingredients';
 
-  @Prop({ type: [CategoryItemSchema], ref: 'Category', required: true })
+  @Prop({
+    type: [CategoryItemSchema],
+    ref: 'Category',
+    required: true,
+  })
   items: CategoryItem[];
+}
+
+const CategoryDataSchema = SchemaFactory.createForClass(CategoryData);
+
+@Schema()
+export class Category {
+  @Prop({ type: CategoryDataSchema, required: true })
+  en: CategoryData;
+
+  @Prop({ type: CategoryDataSchema, required: false, default: {} })
+  ua: CategoryData;
+
+  @Prop({ type: CategoryDataSchema, required: false, default: {} })
+  ru: CategoryData;
 }
 
 const CategorySchema = SchemaFactory.createForClass(Category);

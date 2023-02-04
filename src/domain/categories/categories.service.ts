@@ -12,15 +12,20 @@ export class CategoriesService {
 
   async getByName(): Promise<Category> {
     const categories = await this.categoryModel.find();
-    const result: any = categories.reduce((acc, el) => {
-      acc[el.name] = el.items;
+    //const result: any = categories.reduce((acc, el) => {
+    //  acc[el.name] = el.items;
+    //  return acc;
+    //}, {});
 
+    const result: any = categories.reduce((acc, { en }) => {
+      acc[en.name] = en.items;
       return acc;
     }, {});
     return result;
   }
 
   async create({ name, items }): Promise<Category> {
-    return await this.categoryModel.create({ name, items });
+    const result = await this.categoryModel.create({ en: { name, items } });
+    return result;
   }
 }
