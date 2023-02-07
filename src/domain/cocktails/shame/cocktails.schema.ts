@@ -12,33 +12,32 @@ import defaultRating from 'src/helpers/ratingsFunc/defaultRating';
 //
 export type CocktailDocument = Cocktail & Document;
 
-@Schema({
-  toJSON: {
-    virtuals: true,
-  },
-  // toObject: { virtuals: true },
-})
-export class Cocktail {
-  id: Types.ObjectId;
+@Schema({ _id: false })
+export class CocktailData {
+  @Prop({ default: null })
+  id: Types.ObjectId | null;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
   owner: User;
 
   @Prop({
     type: [CocktailIngredientsSchema],
-    required: true,
+    // required: true,
     // ref: 'Ingredient',
   })
   ingredients: CocktailIngredients[];
 
   @Prop({
     type: CocktailRatingSchema,
-    required: true,
+    // required: true,
     default: defaultRating,
   })
   ratings: CocktailRating;
 
-  @Prop({ type: [String], required: true })
+  @Prop({
+    type: [String],
+    // required: true
+  })
   category: string[];
 
   @Prop({
@@ -48,13 +47,20 @@ export class Cocktail {
   })
   glass: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({
+    // required: true
+  })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({
+    // required: true
+  })
   description: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    // required: true
+  })
   recipe: string;
 
   @Prop({
@@ -77,10 +83,25 @@ export class Cocktail {
   lacks: [];
 }
 
-const CocktailSchema = SchemaFactory.createForClass(Cocktail);
+const CocktailDataSchema = SchemaFactory.createForClass(CocktailData);
 
-CocktailSchema.virtual('id').get(function () {
-  return this._id.toHexString();
-});
+@Schema({
+  toJSON: {
+    virtuals: true,
+  },
+  // toObject: { virtuals: true },
+})
+export class Cocktail {
+  @Prop({ type: CocktailDataSchema, required: true })
+  en: CocktailData;
+
+  @Prop({ type: CocktailDataSchema, required: false, default: {} })
+  ua: CocktailData;
+
+  @Prop({ type: CocktailDataSchema, required: false, default: {} })
+  ru: CocktailData;
+}
+
+const CocktailSchema = SchemaFactory.createForClass(Cocktail);
 
 export { CocktailSchema };

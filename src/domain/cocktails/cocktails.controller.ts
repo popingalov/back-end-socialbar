@@ -53,6 +53,7 @@ export class CocktailsController {
       owner: id,
     });
   }
+
   @UseGuards(JwtPublickGuard)
   @Get(':id')
   async getOne(@Param() { id }: IdDto, @Req() req): Promise<Cocktail> {
@@ -69,6 +70,7 @@ export class CocktailsController {
     @Body() body: CreateCocktailDto,
     @Req() req,
   ): Promise<Cocktail> {
+    console.log('START');
     const { id } = req.user;
     let imageUploadLink: IFileUpload = await fileUpload(
       image,
