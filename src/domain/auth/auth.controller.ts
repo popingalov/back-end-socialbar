@@ -16,6 +16,8 @@ export class AuthController {
   googleAuthRedirect(@Req() req) {
     const { token } = req.user;
 
-    return { url: `http://localhost:3000/?token=${token}` };
+    return {
+      url: `https://cosiaclbar.netlify.app/?token=${token}`,
+    };
   }
 }
