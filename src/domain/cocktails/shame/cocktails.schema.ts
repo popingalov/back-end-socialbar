@@ -14,29 +14,29 @@ export type CocktailDocument = Cocktail & Document;
 
 @Schema({ _id: false })
 export class CocktailData {
-  @Prop({ default: null })
-  id: Types.ObjectId | null;
-
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
-  owner: User;
-
+  @Prop({
+    default: () => {
+      return new Types.ObjectId();
+    },
+  })
+  id: Types.ObjectId;
   @Prop({
     type: [CocktailIngredientsSchema],
-    // required: true,
-    // ref: 'Ingredient',
+    required: true,
+    ref: 'Ingredient',
   })
   ingredients: CocktailIngredients[];
 
   @Prop({
     type: CocktailRatingSchema,
-    // required: true,
+    required: true,
     default: defaultRating,
   })
   ratings: CocktailRating;
 
   @Prop({
     type: [String],
-    // required: true
+    required: true,
   })
   category: string[];
 
@@ -48,18 +48,19 @@ export class CocktailData {
   glass: Types.ObjectId;
 
   @Prop({
-    // required: true
+    required: true,
   })
   title: string;
 
   @Prop({
-    // required: true
+    type: String,
+    required: true,
   })
   description: string;
 
   @Prop({
     type: String,
-    // required: true
+    required: true,
   })
   recipe: string;
 
@@ -94,14 +95,21 @@ const CocktailDataSchema = SchemaFactory.createForClass(CocktailData);
 export class Cocktail {
   @Prop({ type: CocktailDataSchema, required: true })
   en: CocktailData;
+  @Prop({
+    type: SchemaTypes.ObjectId,
+    required: true,
+    default: (state) => state.en.id,
+  })
+  _id: Types.ObjectId;
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
+  owner: User;
 
-  @Prop({ type: CocktailDataSchema, required: false, default: {} })
+  @Prop({ type: CocktailDataSchema, default: {} })
   ua: CocktailData;
 
-  @Prop({ type: CocktailDataSchema, required: false, default: {} })
+  @Prop({ type: CocktailDataSchema, default: {} })
   ru: CocktailData;
 }
 
 const CocktailSchema = SchemaFactory.createForClass(Cocktail);
-
 export { CocktailSchema };

@@ -70,7 +70,7 @@ export class CocktailsController {
     @Body() body: CreateCocktailDto,
     @Req() req,
   ): Promise<Cocktail> {
-    console.log('START');
+    // console.log('START');
     const { id } = req.user;
     let imageUploadLink: IFileUpload = await fileUpload(
       image,

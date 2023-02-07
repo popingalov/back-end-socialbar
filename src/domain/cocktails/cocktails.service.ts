@@ -35,16 +35,19 @@ export class CocktailsService {
   ) {}
 
   async createOne(cocktail): Promise<Cocktail> {
-    const langBody = { en: cocktail, ua: cocktail, ru: cocktail };
-    const newCocktail = new this.cocktailModel(langBody);
-    await newCocktail.save();
-    const updateCocktailId = await this.cocktailModel.findByIdAndUpdate(
-      newCocktail._id,
-      { $set: { en: { id: newCocktail._id } } },
-      { new: true },
-    );
+    // console.log(cocktail);
 
-    return updateCocktailId;
+    const langBody = {
+      owner: cocktail.owner,
+      en: cocktail,
+      ua: cocktail,
+      ru: cocktail,
+    };
+
+    const newCocktail = await this.cocktailModel.create(langBody);
+    // await newCocktail.save();
+
+    return newCocktail;
   }
 
   async getDefault(): Promise<IDefaultCocktails> {
