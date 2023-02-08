@@ -12,22 +12,18 @@ import defaultRating from 'src/helpers/ratingsFunc/defaultRating';
 //
 export type CocktailDocument = Cocktail & Document;
 
-@Schema({
-  toJSON: {
-    virtuals: true,
-  },
-  // toObject: { virtuals: true },
-})
-export class Cocktail {
+@Schema({ _id: false })
+export class CocktailData {
+  @Prop({
+    default: () => {
+      return new Types.ObjectId();
+    },
+  })
   id: Types.ObjectId;
-
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
-  owner: User;
-
   @Prop({
     type: [CocktailIngredientsSchema],
     required: true,
-    // ref: 'Ingredient',
+    ref: 'Ingredient',
   })
   ingredients: CocktailIngredients[];
 
@@ -38,7 +34,10 @@ export class Cocktail {
   })
   ratings: CocktailRating;
 
-  @Prop({ type: [String], required: true })
+  @Prop({
+    type: [String],
+    required: true,
+  })
   category: string[];
 
   @Prop({
@@ -48,13 +47,21 @@ export class Cocktail {
   })
   glass: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({
+    required: true,
+  })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({
+    type: String,
+    required: true,
+  })
   description: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    required: true,
+  })
   recipe: string;
 
   @Prop({
@@ -77,10 +84,32 @@ export class Cocktail {
   lacks: [];
 }
 
+const CocktailDataSchema = SchemaFactory.createForClass(CocktailData);
+
+@Schema({
+  toJSON: {
+    virtuals: true,
+  },
+  // toObject: { virtuals: true },
+})
+export class Cocktail {
+  @Prop({ type: CocktailDataSchema, required: true })
+  en: CocktailData;
+  @Prop({
+    type: SchemaTypes.ObjectId,
+    required: true,
+    default: (state) => state.en.id,
+  })
+  _id: Types.ObjectId;
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
+  owner: User;
+
+  @Prop({ type: CocktailDataSchema, default: {} })
+  ua: CocktailData;
+
+  @Prop({ type: CocktailDataSchema, default: {} })
+  ru: CocktailData;
+}
+
 const CocktailSchema = SchemaFactory.createForClass(Cocktail);
-
-CocktailSchema.virtual('id').get(function () {
-  return this._id.toHexString();
-});
-
 export { CocktailSchema };

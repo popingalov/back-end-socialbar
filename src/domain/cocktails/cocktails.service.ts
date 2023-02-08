@@ -35,23 +35,36 @@ export class CocktailsService {
   ) {}
 
   async createOne(cocktail): Promise<Cocktail> {
-    const newCocktail = new this.cocktailModel(cocktail);
+    // console.log(cocktail);
 
-    return await newCocktail.save();
+    const langBody = {
+      owner: cocktail.owner,
+      en: cocktail,
+      ua: cocktail,
+      ru: cocktail,
+    };
+
+    const newCocktail = await this.cocktailModel.create(langBody);
+    // await newCocktail.save();
+
+    return newCocktail;
   }
 
   async getDefault(): Promise<IDefaultCocktails> {
+    // !
+    const language = 'en';
+    // !
     const owner = process.env.OWNER;
     const cocktails: Cocktail[] = await this.cocktailModel
-      .find({ owner }, '-__v -owner')
+      .find({ owner }, `-__v -owner ${language}`)
       .populate('ingredients.data', ['id', 'title', 'description', 'image'])
       .populate('glass')
       .populate('ingredients.alternatives');
     const ingredients: ShopingList = await this.IngredientListModel.findOne({
       owner,
     });
-
     const favorite: Favorite = await this.FavoriteService.getAll({ owner });
+
     const result: IDefaultCocktails = filterDefault(
       cocktails,
       ingredients,
@@ -61,6 +74,11 @@ export class CocktailsService {
   }
 
   async getMyDefault({ owner }): Promise<IDefaultCocktails> {
+    console.log('THIS');
+    // !
+    const language = 'en';
+    console.log(language);
+    // !
     const defaultOwner = process.env.OWNER;
     const [cocktails, ingredients, favorite]: [
       Cocktail[],
@@ -68,10 +86,15 @@ export class CocktailsService {
       Favorite,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ owner: defaultOwner }, '-__v -owner')
-        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass', '-__v')
-        .populate('ingredients.alternatives'),
+        .find({ title: '' }, `${language}`)
+        .populate(`${language}.ingredients.data`, [
+          'id',
+          'title',
+          'description',
+          'image',
+        ])
+        .populate(`${language}.glass`, '-__v')
+        .populate(`${language}.ingredients.alternatives`),
       this.IngredientListModel.findOne({
         owner: owner,
       }),
@@ -88,6 +111,11 @@ export class CocktailsService {
   }
 
   async getMyCocktails({ owner }): Promise<IMyCocktails> {
+    // !
+    const language = 'en';
+    console.log(language);
+    // !
+
     const [cocktails, ingredients, favorite, defaultObj]: [
       Cocktail[],
       IngredientList,
@@ -95,10 +123,15 @@ export class CocktailsService {
       IDefaultCocktails,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ owner }, '-__v -owner')
-        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass', '-__v')
-        .populate('ingredients.alternatives'),
+        .find({ owner }, `${language}`)
+        .populate(`${language}.ingredients.data`, [
+          'id',
+          'title',
+          'description',
+          'image',
+        ])
+        .populate(`${language}.glass`, '-__v')
+        .populate(`${language}.ingredients.alternatives`),
       this.IngredientListModel.findOne({
         owner,
       }),
@@ -160,9 +193,10 @@ export class CocktailsService {
         new: true,
       },
     );
-
     return await updateCocktail;
   }
+
+  // todo work with image and s3
 
   async uploadImage(dataBuffer: Buffer, fileName: string) {
     const s3 = new S3();

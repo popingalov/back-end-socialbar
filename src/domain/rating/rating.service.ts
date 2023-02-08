@@ -66,7 +66,7 @@ export class RatingService {
     );
 
     if (findCocktail) {
-      const { average } = findCocktail.ratings;
+      const { average } = findCocktail.en.ratings;
       return average;
     }
     return `No items`;
