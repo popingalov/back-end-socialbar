@@ -38,6 +38,7 @@ export class CocktailsController2 {
   async getAll(@Req() req): Promise<IDefaultCocktails | IMyCocktails> {
     const { id, trigger } = req.user;
     if (trigger) {
+      console.log('trigger', trigger);
       return await this.cocktailService.getDefault();
     }
     return await this.cocktailService.getMyCocktails({

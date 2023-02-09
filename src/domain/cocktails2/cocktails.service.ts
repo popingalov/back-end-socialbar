@@ -51,13 +51,20 @@ export class CocktailsService2 {
   async getDefault(): Promise<IDefaultCocktails> {
     // !
     const language = 'en';
-    // !
+    console.log('DEFAULT');
+
     const owner = process.env.OWNER;
     const cocktails: Cocktail2[] = await this.cocktailModel
-      .find({ owner }, `-__v -owner ${language}`)
-      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-      .populate('glass')
-      .populate('ingredients.alternatives');
+      .find({ owner }, `${language}`)
+      .populate(`${language}.ingredients.data`, [
+        'id',
+        'title',
+        'description',
+        'image',
+      ])
+      .populate(`${language}.glass`, '-__v')
+      .populate(`${language}.ingredients.alternatives`);
+
     const ingredients: ShopingList = await this.IngredientListModel.findOne({
       owner,
     });
@@ -72,11 +79,10 @@ export class CocktailsService2 {
   }
 
   async getMyDefault({ owner }): Promise<IDefaultCocktails> {
-    console.log('THIS');
+    console.log('THIS IN MY-DEFAULT');
     // !
     const language = 'en';
-    console.log(language);
-    // !
+
     const defaultOwner = process.env.OWNER;
     const [cocktails, ingredients, favorite]: [
       Cocktail2[],
@@ -84,7 +90,7 @@ export class CocktailsService2 {
       Favorite,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ title: 'Test 13' }, `${language}`)
+        .find({ owner: defaultOwner }, `${language}`)
         .populate(`${language}.ingredients.data`, [
           'id',
           'title',
@@ -99,7 +105,6 @@ export class CocktailsService2 {
       this.FavoriteService.getAll({ owner }),
     ]);
     // console.log(cocktails);
-    console.log(1996);
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,
@@ -112,7 +117,7 @@ export class CocktailsService2 {
   async getMyCocktails({ owner }): Promise<IMyCocktails> {
     // !
     const language = 'en';
-    // !
+    console.log('THIS IN MY COCKTAILS');
 
     const [cocktails, ingredients, favorite, defaultObj]: [
       Cocktail2[],
@@ -152,13 +157,21 @@ export class CocktailsService2 {
   }
 
   async getById({ id, owner }): Promise<Cocktail2> {
+    // !
+    const language = 'en';
+    console.log('THIS IN GET BY ID');
     try {
       const [cocktail, favorite, ingredients] = await Promise.all([
         this.cocktailModel
-          .findById(id, '-__v -owner')
-          .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-          .populate('glass')
-          .populate('ingredients.alternatives'),
+          .findById(id, `${language}`)
+          .populate(`${language}.ingredients.data`, [
+            'id',
+            'title',
+            'description',
+            'image',
+          ])
+          .populate(`${language}.glass`, '-__v')
+          .populate(`${language}.ingredients.alternatives`),
         this.FavoriteService.getAll({ owner }),
         this.IngredientListModel.findOne({
           owner,

@@ -173,6 +173,7 @@ export class CocktailsService {
         Key: `${uuidv4()}-${fileName}`,
       })
       .promise();
+    console.log(result);
     return result;
   }
 
