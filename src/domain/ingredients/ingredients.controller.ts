@@ -35,7 +35,7 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('img'))
+  @UseInterceptors(FileInterceptor('picture'))
   async createIngredient(
     @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateIngredientDto,

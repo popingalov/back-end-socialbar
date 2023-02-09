@@ -10,6 +10,9 @@ export class CreateIngredientDto {
   @IsBoolean()
   @IsOptional()
   readonly isDefault?: boolean;
+  @IsOptional()
+  // @IsString()
+  readonly picture?: Express.Multer.File;
   @IsBoolean()
   @IsOptional()
   readonly availability?: boolean;
