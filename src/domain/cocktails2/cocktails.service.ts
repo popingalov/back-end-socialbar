@@ -196,10 +196,44 @@ export class CocktailsService2 {
     id: Types.ObjectId,
     cocktail: UpdateCocktailDto,
   ): Promise<Cocktail2> {
+    const lang = 'ua';
+    const oldData = await this.cocktailModel.findById(id);
+    console.log(oldData);
+    const {
+      ingredients,
+      ratings,
+      category,
+      glass,
+      recipe,
+      picture,
+      isDefault,
+      favorite,
+      iCan,
+      lacks,
+    } = oldData[lang];
+
     const { title, description } = cocktail;
-    const updateCocktail = this.cocktailModel.findByIdAndUpdate(
-      id,
-      { title, description },
+    const newData = {
+      [lang]: {
+        id,
+        title,
+        description,
+        ingredients,
+        ratings,
+        category,
+        glass,
+        recipe,
+        picture,
+        isDefault,
+        favorite,
+        iCan,
+        lacks,
+      },
+    };
+
+    const updateCocktail = this.cocktailModel.findOneAndUpdate(
+      { _id: id },
+      { $set: newData },
       {
         new: true,
       },
@@ -208,7 +242,6 @@ export class CocktailsService2 {
   }
 
   // todo work with image and s3
-
   async uploadImage(dataBuffer: Buffer, fileName: string) {
     const s3 = new S3();
     const result = await s3
