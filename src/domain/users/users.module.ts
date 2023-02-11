@@ -10,6 +10,10 @@ import {
   IngredientListSchema,
 } from '../ingredient-list/schema/ingredientList.schema';
 import { Favorite, FavoriteSchema } from '../favorite/shema/favorite.schema';
+import {
+  ShopingList,
+  ShopingListSchema,
+} from '../shoping-list/schema/shoping-list.schema';
 
 @Module({
   controllers: [UsersController],
@@ -23,6 +27,10 @@ import { Favorite, FavoriteSchema } from '../favorite/shema/favorite.schema';
       {
         name: IngredientList.name,
         schema: IngredientListSchema,
+      },
+      {
+        name: ShopingList.name,
+        schema: ShopingListSchema,
       },
       {
         name: Favorite.name,
