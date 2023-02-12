@@ -1,7 +1,8 @@
-import { IsMongoId } from 'class-validator';
+import { IsMongoId, Length } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class IdDto {
-  @IsMongoId()
+  @Length(24, 24)
+  // @IsMongoId()
   readonly id: Types.ObjectId;
 }
