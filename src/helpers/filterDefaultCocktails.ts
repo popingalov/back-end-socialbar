@@ -6,13 +6,12 @@ export default function filterDefault(
   favorite,
   lang = 'en',
 ): IDefaultCocktails {
-
+  console.log(cocktails);
 
   return cocktails.reduce(
     (acc, cock, idx) => {
       const cocktail = cock[lang];
       let helper = cocktail.ingredients.length;
-
 
       //
       const favoriteResult =
