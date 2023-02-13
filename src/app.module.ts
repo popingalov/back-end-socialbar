@@ -5,7 +5,6 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './domain/auth/auth.module';
 import { UsersModule } from './domain/users/users.module';
 import { CocktailsModule } from './domain/cocktails/cocktails.module';
-import { CocktailsModule2 } from './domain/cocktails2/cocktails.module';
 import { IngredientsModule } from './domain/ingredients/ingredients.module';
 import { GlassesModule } from './domain/glasses/glasses.module';
 
@@ -28,7 +27,6 @@ const DB_HOST =
     PassportModule.register({ session: true }),
     UsersModule,
     AuthModule,
-    CocktailsModule,
     IngredientsModule,
     GlassesModule,
     CategoriesModule,
@@ -36,7 +34,7 @@ const DB_HOST =
     ShopingListModule,
     IngredientListModule,
     RatingModule,
-    CocktailsModule2,
+    CocktailsModule,
   ],
 })
 export class AppModule {}

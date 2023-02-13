@@ -63,15 +63,18 @@ export class IngredientsController {
   @UseGuards(JwtPublickGuard)
   @Get()
   async getDefault(@Req() req): Promise<Ingredient[]> {
+    const { lang } = req.query;
     const owner = req.user.id;
-    return await this.ingredientsService.getDefault({ owner });
+    return await this.ingredientsService.getDefault({ owner, lang });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/my')
   async getIngredients(@Req() req): Promise<Ingredient[]> {
+    const { lang } = req.query;
     return await this.ingredientsService.getIngredients({
       owner: req.user.id,
+      lang,
     });
   }
 

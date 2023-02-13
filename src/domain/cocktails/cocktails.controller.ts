@@ -4,6 +4,7 @@ import {
   Post,
   Res,
   Put,
+  Patch,
   Delete,
   Body,
   Req,
@@ -29,7 +30,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import IFileUpload from 'src/helpers/imageHeplers/fileUpload.interface';
 import fileUpload from 'src/helpers/imageHeplers/fileUpload';
 
-@Controller('cocktails')
+@Controller('cocktails2')
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
 
@@ -37,11 +38,15 @@ export class CocktailsController {
   @Get()
   async getAll(@Req() req): Promise<IDefaultCocktails | IMyCocktails> {
     const { id, trigger } = req.user;
+    const { lang } = req.query;
+
     if (trigger) {
-      return await this.cocktailService.getDefault();
+      console.log('trigger', trigger);
+      return await this.cocktailService.getDefault({ lang });
     }
     return await this.cocktailService.getMyCocktails({
       owner: id,
+      lang,
     });
   }
 
@@ -49,21 +54,24 @@ export class CocktailsController {
   @UseGuards(JwtAuthGuard)
   async getMyCocktails(@Req() req): Promise<IMyCocktails> {
     const { id } = req.user;
+    const { lang } = req.query;
     return await this.cocktailService.getMyCocktails({
       owner: id,
+      lang,
     });
   }
+
   @UseGuards(JwtPublickGuard)
   @Get(':id')
   async getOne(@Param() { id }: IdDto, @Req() req): Promise<Cocktail> {
     const owner = req.user.id;
-
-    return await this.cocktailService.getById({ id, owner });
+    const { lang } = req.query;
+    return await this.cocktailService.getById({ id, owner, lang });
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('img'))
+  @UseInterceptors(FileInterceptor('picture'))
   async createCocktail(
     @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateCocktailDto,
@@ -97,7 +105,7 @@ export class CocktailsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
+  @Patch(':id')
   async updateOne(
     @Body() cocktail: UpdateCocktailDto,
     @Param() { id }: IdDto,
@@ -108,7 +116,7 @@ export class CocktailsController {
   // ! test controller
   @UseGuards(JwtAuthGuard)
   @Post('upload')
-  @UseInterceptors(FileInterceptor('img'))
+  @UseInterceptors(FileInterceptor('picture'))
   async testUpload(@UploadedFile() image: Express.Multer.File, @Body() body) {
     const { picture } = body;
     await this.cocktailService.deleteImage(picture);

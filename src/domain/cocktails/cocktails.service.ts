@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-
-//
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-//
+
+// ? Helpers
 import filterDefault from '../../helpers/filterDefaultCocktails';
 import filterMy from '../../helpers/filterMyCocktails';
-import { FavoriteService } from '../favorite/favorite.service';
 import addFavoriteAndICan from '../../helpers/addFavoriteAndICan';
 import errorGenerator from '../../helpers/errorGenerator';
+
+// ?
+import { FavoriteService } from '../favorite/favorite.service';
 import { Cocktail, CocktailDocument } from './shame/cocktails.schema';
 import {
   IngredientListDocument,
@@ -34,24 +35,38 @@ export class CocktailsService {
     private readonly IngredientListModel: Model<IngredientListDocument>,
   ) {}
 
+  // todo METHODS
   async createOne(cocktail): Promise<Cocktail> {
-    const newCocktail = new this.cocktailModel(cocktail);
+    const langBody = {
+      owner: cocktail.owner,
+      en: cocktail,
+    };
 
-    return await newCocktail.save();
+    const newCocktail = await this.cocktailModel.create(langBody);
+    // await newCocktail.save();
+    return newCocktail;
   }
 
-  async getDefault(): Promise<IDefaultCocktails> {
+  async getDefault({ lang = 'en' }): Promise<IDefaultCocktails> {
+    console.log('DEFAULT');
     const owner = process.env.OWNER;
+
     const cocktails: Cocktail[] = await this.cocktailModel
-      .find({ owner }, '-__v -owner')
-      .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-      .populate('glass')
-      .populate('ingredients.alternatives');
+      .find({ owner }, `${lang}`)
+      .populate(`${lang}.ingredients.data`, [
+        'id',
+        'title',
+        'description',
+        'image',
+      ])
+      .populate(`${lang}.glass`, '-__v')
+      .populate(`${lang}.ingredients.alternatives`);
+
     const ingredients: ShopingList = await this.IngredientListModel.findOne({
       owner,
     });
-
     const favorite: Favorite = await this.FavoriteService.getAll({ owner });
+
     const result: IDefaultCocktails = filterDefault(
       cocktails,
       ingredients,
@@ -60,24 +75,30 @@ export class CocktailsService {
     return result;
   }
 
-  async getMyDefault({ owner }): Promise<IDefaultCocktails> {
+  async getMyDefault({ owner, lang = 'en' }): Promise<IDefaultCocktails> {
+    console.log('THIS IN MY-DEFAULT');
     const defaultOwner = process.env.OWNER;
+
     const [cocktails, ingredients, favorite]: [
       Cocktail[],
       IngredientList,
       Favorite,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ owner: defaultOwner }, '-__v -owner')
-        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass', '-__v')
-        .populate('ingredients.alternatives'),
+        .find({ owner: defaultOwner }, `${lang}`)
+        .populate(`${lang}.ingredients.data`, [
+          'id',
+          'title',
+          'description',
+          'image',
+        ])
+        .populate(`${lang}.glass`, '-__v')
+        .populate(`${lang}.ingredients.alternatives`),
       this.IngredientListModel.findOne({
         owner: owner,
       }),
       this.FavoriteService.getAll({ owner }),
     ]);
-    // console.log(cocktails);
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,
@@ -87,7 +108,9 @@ export class CocktailsService {
     return result;
   }
 
-  async getMyCocktails({ owner }): Promise<IMyCocktails> {
+  async getMyCocktails({ owner, lang = 'en' }): Promise<IMyCocktails> {
+    console.log('THIS IN MY-COCKTAILS');
+
     const [cocktails, ingredients, favorite, defaultObj]: [
       Cocktail[],
       IngredientList,
@@ -95,48 +118,59 @@ export class CocktailsService {
       IDefaultCocktails,
     ] = await Promise.all([
       this.cocktailModel
-        .find({ owner }, '-__v -owner')
-        .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-        .populate('glass', '-__v')
-        .populate('ingredients.alternatives'),
+        .find({ owner }, `${lang}`)
+        .populate(`${lang}.ingredients.data`, [
+          'id',
+          'title',
+          'description',
+          'image',
+        ])
+        .populate(`${lang}.glass`, '-__v')
+        .populate(`${lang}.ingredients.alternatives`),
       this.IngredientListModel.findOne({
         owner,
       }),
       this.FavoriteService.getAll({ owner }),
-      this.getMyDefault({ owner }),
+      this.getMyDefault({ owner, lang }),
     ]);
 
     const myObj = filterMy(cocktails, ingredients, favorite);
-    // console.log(myObj);
-
     const mine = myObj.all.length === 0 ? null : myObj.mine;
+
     const result = {
       haveAll: myObj.haveAll.concat(defaultObj.haveAll),
       needMore: myObj.needMore.concat(defaultObj.needMore),
       other: myObj.other.concat(defaultObj.other),
       all: myObj.all.concat(defaultObj.all),
       mine,
+      lang,
     };
     return result;
   }
 
-  async getById({ id, owner }): Promise<Cocktail> {
+  async getById({ id, owner, lang = 'en' }): Promise<Cocktail> {
     try {
       const [cocktail, favorite, ingredients] = await Promise.all([
         this.cocktailModel
-          .findById(id, '-__v -owner')
-          .populate('ingredients.data', ['id', 'title', 'description', 'image'])
-          .populate('glass')
-          .populate('ingredients.alternatives'),
+          .findById(id, `${lang}`)
+          .populate(`${lang}.ingredients.data`, [
+            'id',
+            'title',
+            'description',
+            'image',
+          ])
+          .populate(`${lang}.glass`, '-__v')
+          .populate(`${lang}.ingredients.alternatives`),
         this.FavoriteService.getAll({ owner }),
         this.IngredientListModel.findOne({
           owner,
         }),
       ]);
-      const result = addFavoriteAndICan(cocktail, ingredients, favorite);
+      console.log('!!!');
+      const result = addFavoriteAndICan(cocktail, ingredients, favorite, lang);
       return result;
     } catch (error) {
-      errorGenerator('Wrong ID , ingredient not found', 'NOT_FOUND');
+      errorGenerator('Wrong ID , cocktail not found', 'NOT_FOUND');
     }
   }
 
@@ -152,18 +186,52 @@ export class CocktailsService {
     id: Types.ObjectId,
     cocktail: UpdateCocktailDto,
   ): Promise<Cocktail> {
+    const lang = 'ua';
+    const oldData = await this.cocktailModel.findById(id);
+    console.log(oldData);
+    const {
+      ingredients,
+      ratings,
+      category,
+      glass,
+      recipe,
+      picture,
+      isDefault,
+      favorite,
+      iCan,
+      lacks,
+    } = oldData[lang];
+
     const { title, description } = cocktail;
-    const updateCocktail = this.cocktailModel.findByIdAndUpdate(
-      id,
-      { title, description },
+    const newData = {
+      [lang]: {
+        id,
+        title,
+        description,
+        ingredients,
+        ratings,
+        category,
+        glass,
+        recipe,
+        picture,
+        isDefault,
+        favorite,
+        iCan,
+        lacks,
+      },
+    };
+
+    const updateCocktail = this.cocktailModel.findOneAndUpdate(
+      { _id: id },
+      { $set: newData },
       {
         new: true,
       },
     );
-
     return await updateCocktail;
   }
 
+  // todo work with image and s3
   async uploadImage(dataBuffer: Buffer, fileName: string) {
     const s3 = new S3();
     const result = await s3
@@ -173,7 +241,6 @@ export class CocktailsService {
         Key: `${uuidv4()}-${fileName}`,
       })
       .promise();
-    console.log(result);
     return result;
   }
 

@@ -1,7 +1,10 @@
-export default function (cocktail, ingredients, favorite) {
-  const lang = 'en';
-  // !
-
+export default function addFavoriteAndICan(
+  cocktail,
+  ingredients,
+  favorite,
+  lang,
+): any {
+  console.log(lang);
   let helper = cocktail[lang].ingredients.length;
 
   //

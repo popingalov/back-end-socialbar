@@ -1,7 +1,12 @@
 import { IDefaultCocktails } from 'src/domain/cocktails/dto/returnDefaultCocktails.dto';
-import addFavirotAndIcan from './addFavoriteAndICan';
-export default function (cocktails, ingredients, favorite): IDefaultCocktails {
-  const lang = 'en';
+
+export default function filterDefault(
+  cocktails,
+  ingredients,
+  favorite,
+  lang = 'ua',
+): IDefaultCocktails {
+  //const lang = 'ua';
   return cocktails.reduce(
     (acc, cocktail, idx) => {
       let helper = cocktail[lang].ingredients.length;
