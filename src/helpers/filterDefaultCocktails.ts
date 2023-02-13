@@ -6,20 +6,24 @@ export default function filterDefault(
   favorite,
   lang = 'en',
 ): IDefaultCocktails {
+
+
   return cocktails.reduce(
-    (acc, cocktail, idx) => {
-      let helper = cocktail[lang].ingredients.length;
+    (acc, cock, idx) => {
+      const cocktail = cock[lang];
+      let helper = cocktail.ingredients.length;
+
 
       //
       const favoriteResult =
         favorite.cocktails.reduce((acc, el) => {
-          if (el.id === cocktail[lang].id) acc += 1;
+          if (el.id === cocktail.id) acc += 1;
           return acc;
         }, 0) === 1;
-      cocktail[lang].favorite = favoriteResult;
+      cocktail.favorite = favoriteResult;
       //
 
-      const include = cocktail[lang].ingredients.reduce((acc, el) => {
+      const include = cocktail.ingredients.reduce((acc, el) => {
         if (!el.data) {
           return acc;
         }
@@ -27,24 +31,24 @@ export default function filterDefault(
           acc += 1;
           return acc;
         }
-        cocktail[lang].lacks.push(el.data.title);
+        cocktail.lacks.push(el.data.title);
         return acc;
       }, 0);
 
       const iCanDo = include === helper;
 
-      acc.all.push(cocktail[lang]);
+      acc.all.push(cocktail);
       if (iCanDo) {
-        cocktail[lang].iCan = true;
-        acc.haveAll.push(cocktail[lang]);
+        cocktail.iCan = true;
+        acc.haveAll.push(cocktail);
         return acc;
       }
 
       if (helper - include <= 2) {
-        acc.needMore.push(cocktail[lang]);
+        acc.needMore.push(cocktail);
         return acc;
       }
-      acc.other.push(cocktail[lang]);
+      acc.other.push(cocktail);
       return acc;
     },
     { haveAll: [], needMore: [], other: [], all: [], mine: null },
