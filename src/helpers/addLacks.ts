@@ -4,14 +4,10 @@ export default function addLacks({ favorite, ingredientList }) {
   });
   console.log('! D');
   favorite.cocktails.forEach((cock, idx) => {
-
-    console.log(cock);
-    if (cock.ua.ingredients.length <= 0) {
+    if (cock.en.ingredients.length <= 0) {
       return favorite;
     }
-    cock.ua.ingredients.forEach((el) => {
-      console.log('ARA');
-
+    cock.en.ingredients.forEach((el) => {
       if (!list.includes(el.data.title)) {
         favorite.cocktails[idx].lacks.push(el.data.title);
       }

@@ -62,6 +62,7 @@ export class FavoriteService {
     const result = addLacks({ favorite, ingredientList });
     return result;
   }
+
   async getAllForMail({ email }: GetFavoriteDtoMail): Promise<Favorite> {
     const favoriteList = await this.favoritetModel
       .findOne({ email })

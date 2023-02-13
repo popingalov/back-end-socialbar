@@ -4,13 +4,11 @@ export default function filterMy(
   cocktails,
   ingredients,
   favorite,
-  lang = 'ua',
+  lang = 'en',
 ): IMyCocktails {
-  //const lang = 'ua';
   return cocktails.reduce(
     (acc, cocktail, idx) => {
       let helper = cocktail[lang].ingredients.length;
-      console.log('helper', helper);
 
       //
       const favoriteResult =
