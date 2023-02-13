@@ -136,7 +136,7 @@ export class CocktailsService {
       this.getMyDefault({ owner, lang }),
     ]);
 
-    const myObj = filterMy(cocktails, ingredients, favorite);
+    const myObj = filterMy(cocktails, ingredients, favorite, lang);
     const mine = myObj.all.length === 0 ? null : myObj.mine;
 
     const result = {
@@ -168,7 +168,6 @@ export class CocktailsService {
           owner,
         }),
       ]);
-      console.log('!!!');
       const result = addFavoriteAndICan(cocktail, ingredients, favorite, lang);
       return result;
     } catch (error) {
@@ -187,8 +186,8 @@ export class CocktailsService {
   async updateOne(
     id: Types.ObjectId,
     cocktail: UpdateCocktailDto,
+    lang: string = 'en',
   ): Promise<Cocktail> {
-    const lang = 'ua';
     const oldData = await this.cocktailModel.findById(id);
     console.log(oldData);
     const {
@@ -233,7 +232,7 @@ export class CocktailsService {
     return await updateCocktail;
   }
 
-  // todo work with image and s3
+  // todo Work with image and s3
   async uploadImage(dataBuffer: Buffer, fileName: string) {
     const s3 = new S3();
     const result = await s3

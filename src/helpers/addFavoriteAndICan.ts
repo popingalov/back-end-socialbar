@@ -4,7 +4,6 @@ export default function addFavoriteAndICan(
   favorite,
   lang,
 ): any {
-  console.log(lang);
   let helper = cocktail[lang].ingredients.length;
 
   //

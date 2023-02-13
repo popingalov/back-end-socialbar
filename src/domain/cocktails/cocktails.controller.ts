@@ -108,8 +108,10 @@ export class CocktailsController {
   async updateOne(
     @Body() cocktail: UpdateCocktailDto,
     @Param() { id }: IdDto,
+    @Req() req,
   ): Promise<Cocktail> {
-    return await this.cocktailService.updateOne(id, cocktail);
+    const { lang } = req.query;
+    return await this.cocktailService.updateOne(id, cocktail, lang);
   }
 
   // ! test controller
