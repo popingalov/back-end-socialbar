@@ -1,15 +1,18 @@
 export default function (cocktail, ingredients, favorite) {
-  let helper = cocktail.ingredients.length;
+  const lang = 'en';
+  // !
+
+  let helper = cocktail[lang].ingredients.length;
 
   //
   const favoriteResult =
     favorite.cocktails.reduce((acc, el) => {
-      if (el.id === cocktail.id) acc += 1;
+      if (el.id === cocktail[lang].id) acc += 1;
       return acc;
     }, 0) === 1;
-  cocktail.favorite = favoriteResult;
+  cocktail[lang].favorite = favoriteResult;
   //
-  const include = cocktail.ingredients.reduce((acc, el) => {
+  const include = cocktail[lang].ingredients.reduce((acc, el) => {
     if (!el.data) {
       return acc;
     }
@@ -20,8 +23,8 @@ export default function (cocktail, ingredients, favorite) {
   }, 0);
 
   if (include === helper) {
-    cocktail.iCan = true;
+    cocktail[lang].iCan = true;
   }
 
-  return cocktail;
+  return cocktail[lang];
 }

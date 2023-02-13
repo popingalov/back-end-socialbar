@@ -4,6 +4,7 @@ import {
   Post,
   Res,
   Put,
+  Patch,
   Delete,
   Body,
   Req,
@@ -38,6 +39,7 @@ export class CocktailsController2 {
   async getAll(@Req() req): Promise<IDefaultCocktails | IMyCocktails> {
     const { id, trigger } = req.user;
     if (trigger) {
+      console.log('trigger', trigger);
       return await this.cocktailService.getDefault();
     }
     return await this.cocktailService.getMyCocktails({
@@ -99,7 +101,7 @@ export class CocktailsController2 {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
+  @Patch(':id')
   async updateOne(
     @Body() cocktail: UpdateCocktailDto,
     @Param() { id }: IdDto,

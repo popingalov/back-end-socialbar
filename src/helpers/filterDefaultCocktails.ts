@@ -1,20 +1,22 @@
 import { IDefaultCocktails } from 'src/domain/cocktails/dto/returnDefaultCocktails.dto';
 import addFavirotAndIcan from './addFavoriteAndICan';
 export default function (cocktails, ingredients, favorite): IDefaultCocktails {
+  const lang = 'en';
   return cocktails.reduce(
     (acc, cocktail, idx) => {
-      let helper = cocktail.ingredients.length;
+      let helper = cocktail[lang].ingredients.length;
+      console.log('helper', helper);
 
       //
-
       const favoriteResult =
         favorite.cocktails.reduce((acc, el) => {
-          if (el.id === cocktail.id) acc += 1;
+          if (el.id === cocktail[lang].id) acc += 1;
           return acc;
         }, 0) === 1;
-      cocktail.favorite = favoriteResult;
+      cocktail[lang].favorite = favoriteResult;
       //
-      const include = cocktail.ingredients.reduce((acc, el) => {
+
+      const include = cocktail[lang].ingredients.reduce((acc, el) => {
         if (!el.data) {
           return acc;
         }
@@ -22,24 +24,24 @@ export default function (cocktails, ingredients, favorite): IDefaultCocktails {
           acc += 1;
           return acc;
         }
-        cocktail.lacks.push(el.data.title);
+        cocktail[lang].lacks.push(el.data.title);
         return acc;
       }, 0);
 
       const iCanDo = include === helper;
 
-      acc.all.push(cocktail);
+      acc.all.push(cocktail[lang]);
       if (iCanDo) {
-        cocktail.iCan = true;
-        acc.haveAll.push(cocktail);
+        cocktail[lang].iCan = true;
+        acc.haveAll.push(cocktail[lang]);
         return acc;
       }
 
       if (helper - include <= 2) {
-        acc.needMore.push(cocktail);
+        acc.needMore.push(cocktail[lang]);
         return acc;
       }
-      acc.other.push(cocktail);
+      acc.other.push(cocktail[lang]);
       return acc;
     },
     { haveAll: [], needMore: [], other: [], all: [], mine: null },
