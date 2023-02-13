@@ -13,27 +13,28 @@ import {
 
 export type IngredientDocument = Ingredient & Document;
 
-@Schema({
-  toJSON: {
-    virtuals: true,
-  },
-})
-export class Ingredient {
+@Schema({ _id: false })
+export class IngredientData {
+  @Prop({
+    default: () => {
+      return new Types.ObjectId();
+    },
+  })
   id: Types.ObjectId;
-
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
-  owner: User | null;
-
-  @Prop({ type: String, ref: 'categories' })
-  category: string;
 
   @Prop({ type: [], ref: 'Cocktail' })
   cocktails: any[];
 
-  @Prop({ required: true })
+  //@Prop({ type: String, ref: 'categories' })
+  //category: string;
+
+  @Prop({ type: String })
+  category: string[];
+
+  @Prop({ type: String })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String })
   description: string;
 
   @Prop({
@@ -55,10 +56,33 @@ export class Ingredient {
   iHave: boolean;
 }
 
+const IngredientDataSchema = SchemaFactory.createForClass(IngredientData);
+
+@Schema({
+  toJSON: {
+    virtuals: true,
+  },
+})
+export class Ingredient {
+  @Prop({
+    type: SchemaTypes.ObjectId,
+    required: true,
+    default: (state) => state.en.id,
+  })
+  _id: Types.ObjectId;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
+  owner: User | null;
+
+  @Prop({ type: IngredientDataSchema, required: true })
+  en: IngredientData;
+
+  @Prop({ type: IngredientDataSchema, default: {} })
+  ua: IngredientData;
+
+  @Prop({ type: IngredientDataSchema, default: {} })
+  ru: IngredientData;
+}
+
 const IngredientSchema = SchemaFactory.createForClass(Ingredient);
-
-IngredientSchema.virtual('id').get(function () {
-  return this._id.toHexString();
-});
-
 export { IngredientSchema };

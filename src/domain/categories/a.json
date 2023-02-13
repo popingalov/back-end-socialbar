@@ -1,0 +1,38 @@
+{
+  "en": {
+    "name": "cocktails",
+    "items": [
+      {
+        "title": "IBA Official",
+        "code": "IBA Official"
+      },
+      {
+        "title": "Strong",
+        "code": "Strong"
+      },
+      {
+        "title": "Moderately strong",
+        "code": "Moderately strong"
+      },
+      {
+        "title": "Soft",
+        "code": "Soft"
+      },
+      {
+        "title": "Long",
+        "code": "Long"
+      },
+      {
+        "title": "Non-alcoholic",
+        "code": "Non-alcoholic"
+      },
+      {
+        "title": "Shooters",
+        "code": "Shooters"
+      }
+    ]
+  },
+  "ua": {},
+  "ru": {},
+  "__v": 0
+}
