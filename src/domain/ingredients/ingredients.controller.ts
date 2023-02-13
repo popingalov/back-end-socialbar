@@ -26,7 +26,7 @@ import IFileUpload from 'src/helpers/imageHeplers/fileUpload.interface';
 import fileUpload from 'src/helpers/imageHeplers/fileUpload';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('ingredients')
+@Controller('ingredients2')
 export class IngredientsController {
   constructor(
     private readonly ingredientsService: IngredientsService,
@@ -41,6 +41,7 @@ export class IngredientsController {
     @Body() body: CreateIngredientDto,
     @Req() req,
   ): Promise<Ingredient> {
+    const { id } = req.user;
     let imageUploadLink: IFileUpload = await fileUpload(
       image,
       this.cocktailsService.uploadImage,
@@ -51,11 +52,11 @@ export class IngredientsController {
         ? {
             ...body,
             picture: imageUploadLink.Location,
-            owner: req.user.id,
+            owner: id,
           }
         : {
             ...body,
-            owner: req.user.id,
+            owner: id,
           },
     );
   }
@@ -79,8 +80,9 @@ export class IngredientsController {
   }
 
   @Get(':id')
-  async getById(@Param() { id }: IdDto) {
-    return await this.ingredientsService.getIngredientById({ id });
+  async getById(@Param() { id }: IdDto, @Req() req) {
+    const { lang } = req.query;
+    return await this.ingredientsService.getIngredientById({ id, lang });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -92,12 +94,14 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  @UseInterceptors(FileInterceptor('img'))
+  @UseInterceptors(FileInterceptor('picture'))
   async updateOne(
     @UploadedFile() image: Express.Multer.File,
     @Body() body: UpdateIngredientDto,
     @Param() { id }: IdDto,
+    @Req() req,
   ): Promise<Ingredient> {
+    const { lang } = req.query;
     let imageUploadLink: IFileUpload = await fileUpload(
       image,
       this.cocktailsService.uploadImage,
@@ -105,6 +109,7 @@ export class IngredientsController {
 
     return await this.ingredientsService.updateIngredient(
       id,
+      lang,
       imageUploadLink
         ? {
             ...body,

@@ -1,13 +1,22 @@
 import { Ingredient } from 'src/domain/ingredients/schema/ingredients.schema';
 
-export default function ({ ingredients, shopingList, ingredientList, all }) {
+export default function filterShopingIngredientList({
+  ingredients,
+  shopingList,
+  ingredientList,
+  all,
+  lang = 'en',
+}) {
   return ingredients.map((el: Ingredient) => {
-    el.shopping = shopingList.ingredients.includes(el.id);
+    console.log(el[lang]);
+    console.log('shopingList', shopingList);
+    el[lang].shopping = shopingList.ingredients.includes(el[lang].id);
+    console.log(el[lang].shopping);
     const cocktailList: string[] = all.reduce((acc, cocktail) => {
       const result = cocktail.ingredients.reduce((acc, { data }) => {
         if (!data) return acc;
 
-        if (data.title === el.title) {
+        if (data.title === el[lang].title) {
           acc.push(cocktail.title);
         }
         return acc;
@@ -18,8 +27,8 @@ export default function ({ ingredients, shopingList, ingredientList, all }) {
       return acc;
     }, [] as string[]);
 
-    el.cocktails.push(...cocktailList);
-    el.iHave = ingredientList.list.includes(el.id);
+    el[lang].cocktails.push(...cocktailList);
+    el[lang].iHave = ingredientList.list.includes(el[lang].id);
     return el;
   });
 }

@@ -179,8 +179,10 @@ export class CocktailsService {
     await this.cocktailModel.findOneAndDelete({ owner: userId, id });
   }
 
-  async findByIngredient({ id }): Promise<Cocktail[]> {
-    return await this.cocktailModel.find({ 'ingredients.data': id });
+  async findByIngredient({ id, lang }): Promise<Cocktail[]> {
+    console.log('FIND BY INGRIDIENT');
+    const path = `ingredients.${lang}.data`;
+    return await this.cocktailModel.find({ [path]: id });
   }
 
   async updateOne(

@@ -14,7 +14,7 @@ import {
   IngredientList,
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
-import filter from '../../helpers/filterShopingIngredientList';
+import filterShopingIngredientList from '../../helpers/filterShopingIngredientList';
 import { IMyCocktails } from '../cocktails/dto/returnMyCocktails.dto';
 
 @Injectable()
@@ -30,9 +30,14 @@ export class IngredientsService {
   ) {}
 
   async createIngredient(ingredient): Promise<Ingredient> {
-    const newIngredient = new this.ingredientModel(ingredient);
+    const langBody = {
+      owner: ingredient.owner,
+      en: ingredient,
+    };
 
-    return await newIngredient.save();
+    const newIngredient = await this.ingredientModel.create(langBody);
+    // await newIngredient.save();
+    return newIngredient;
   }
 
   async getDefault({ owner, lang = 'en' }): Promise<Ingredient[]> {
@@ -43,12 +48,22 @@ export class IngredientsService {
       ShopingList,
       IngredientList,
     ] = await Promise.all([
-      this.ingredientModel.find({ owner: defaultOwner }, '-owner'),
+      this.ingredientModel.find({ owner: defaultOwner }, `${lang}`),
       this.cocktailsService.getMyCocktails({ owner: defaultOwner, lang }),
       this.shopingListModel.findOne({ owner }),
       this.ingredientListtModel.findOne({ owner }),
     ]);
-    const result = filter({ ingredients, shopingList, ingredientList, all });
+
+    console.log(ingredients);
+    const result = filterShopingIngredientList({
+      ingredients,
+      shopingList,
+      ingredientList,
+      all,
+      lang,
+    });
+
+    console.log('result', result);
 
     return result;
   }
@@ -64,35 +79,83 @@ export class IngredientsService {
         {
           owner,
         },
-        '-owner',
+        `${lang}`,
       ),
       this.cocktailsService.getMyCocktails({ owner, lang }),
       this.shopingListModel.findOne({ owner }),
       this.ingredientListtModel.findOne({ owner }),
     ]);
-    const result = filter({ ingredients, shopingList, ingredientList, all });
+
+    console.log('IN GET INGRIDIENTS');
+    const result = filterShopingIngredientList({
+      ingredients,
+      shopingList,
+      ingredientList,
+      all,
+    });
 
     return result;
   }
 
-  async getIngredientById({ id }) {
+  async getIngredientById({ id, lang = 'en' }) {
     const ingredient = await this.ingredientModel.findById(id);
     if (!ingredient) {
       errorGenerator('Wrong ID , ingredient not found', 'NOT_FOUND');
     }
-    ingredient.cocktails = await this.cocktailsService.findByIngredient({ id });
+    ingredient[lang].cocktails = await this.cocktailsService.findByIngredient({
+      id,
+      lang,
+    });
 
-    return ingredient.populate('cocktails.ingredients.data', ['id', 'title']);
+    console.log('AFTER FIND BY INGRIDIENT', ingredient[lang].cocktails);
+
+    return ingredient.populate(`${lang}.cocktails.ingredients.data`, [
+      'id',
+      'title',
+    ]);
   }
 
   async deleteIngredient({ id, owner }): Promise<void> {
     await this.ingredientModel.findOneAndDelete({ _id: id, owner });
   }
 
-  async updateIngredient(id: Types.ObjectId, body): Promise<Ingredient> {
-    const updateCocktail = this.ingredientModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+  async updateIngredient(
+    id: Types.ObjectId,
+    lang: string = 'en',
+    body,
+  ): Promise<Ingredient> {
+    const oldData = await this.ingredientModel.findById(id);
+    const {
+      cocktails,
+      category,
+      picture,
+      isDefault,
+      availability,
+      shopping,
+      iHave,
+    } = oldData[lang];
+    const { title, description } = body;
+    const newData = {
+      [lang]: {
+        id,
+        title,
+        description,
+        cocktails,
+        category,
+        picture,
+        isDefault,
+        availability,
+        shopping,
+        iHave,
+      },
+    };
+    const updateCocktail = this.ingredientModel.findOneAndUpdate(
+      { _id: id },
+      { $set: newData },
+      {
+        new: true,
+      },
+    );
 
     return await updateCocktail;
   }
