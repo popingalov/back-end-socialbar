@@ -71,6 +71,7 @@ export class CocktailsService {
       cocktails,
       ingredients,
       favorite,
+      lang,
     );
     return result;
   }
@@ -104,6 +105,7 @@ export class CocktailsService {
       cocktails,
       ingredients,
       favorite,
+      lang,
     );
     return result;
   }

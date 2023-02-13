@@ -30,7 +30,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import IFileUpload from 'src/helpers/imageHeplers/fileUpload.interface';
 import fileUpload from 'src/helpers/imageHeplers/fileUpload';
 
-@Controller('cocktails2')
+@Controller('cocktails')
 export class CocktailsController {
   constructor(private readonly cocktailService: CocktailsService) {}
 
@@ -41,7 +41,6 @@ export class CocktailsController {
     const { lang } = req.query;
 
     if (trigger) {
-      console.log('trigger', trigger);
       return await this.cocktailService.getDefault({ lang });
     }
     return await this.cocktailService.getMyCocktails({
