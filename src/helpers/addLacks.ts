@@ -1,22 +1,26 @@
 export default function addLacks({ favorite, ingredientList, lang }) {
+  const favorite1 = { ...favorite }._doc;
   const list = ingredientList.list.map((one) => {
     return one.title;
   });
-  // console.log(favorite.cocktails[0][lang].ingredients[0].data);
-
-  favorite.cocktails.forEach((cock, idx) => {
+  const helper = favorite1.cocktails.map((cock, idx) => {
     cock = cock[lang];
     if (cock.ingredients.length <= 0) {
-      return favorite;
+      return favorite1;
     }
     cock.ingredients.forEach((el) => {
       el.data = el.data[lang];
-      if (!list.includes(el.data.title)) {
-        favorite.cocktails[idx][lang].lacks.push(el.data.title);
+
+      if (!list.includes(el.data[lang].title)) {
+        favorite1.cocktails[idx][lang].lacks.push(el.data[lang].title);
       }
       el.data = el.data._id;
     });
-  });
 
-  return favorite;
+    return cock;
+  });
+  favorite1.cocktails = helper;
+  console.log('tyt', helper);
+
+  return favorite1;
 }

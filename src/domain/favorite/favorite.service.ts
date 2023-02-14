@@ -59,7 +59,8 @@ export class FavoriteService {
       this.ingredientList.findOne({ owner }).populate('list'),
     ]);
 
-    const result = addLacks({ favorite, ingredientList, lang });
+    const result: any = addLacks({ favorite, ingredientList, lang });
+
     return result;
   }
 
