@@ -49,17 +49,17 @@ export class FavoriteService {
     }
   }
 
-  async getAll({ owner }): Promise<Favorite> {
+  async getAll({ owner, lang }): Promise<Favorite> {
     const [favorite, ingredientList] = await Promise.all([
       (
         await this.favoritetModel
           .findOne({ owner })
           .populate('cocktails', '-owner')
-      ).populate('cocktails.ingredients.data'),
+      ).populate(`cocktails.${lang}.ingredients.data`),
       this.ingredientList.findOne({ owner }).populate('list'),
     ]);
 
-    const result = addLacks({ favorite, ingredientList });
+    const result = addLacks({ favorite, ingredientList, lang });
     return result;
   }
 

@@ -32,6 +32,7 @@ export class FavoriteController {
   getAll(@Req() req): Promise<Favorite> {
     return this.favoriteService.getAll({
       owner: req.user.id,
+      lang: 'en',
     });
   }
 

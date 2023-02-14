@@ -64,7 +64,10 @@ export class CocktailsService {
     const ingredients: ShopingList = await this.IngredientListModel.findOne({
       owner,
     });
-    const favorite: Favorite = await this.FavoriteService.getAll({ owner });
+    const favorite: Favorite = await this.FavoriteService.getAll({
+      owner,
+      lang,
+    });
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,
@@ -96,7 +99,7 @@ export class CocktailsService {
       this.IngredientListModel.findOne({
         owner: owner,
       }),
-      this.FavoriteService.getAll({ owner }),
+      this.FavoriteService.getAll({ owner, lang }),
     ]);
 
     const result: IDefaultCocktails = filterDefault(
@@ -128,7 +131,7 @@ export class CocktailsService {
       this.IngredientListModel.findOne({
         owner,
       }),
-      this.FavoriteService.getAll({ owner }),
+      this.FavoriteService.getAll({ owner, lang }),
       this.getMyDefault({ owner, lang }),
     ]);
 
@@ -159,7 +162,7 @@ export class CocktailsService {
           ])
           .populate(`${lang}.glass`, '-__v')
           .populate(`${lang}.ingredients.alternatives`),
-        this.FavoriteService.getAll({ owner }),
+        this.FavoriteService.getAll({ owner, lang }),
         this.IngredientListModel.findOne({
           owner,
         }),
