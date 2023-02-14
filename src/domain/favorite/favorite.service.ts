@@ -58,6 +58,7 @@ export class FavoriteService {
       ).populate(`cocktails.${lang}.ingredients.data`),
       this.ingredientList.findOne({ owner }).populate('list'),
     ]);
+
     const result: any = addLacks({ favorite, ingredientList, lang });
 
     return result;
