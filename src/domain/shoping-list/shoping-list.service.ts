@@ -47,13 +47,13 @@ export class ShopingListService {
   async getAll({ owner }): Promise<ShopingList> {
     const itemsList: any = await this.shopingListModel
       .findOne({ owner })
-      .populate('ingredients');
-    const list = { ...itemsList }._doc;
-    list.ingredients = itemsList.ingredients.map((el) => {
+      .populate('ingredients')
+      .lean();
+    itemsList.ingredients = itemsList.ingredients.map((el) => {
       return el.en;
     });
 
-    return list;
+    return itemsList;
   }
 
   async deleteItem({ id, owner }): Promise<void> {
