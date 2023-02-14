@@ -98,7 +98,6 @@ export class CocktailsService {
       }),
       this.FavoriteService.getAll({ owner }),
     ]);
-    console.log(cocktails[0].en.ingredients[0].data);
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,

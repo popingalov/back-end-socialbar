@@ -14,9 +14,7 @@ export default function addFavoriteAndICan(
     }, 0) === 1;
   cocktail[lang].favorite = favoriteResult;
   //
-
   const include = cocktail[lang].ingredients.reduce((acc, el) => {
-    el.data = el.data[lang];
     if (!el.data) {
       return acc;
     }
