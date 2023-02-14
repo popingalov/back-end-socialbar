@@ -53,8 +53,8 @@ export class IngredientsService {
       this.shopingListModel.findOne({ owner }),
       this.ingredientListtModel.findOne({ owner }),
     ]);
-
     console.log(ingredients);
+
     const result = filterShopingIngredientList({
       ingredients,
       shopingList,
@@ -62,8 +62,6 @@ export class IngredientsService {
       all,
       lang,
     });
-
-    console.log('result', result);
 
     return result;
   }
@@ -85,8 +83,8 @@ export class IngredientsService {
       this.shopingListModel.findOne({ owner }),
       this.ingredientListtModel.findOne({ owner }),
     ]);
+    console.log(all);
 
-    console.log('IN GET INGRIDIENTS');
     const result = filterShopingIngredientList({
       ingredients,
       shopingList,
@@ -98,21 +96,17 @@ export class IngredientsService {
   }
 
   async getIngredientById({ id, lang = 'en' }) {
-    const ingredient = await this.ingredientModel.findById(id);
+    const ingredient = await this.ingredientModel.findById(id, `${lang}`);
     if (!ingredient) {
       errorGenerator('Wrong ID , ingredient not found', 'NOT_FOUND');
     }
+
     ingredient[lang].cocktails = await this.cocktailsService.findByIngredient({
       id,
       lang,
     });
 
-    console.log('AFTER FIND BY INGRIDIENT', ingredient[lang].cocktails);
-
-    return ingredient.populate(`${lang}.cocktails.ingredients.data`, [
-      'id',
-      'title',
-    ]);
+    return ingredient[lang];
   }
 
   async deleteIngredient({ id, owner }): Promise<void> {

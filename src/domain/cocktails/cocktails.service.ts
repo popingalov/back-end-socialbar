@@ -48,7 +48,6 @@ export class CocktailsService {
   }
 
   async getDefault({ lang = 'en' }): Promise<IDefaultCocktails> {
-    console.log('DEFAULT');
     const owner = process.env.OWNER;
 
     const cocktails: Cocktail[] = await this.cocktailModel
@@ -77,7 +76,6 @@ export class CocktailsService {
   }
 
   async getMyDefault({ owner, lang = 'en' }): Promise<IDefaultCocktails> {
-    console.log('THIS IN MY-DEFAULT');
     const defaultOwner = process.env.OWNER;
 
     const [cocktails, ingredients, favorite]: [
@@ -111,8 +109,6 @@ export class CocktailsService {
   }
 
   async getMyCocktails({ owner, lang = 'en' }): Promise<IMyCocktails> {
-    console.log('THIS IN MY-COCKTAILS');
-
     const [cocktails, ingredients, favorite, defaultObj]: [
       Cocktail[],
       IngredientList,
@@ -180,9 +176,18 @@ export class CocktailsService {
   }
 
   async findByIngredient({ id, lang }): Promise<Cocktail[]> {
-    console.log('FIND BY INGRIDIENT');
     const path = `ingredients.${lang}.data`;
-    return await this.cocktailModel.find({ [path]: id });
+    const cock: Cocktail[] = await this.cocktailModel
+      .find({ path: id }, `${lang}`)
+      .populate(`${lang}.ingredients.data`, `${lang}.title ${lang}.id`);
+
+    return cock.map((el) => {
+      el[lang].ingredients.map((el) => {
+        el.data = el.data[lang];
+        return el;
+      });
+      return el[lang];
+    });
   }
 
   async updateOne(
@@ -191,7 +196,6 @@ export class CocktailsService {
     lang: string = 'en',
   ): Promise<Cocktail> {
     const oldData = await this.cocktailModel.findById(id);
-    console.log(oldData);
     const {
       ingredients,
       ratings,

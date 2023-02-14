@@ -26,7 +26,7 @@ import IFileUpload from 'src/helpers/imageHeplers/fileUpload.interface';
 import fileUpload from 'src/helpers/imageHeplers/fileUpload';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('ingredients2')
+@Controller('ingredients')
 export class IngredientsController {
   constructor(
     private readonly ingredientsService: IngredientsService,

@@ -54,7 +54,6 @@ export class RatingService {
       },
       { new: true },
     );
-    console.log('ADD RESPONSE', addCocktailsRatings);
 
     return await newRating.save();
   }
@@ -83,7 +82,6 @@ export class RatingService {
     }
 
     // ? Update Ratings in Cocktails object
-    console.log('???update???', id);
     const findCocktail = await this.cocktailModel.findOne(
       { _id: id },
       'ratings',
@@ -101,6 +99,5 @@ export class RatingService {
       },
       { new: true },
     );
-    console.log('UPDATE RESPONSE', updateCocktailsRatings);
   }
 }
