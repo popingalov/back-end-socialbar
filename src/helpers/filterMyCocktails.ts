@@ -21,6 +21,7 @@ export default function filterMy(
       //
 
       const include = cocktail.ingredients.reduce((acc, el) => {
+        el.data = el.data[lang];
         if (!el.data) {
           return acc;
         }
