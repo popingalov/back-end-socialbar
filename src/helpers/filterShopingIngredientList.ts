@@ -7,13 +7,17 @@ export default function filterShopingIngredientList({
   all,
   lang = 'en',
 }) {
-  return ingredients.map((el: Ingredient) => {
-    el[lang].shopping = shopingList.ingredients.includes(el[lang].id);
+  return ingredients.map((eld: Ingredient) => {
+    const el = eld[lang];
+    el.shopping = shopingList.ingredients.includes(el.id);
     const cocktailList: string[] = all.reduce((acc, cocktail) => {
-      const result = cocktail.ingredients.reduce((acc, { data }) => {
+      // console.log(cocktail);
+
+      const result = cocktail.ingredients.reduce((acc, oldEl) => {
+        const data = oldEl.data[lang];
         if (!data) return acc;
 
-        if (data.title === el[lang].title) {
+        if (data.title === el.title) {
           acc.push(cocktail.title);
         }
         return acc;
@@ -24,8 +28,8 @@ export default function filterShopingIngredientList({
       return acc;
     }, [] as string[]);
 
-    el[lang].cocktails.push(...cocktailList);
-    el[lang].iHave = ingredientList.list.includes(el[lang].id);
+    el.cocktails.push(...cocktailList);
+    el.iHave = ingredientList.list.includes(el.id);
     return el;
   });
 }

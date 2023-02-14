@@ -53,7 +53,6 @@ export class IngredientsService {
       this.shopingListModel.findOne({ owner }),
       this.ingredientListtModel.findOne({ owner }),
     ]);
-    console.log(ingredients);
 
     const result = filterShopingIngredientList({
       ingredients,
@@ -83,7 +82,6 @@ export class IngredientsService {
       this.shopingListModel.findOne({ owner }),
       this.ingredientListtModel.findOne({ owner }),
     ]);
-    console.log(all);
 
     const result = filterShopingIngredientList({
       ingredients,

@@ -53,10 +53,10 @@ export class CocktailsService {
     const cocktails: Cocktail[] = await this.cocktailModel
       .find({ owner }, `${lang}`)
       .populate(`${lang}.ingredients.data`, [
-        'id',
-        'title',
-        'description',
-        'image',
+        `${lang}.id`,
+        `${lang}.title`,
+        `${lang}.description`,
+        `${lang}.picture`,
       ])
       .populate(`${lang}.glass`, '-__v')
       .populate(`${lang}.ingredients.alternatives`);
@@ -86,10 +86,10 @@ export class CocktailsService {
       this.cocktailModel
         .find({ owner: defaultOwner }, `${lang}`)
         .populate(`${lang}.ingredients.data`, [
-          'id',
-          'title',
-          'description',
-          'image',
+          `${lang}.id`,
+          `${lang}.title`,
+          `${lang}.description`,
+          `${lang}.picture`,
         ])
         .populate(`${lang}.glass`, '-__v')
         .populate(`${lang}.ingredients.alternatives`),
@@ -98,6 +98,7 @@ export class CocktailsService {
       }),
       this.FavoriteService.getAll({ owner }),
     ]);
+    console.log(cocktails[0].en.ingredients[0].data);
 
     const result: IDefaultCocktails = filterDefault(
       cocktails,
@@ -118,10 +119,10 @@ export class CocktailsService {
       this.cocktailModel
         .find({ owner }, `${lang}`)
         .populate(`${lang}.ingredients.data`, [
-          'id',
-          'title',
-          'description',
-          'image',
+          `${lang}.id`,
+          `${lang}.title`,
+          `${lang}.description`,
+          `${lang}.picture`,
         ])
         .populate(`${lang}.glass`, '-__v')
         .populate(`${lang}.ingredients.alternatives`),
@@ -152,10 +153,10 @@ export class CocktailsService {
         this.cocktailModel
           .findById(id, `${lang}`)
           .populate(`${lang}.ingredients.data`, [
-            'id',
-            'title',
-            'description',
-            'image',
+            `${lang}.id`,
+            `${lang}.title`,
+            `${lang}.description`,
+            `${lang}.picture`,
           ])
           .populate(`${lang}.glass`, '-__v')
           .populate(`${lang}.ingredients.alternatives`),
@@ -164,6 +165,7 @@ export class CocktailsService {
           owner,
         }),
       ]);
+
       const result = addFavoriteAndICan(cocktail, ingredients, favorite, lang);
       return result;
     } catch (error) {
