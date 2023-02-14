@@ -29,7 +29,7 @@ export class IngredientsService {
     private readonly cocktailsService: CocktailsService,
   ) {}
 
-  async createIngredient(ingredient): Promise<Ingredient> {
+  async createIngredient(ingredient): Promise<any> {
     const langBody = {
       owner: ingredient.owner,
       en: ingredient,
@@ -37,7 +37,7 @@ export class IngredientsService {
 
     const newIngredient = await this.ingredientModel.create(langBody);
     // await newIngredient.save();
-    return newIngredient;
+    return newIngredient.en;
   }
 
   async getDefault({ owner, lang = 'en' }): Promise<Ingredient[]> {
