@@ -1,13 +1,29 @@
-import { Controller, Get, Redirect, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Redirect,
+  UseGuards,
+  Req,
+  Post,
+  Body,
+} from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { TokenGenerator } from './dto/createWorkToken.dto';
 
 import { GoogleAuthGuard } from './strategies/google.guard';
 
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
   @UseGuards(GoogleAuthGuard)
   @Get('google/login')
   async handleLogin() {
     console.log('Doing things');
+  }
+
+  @Post('token')
+  async tokenGenerator(@Body() body: TokenGenerator) {
+    return this.authService.createToken({ ...body });
   }
 
   @Get('google/redirect')
