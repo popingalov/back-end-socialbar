@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   createToken(data: any): any {
-    return this.jwtService.sign(data);
+    return { token: this.jwtService.sign(data) };
   }
   validToken(data: any): any {
     return this.jwtService.verify(data);
