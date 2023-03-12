@@ -23,7 +23,7 @@ export class AuthController {
 
   @Post('token')
   async tokenGenerator(@Body() body: TokenGenerator) {
-    return this.authService.createToken({ ...body });
+    return this.authService.createTestToken({ ...body });
   }
 
   @Get('google/redirect')

@@ -25,6 +25,10 @@ export class AuthService {
   }
 
   createToken(data: any): any {
+    return this.jwtService.sign(data);
+  }
+
+  createTestToken(data: any): any {
     return { token: this.jwtService.sign(data) };
   }
   validToken(data: any): any {
