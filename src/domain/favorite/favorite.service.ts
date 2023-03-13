@@ -60,7 +60,6 @@ export class FavoriteService {
     ]);
 
     const result: any = addLacks({ favorite, ingredientList, lang });
-
     return result;
   }
 
