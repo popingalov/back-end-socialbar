@@ -16,8 +16,7 @@ import { IngredientListModule } from './domain/ingredient-list/ingredient-list.m
 import { RatingModule } from './domain/rating/rating.module';
 import { DocumentTestModule } from './domain/document-test/document-test.module';
 
-const DB_HOST =
-  'mongodb+srv://popingalov:popingalov@cluster0.gdfjo81.mongodb.net/db-bar?retryWrites=true&w=majority';
+const DB_HOST = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.gdfjo81.mongodb.net/db-bar?retryWrites=true&w=majority`;
 
 @Module({
   controllers: [],
