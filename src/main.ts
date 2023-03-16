@@ -5,8 +5,16 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { config } from 'dotenv';
 import { config as awsConfig } from 'aws-sdk';
+
+import rateLimit from 'express-rate-limit';
 config();
 const PORT = process.env.PORT || 5000;
+
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  message: 'Error 429. Request Limit.',
+});
 
 async function bootstrap() {
   awsConfig.update({
@@ -35,6 +43,7 @@ async function bootstrap() {
         process.env.NODE_ENV === 'PRODUCTION' ? true : false,
     }),
   );
+  app.use('/api', apiLimiter);
   app.use(passport.initialize());
   app.use(passport.session());
 
