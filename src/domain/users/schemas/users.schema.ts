@@ -3,6 +3,22 @@ import { Document, Types } from 'mongoose';
 
 export type UsersDocument = User & Document;
 
+@Schema({ _id: false })
+export class RequestsLimit {
+  id: Types.ObjectId;
+
+  @Prop({ type: Number })
+  current: number;
+
+  @Prop({ type: Number })
+  max: number;
+
+  @Prop({ type: String })
+  time: String;
+}
+
+const RequestsLimitSchema = SchemaFactory.createForClass(RequestsLimit);
+
 @Schema({
   toJSON: {
     virtuals: true,
@@ -30,6 +46,9 @@ export class User {
 
   @Prop({ type: String, default: 'allIngredients' })
   startPage: string;
+
+  @Prop({ type: RequestsLimitSchema })
+  requestsLimit?: RequestsLimit;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
