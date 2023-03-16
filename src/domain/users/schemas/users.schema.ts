@@ -13,8 +13,8 @@ export class RequestsLimit {
   @Prop({ type: Number })
   max: number;
 
-  @Prop({ type: NativeDate })
-  time: NativeDate;
+  @Prop({ type: String })
+  time: String;
 }
 
 const RequestsLimitSchema = SchemaFactory.createForClass(RequestsLimit);
