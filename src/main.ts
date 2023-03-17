@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { config } from 'dotenv';
 import { config as awsConfig } from 'aws-sdk';
-
 import rateLimit from 'express-rate-limit';
 config();
 const PORT = process.env.PORT || 5000;
