@@ -7,7 +7,7 @@ const sumRatings = (data, total, rating): number => {
   }
 
   if (sum <= 0) return rating;
-  return sum / (total + 1);
+  return sum / total;
 };
 
 export default sumRatings;
