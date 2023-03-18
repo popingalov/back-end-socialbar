@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Glass, GlassDocument } from './schema/glasses.schema';
@@ -10,12 +10,22 @@ export class GlassesService {
   ) {}
 
   async getAll(): Promise<Glass[]> {
-    return await this.glassModel.find();
+    try {
+      return await this.glassModel.find();
+    } catch (error) {
+      throw new HttpException('Item Not Found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async createOne(glass): Promise<Glass> {
-    const newGlass = new this.glassModel(glass);
-
-    return newGlass.save();
+    try {
+      const newGlass = new this.glassModel(glass);
+      return newGlass.save();
+    } catch (error) {
+      throw new HttpException(
+        'Impossible to create a New Glass',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
+    }
   }
 }
