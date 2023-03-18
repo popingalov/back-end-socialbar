@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import addLacks from 'src/helpers/addLacks';
@@ -59,7 +59,12 @@ export class FavoriteService {
       this.ingredientList.findOne({ owner }).populate('list'),
     ]);
 
+    console.log('favorite', favorite);
+    console.log('ingredientList', ingredientList);
+
     const result: any = addLacks({ favorite, ingredientList, lang });
+
+    console.log('RESULT', result);
 
     return result;
   }
