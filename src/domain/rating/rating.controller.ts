@@ -7,6 +7,8 @@ import {
   Param,
   Req,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/strategies/jwt.guard';
 import { RatingService } from './rating.service';
@@ -22,22 +24,43 @@ export class RatingController {
   @UseGuards(JwtAuthGuard)
   @Post(':id')
   create(@Param() { id }: IdDto, @Req() req, @Body() body: CreateRatingDto) {
-    const owner = req.user.id;
-    const { rating } = body;
-    return this.ratingService.postRating({ id, owner, rating });
+    try {
+      const owner = req.user.id;
+      const { rating } = body;
+      return this.ratingService.postRating({ id, owner, rating });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param() { id }: IdDto) {
-    return this.ratingService.findOne({ id });
+    try {
+      return this.ratingService.findOne({ id });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param() { id }: IdDto, @Req() req, @Body() body: UpdateRatingDto) {
-    const owner = req.user.id;
-    const { rating } = body;
-    return this.ratingService.updateRating({ id, owner, rating });
+    try {
+      const owner = req.user.id;
+      const { rating } = body;
+      return this.ratingService.updateRating({ id, owner, rating });
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
