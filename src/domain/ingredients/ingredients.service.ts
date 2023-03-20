@@ -14,6 +14,10 @@ import {
   IngredientList,
   IngredientListDocument,
 } from '../ingredient-list/schema/ingredientList.schema';
+import {
+  Cocktail,
+  CocktailDocument,
+} from '../cocktails/shame/cocktails.schema';
 import filterShopingIngredientList from '../../helpers/filterShopingIngredientList';
 import { IMyCocktails } from '../cocktails/dto/returnMyCocktails.dto';
 
@@ -26,6 +30,8 @@ export class IngredientsService {
     private readonly shopingListModel: Model<ShopingListDocument>,
     @InjectModel(IngredientList.name)
     private readonly ingredientListtModel: Model<IngredientListDocument>,
+    @InjectModel(Cocktail.name)
+    private readonly cocktailModel: Model<CocktailDocument>,
     private readonly cocktailsService: CocktailsService,
   ) {}
 
@@ -108,6 +114,16 @@ export class IngredientsService {
   }
 
   async deleteIngredient({ id, owner }): Promise<void> {
+    await this.cocktailModel.findOneAndDelete(
+      { owner },
+      {
+        $pull: {
+          en: { ingredients: id },
+          ua: { ingredients: id },
+          ru: { ingredients: id },
+        },
+      },
+    );
     await this.ingredientModel.findOneAndDelete({ _id: id, owner });
   }
 

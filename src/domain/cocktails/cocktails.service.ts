@@ -102,6 +102,8 @@ export class CocktailsService {
       this.FavoriteService.getAll({ owner, lang }),
     ]);
 
+    console.log('FAVORITE', favorite);
+
     const result: IDefaultCocktails = filterDefault(
       cocktails,
       ingredients,

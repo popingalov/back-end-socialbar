@@ -2,8 +2,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import addLacks from 'src/helpers/addLacks';
-import { IngredientList } from '../ingredient-list/schema/ingredientList.schema';
-import { IngredientDocument } from '../ingredients/schema/ingredients.schema';
+import {
+  IngredientList,
+  IngredientListDocument,
+} from '../ingredient-list/schema/ingredientList.schema';
 import { GetFavoriteDtoMail } from './dto/get-favorite.dto';
 import { Favorite, FavoriteDocument } from './shema/favorite.schema';
 
@@ -13,7 +15,7 @@ export class FavoriteService {
     @InjectModel(Favorite.name)
     private readonly favoritetModel: Model<FavoriteDocument>,
     @InjectModel(IngredientList.name)
-    private readonly ingredientList: Model<IngredientDocument>,
+    private readonly ingredientList: Model<IngredientListDocument>,
   ) {}
 
   async createFavorite({ owner, id }) {
@@ -51,21 +53,15 @@ export class FavoriteService {
 
   async getAll({ owner, lang }): Promise<Favorite> {
     const [favorite, ingredientList] = await Promise.all([
-      (
-        await this.favoritetModel
-          .findOne({ owner })
-          .populate('cocktails', '-owner')
-      ).populate(`cocktails.${lang}.ingredients.data`),
+      await this.favoritetModel
+        .findOne({ owner })
+        .populate('cocktails', '-owner'),
+      //.populate(`cocktails.${lang}.ingredients.data`),
       this.ingredientList.findOne({ owner }).populate('list'),
     ]);
 
-    console.log('favorite', favorite);
-    console.log('ingredientList', ingredientList);
-
     const result: any = addLacks({ favorite, ingredientList, lang });
-
     console.log('RESULT', result);
-
     return result;
   }
 

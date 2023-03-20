@@ -14,6 +14,7 @@ export default function filterDefault(
       //
       const favoriteResult =
         favorite.cocktails.reduce((acc, el) => {
+          console.log(1996);
           if (el.id === cocktail.id) acc += 1;
           return acc;
         }, 0) === 1;
