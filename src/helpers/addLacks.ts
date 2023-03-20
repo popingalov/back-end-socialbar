@@ -9,6 +9,8 @@ export default function addLacks({ favorite, ingredientList, lang }) {
       return favorite;
     }
     cock.ingredients.forEach((el) => {
+      console.log('ELEM!', el);
+      if (!el) return;
       el.data = el.data[lang];
 
       if (!list.includes(el.data[lang].title)) {
@@ -19,9 +21,7 @@ export default function addLacks({ favorite, ingredientList, lang }) {
     acc.push(cock);
     return acc;
   }, []);
-  console.log('Lacks1', favorite1);
-  console.log('Lacks2', helper);
-  favorite1.cocktails = helper;
 
+  if (!favorite1) favorite1.cocktails = helper;
   return favorite1;
 }

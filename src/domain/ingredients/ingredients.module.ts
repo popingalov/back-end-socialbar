@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IngredientsService } from './ingredients.service';
 import { IngredientsController } from './ingredients.controller';
 import { Ingredient, IngredientSchema } from './schema/ingredients.schema';
+import { Cocktail, CocktailSchema } from '../cocktails/shame/cocktails.schema';
 
 import { CocktailsModule } from '../cocktails/cocktails.module';
 import {
@@ -31,6 +32,10 @@ import {
       {
         name: IngredientList.name,
         schema: IngredientListSchema,
+      },
+      {
+        name: Cocktail.name,
+        schema: CocktailSchema,
       },
     ]),
   ],
