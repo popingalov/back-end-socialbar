@@ -19,6 +19,8 @@ export default function addLacks({ favorite, ingredientList, lang }) {
     acc.push(cock);
     return acc;
   }, []);
+  console.log('Lacks1', favorite1);
+  console.log('Lacks2', helper);
   favorite1.cocktails = helper;
 
   return favorite1;
