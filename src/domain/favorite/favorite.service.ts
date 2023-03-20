@@ -2,8 +2,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import addLacks from 'src/helpers/addLacks';
-import { IngredientList } from '../ingredient-list/schema/ingredientList.schema';
-import { IngredientDocument } from '../ingredients/schema/ingredients.schema';
+import {
+  IngredientList,
+  IngredientListDocument,
+} from '../ingredient-list/schema/ingredientList.schema';
 import { GetFavoriteDtoMail } from './dto/get-favorite.dto';
 import { Favorite, FavoriteDocument } from './shema/favorite.schema';
 
@@ -13,7 +15,7 @@ export class FavoriteService {
     @InjectModel(Favorite.name)
     private readonly favoritetModel: Model<FavoriteDocument>,
     @InjectModel(IngredientList.name)
-    private readonly ingredientList: Model<IngredientDocument>,
+    private readonly ingredientList: Model<IngredientListDocument>,
   ) {}
 
   async createFavorite({ owner, id }) {
