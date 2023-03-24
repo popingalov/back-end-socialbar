@@ -11,16 +11,16 @@ const PORT = process.env.PORT || 5000;
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 25,
   message: 'Error 429. Request Limit.',
 });
 
 async function bootstrap() {
-  //awsConfig.update({
-  //  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  //  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  //  region: process.env.AWS_REGION,
-  //});
+  awsConfig.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+  });
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
