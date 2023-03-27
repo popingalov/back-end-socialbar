@@ -4,7 +4,9 @@ export default function addLacks({ favorite, ingredientList, lang }) {
     return one.title;
   });
   const helper = favorite.cocktails.reduce((acc, cock, idx) => {
+    console.log(888, cock);
     cock = cock[lang];
+    console.log(777, cock);
     if (cock.ingredients.length <= 0) {
       return favorite;
     }
