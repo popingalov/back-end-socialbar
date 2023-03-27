@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
@@ -180,18 +180,22 @@ export class CocktailsService {
   }
 
   async findByIngredient({ id, lang }): Promise<Cocktail[]> {
-    const path = `ingredients.${lang}.data`;
-    const cock: Cocktail[] = await this.cocktailModel
-      .find({ path: id }, `${lang}`)
-      .populate(`${lang}.ingredients.data`, `${lang}.title ${lang}.id`);
+    try {
+      const path = `ingredients.${lang}.data`;
+      const cock: Cocktail[] = await this.cocktailModel
+        .find({ path: id }, `${lang}`)
+        .populate(`${lang}.ingredients.data`, `${lang}.title ${lang}.id`);
 
-    return cock.map((el) => {
-      el[lang].ingredients.map((el) => {
-        el.data = el.data[lang];
+      return cock.map((el) => {
+        el[lang].ingredients.map((el) => {
+          el.data = el.data;
+          return el;
+        });
         return el;
       });
-      return el[lang];
-    });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async updateOne(
