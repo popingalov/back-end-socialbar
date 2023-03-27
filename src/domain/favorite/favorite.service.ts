@@ -61,7 +61,6 @@ export class FavoriteService {
     ]);
 
     const result: any = addLacks({ favorite, ingredientList, lang });
-    console.log('RESULT', result);
     return result;
   }
 
