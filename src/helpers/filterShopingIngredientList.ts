@@ -10,7 +10,7 @@ export default function filterShopingIngredientList({
   return ingredients.map((eld: Ingredient) => {
     const el = eld[lang];
 
-    el.shopping = shopingList.ingredients.includes(el.id);
+    el.shopping = shopingList?.ingredients.includes(el.id) || false;
     const cocktailList: string[] = all.reduce((acc, cocktail) => {
       const result = cocktail.ingredients.reduce((acc, { data }) => {
         if (!data) return acc;
