@@ -9,7 +9,7 @@ export default function addLacks({ favorite, ingredientList, lang }) {
       return favorite;
     }
     cock.ingredients.forEach((el) => {
-      console.log('ELEM!', el);
+      console.log('ELEM!', el.data);
       if (!el) return;
       el.data = el.data[lang];
 
