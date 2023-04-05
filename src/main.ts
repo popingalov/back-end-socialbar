@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 25,
+  max: 250,
   message: 'Error 429. Request Limit.',
 });
 
